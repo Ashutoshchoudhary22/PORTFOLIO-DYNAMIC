@@ -1,143 +1,95 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useLoading } from "@/hooks/use-loading";
+
+const loadingSteps = [
+  "Initializing portfolio",
+  "Loading projects and experience",
+  "Preparing interface",
+  "Almost ready",
+];
 
 export function LoadingAnimation() {
   const { isLoading, progress } = useLoading(true);
-  const [currentText, setCurrentText] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
 
-  const loadingTexts = [
-    "Crafting Digital Magic...",
-    "Loading Awesome Content...",
-    "Almost There...",
-    "Preparing Experience...",
-    "Setting Up Portfolio...",
-  ];
-
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 20 }, (_, i) => ({
-        id: i,
-        left: (i * 17 + 13) % 100,
-        top: (i * 23 + 7) % 100,
-        size: (i % 5) + 2,
-        hue: (i * 12) % 60 + 200,
-        delay: (i % 10) * 0.3,
-        duration: (i % 4) + 2,
-      })),
-    []
-  );
+  useEffect(() => {
+    if (!isLoading) {
+      const timeout = setTimeout(() => setVisible(false), 400);
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (!isLoading) return;
-    const interval = setInterval(() => {
-      setCurrentText((prev) => (prev + 1) % loadingTexts.length);
-    }, 800);
-    return () => clearInterval(interval);
-  }, [isLoading, loadingTexts.length]);
 
-  if (!isLoading) return null;
+    const interval = setInterval(() => {
+      setStepIndex((prev) => (prev + 1) % loadingSteps.length);
+    }, 1800);
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
+
+  if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black backdrop-blur-md">
-      {/* Animated Background Particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full animate-float"
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              background: `hsl(${particle.hue}, 70%, 60%)`,
-              animationDelay: `${particle.delay}s`,
-              animationDuration: `${particle.duration}s`,
-            }}
-          />
-        ))}
-      </div>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${
+        isLoading ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+      aria-live="polite"
+      aria-busy={isLoading}
+    >
+      <div className="absolute inset-0 bg-[#070b14]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(circle_at_center,black,transparent_80%)]" />
 
-      <div className="relative z-10 flex flex-col items-center space-y-10 animate-fade-in-up">
-        {/* Enhanced 3D Spinner */}
-        <div className="relative">
-          {/* Outer Glow Ring */}
-          <div className="absolute inset-0 w-32 h-32 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-20 blur-2xl animate-pulse-glow"></div>
-          
-          {/* Main Spinner Layers */}
-          <div className="relative w-32 h-32">
-            {/* Layer 1 - Fast */}
-            <div className="absolute inset-0 border-4 border-transparent border-t-blue-500 border-r-purple-500 rounded-full animate-spin-fast"></div>
-            {/* Layer 2 - Medium */}
-            <div className="absolute inset-2 border-4 border-transparent border-b-pink-500 border-l-green-500 rounded-full animate-spin animation-delay-150"></div>
-            {/* Layer 3 - Slow */}
-            <div className="absolute inset-4 border-3 border-transparent border-t-cyan-400 border-r-yellow-400 rounded-full animate-spin-slow animation-delay-300"></div>
-            {/* Center Glow */}
-            <div className="absolute inset-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 opacity-30 animate-pulse"></div>
-          </div>
-        </div>
-        
-        {/* Animated Loading Text with Typing Effect */}
-        <div className="text-center space-y-4">
-          <h3 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 via-pink-500 to-blue-400 bg-[length:200%_auto] animate-gradient-shift">
-            Loading Portfolio
-          </h3>
-          <div className="h-8">
-            <p className="text-gray-300 text-lg md:text-xl font-semibold animate-text-slide">
-              {loadingTexts[currentText]}
+      <div className="relative z-10 w-full max-w-md px-6 animate-fade-in-up">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl px-8 py-10 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+          <div className="flex flex-col items-center text-center">
+            <div className="relative mb-8 flex h-20 w-20 items-center justify-center">
+              <div className="absolute inset-0 rounded-full border border-white/10" />
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-blue-400/90 border-r-violet-400/70 animate-spin" />
+              <div className="absolute inset-3 rounded-full border border-white/5" />
+              <div className="h-2.5 w-2.5 rounded-full bg-blue-400/80 shadow-[0_0_18px_rgba(96,165,250,0.8)]" />
+            </div>
+
+            <p className="text-[11px] font-medium uppercase tracking-[0.35em] text-blue-300/70">
+              Portfolio
             </p>
-          </div>
-        </div>
-
-        {/* Enhanced Progress Bar with Glow */}
-        <div className="w-full max-w-md space-y-3">
-          <div className="relative w-full h-3 bg-gray-800 rounded-full overflow-hidden shadow-2xl border border-gray-700">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-shimmer"></div>
-            <div 
-              className="relative h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300 ease-out shadow-lg"
-              style={{ width: `${progress}%` }}
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
+              Loading Experience
+            </h3>
+            <p
+              key={stepIndex}
+              className="mt-3 min-h-6 text-sm text-white/55 animate-loading-step"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shine"></div>
-            </div>
-          </div>
-          
-          {/* Progress Percentage with Animation */}
-          <div className="flex items-center justify-between">
-            <div className="flex space-x-2">
-              {[...Array(3)].map((_, i) => (
+              {loadingSteps[stepIndex]}
+            </p>
+
+            <div className="mt-8 w-full space-y-3">
+              <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
                 <div
-                  key={i}
-                  className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 animate-bounce"
-                  style={{ animationDelay: `${i * 0.2}s` }}
+                  className="h-full rounded-full bg-gradient-to-r from-blue-500 via-violet-500 to-blue-400 transition-all duration-300 ease-out"
+                  style={{ width: `${Math.min(progress, 100)}%` }}
                 />
-              ))}
-            </div>
-            <div className="text-gray-300 text-sm font-bold tabular-nums">
-              {Math.round(progress)}%
+              </div>
+              <div className="flex items-center justify-between text-xs text-white/45">
+                <span>Please wait</span>
+                <span className="tabular-nums font-medium text-white/70">
+                  {Math.round(Math.min(progress, 100))}%
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Floating Tech Icons */}
-        <div className="flex space-x-6 mt-4">
-          {['⚡', '🚀', '💻', '✨'].map((icon, i) => (
-            <div
-              key={i}
-              className="text-3xl animate-float-icon"
-              style={{ animationDelay: `${i * 0.3}s` }}
-            >
-              {icon}
-            </div>
-          ))}
         </div>
       </div>
     </div>
   );
 }
 
-// Page Loading Animation for route changes
 export function PageLoadingAnimation() {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -145,51 +97,55 @@ export function PageLoadingAnimation() {
     const handleStart = () => setIsLoading(true);
     const handleComplete = () => setIsLoading(false);
 
-    // Listen for route changes
-    window.addEventListener('beforeunload', handleStart);
-    window.addEventListener('load', handleComplete);
+    window.addEventListener("beforeunload", handleStart);
+    window.addEventListener("load", handleComplete);
 
     return () => {
-      window.removeEventListener('beforeunload', handleStart);
-      window.removeEventListener('load', handleComplete);
+      window.removeEventListener("beforeunload", handleStart);
+      window.removeEventListener("load", handleComplete);
     };
   }, []);
 
   if (!isLoading) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-pulse"></div>
+    <div className="fixed top-0 left-0 right-0 z-50 h-0.5 overflow-hidden bg-white/5">
+      <div className="h-full w-1/3 animate-loading-bar bg-gradient-to-r from-transparent via-blue-400 to-transparent" />
+    </div>
   );
 }
 
-// Simple Spinner Component
 export function Spinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const sizeClasses = {
-    sm: "w-4 h-4",
-    md: "w-8 h-8", 
-    lg: "w-12 h-12"
+    sm: "h-4 w-4",
+    md: "h-8 w-8",
+    lg: "h-12 w-12",
   };
 
   return (
-    <div className={`${sizeClasses[size]} border-2 border-transparent border-t-blue-500 rounded-full animate-spin`}></div>
+    <div
+      className={`${sizeClasses[size]} animate-spin rounded-full border-2 border-white/10 border-t-blue-400`}
+      role="status"
+      aria-label="Loading"
+    />
   );
 }
 
-// Section Loading Component
-export function SectionLoading({ children, isLoading, className = "" }: { 
-  children: React.ReactNode; 
-  isLoading: boolean; 
+export function SectionLoading({
+  children,
+  isLoading,
+  className = "",
+}: {
+  children: React.ReactNode;
+  isLoading: boolean;
   className?: string;
 }) {
   if (isLoading) {
     return (
       <div className={`flex items-center justify-center p-8 ${className}`}>
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            <div className="w-12 h-12 border-4 border-transparent border-t-blue-500 border-r-purple-500 rounded-full animate-spin"></div>
-            <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-b-pink-500 border-l-green-500 rounded-full animate-spin animation-delay-150"></div>
-          </div>
-          <p className="text-gray-400 animate-pulse">Loading...</p>
+        <div className="flex flex-col items-center gap-4">
+          <Spinner size="lg" />
+          <p className="text-sm text-white/50">Loading content...</p>
         </div>
       </div>
     );

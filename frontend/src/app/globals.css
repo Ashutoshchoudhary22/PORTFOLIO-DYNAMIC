@@ -42,132 +42,34 @@ body {
   }
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(147, 51, 234, 0.8);
-  }
-}
-
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) translateX(0);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-20px) translateX(10px);
-    opacity: 0.8;
-  }
-}
-
-@keyframes spin-fast {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes spin-slow {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes text-slide {
+@keyframes loading-step {
   0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
-  50% {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
 }
 
-@keyframes shimmer {
+@keyframes loading-bar {
   0% {
-    background-position: -1000px 0;
+    transform: translateX(-120%);
   }
   100% {
-    background-position: 1000px 0;
+    transform: translateX(320%);
   }
 }
 
-@keyframes shine {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+.animate-loading-step {
+  animation: loading-step 0.45s ease-out;
 }
 
-@keyframes float-icon {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-15px) scale(1.1);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-spin-fast {
-  animation: spin-fast 0.8s linear infinite;
-}
-
-.animate-spin-slow {
-  animation: spin-slow 2s linear infinite;
-}
-
-.animate-gradient-shift {
-  animation: gradient-shift 3s ease infinite;
-}
-
-.animate-text-slide {
-  animation: text-slide 0.8s ease-in-out;
-}
-
-.animate-shimmer {
-  animation: shimmer 2s linear infinite;
-  background-size: 1000px 100%;
-}
-
-.animate-shine {
-  animation: shine 1.5s ease-in-out infinite;
-}
-
-.animate-float-icon {
-  animation: float-icon 2s ease-in-out infinite;
+.animate-loading-bar {
+  animation: loading-bar 1.2s ease-in-out infinite;
 }

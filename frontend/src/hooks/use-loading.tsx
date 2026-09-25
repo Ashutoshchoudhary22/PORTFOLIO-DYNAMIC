@@ -9,16 +9,21 @@ export function useLoading(initialState = true) {
   useEffect(() => {
     if (!isLoading) return;
 
+    let current = 0;
     const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          setTimeout(() => setIsLoading(false), 500);
-          return 100;
-        }
-        return prev + Math.random() * 15;
-      });
-    }, 100);
+      if (current >= 100) {
+        clearInterval(progressInterval);
+        setProgress(100);
+        setTimeout(() => setIsLoading(false), 350);
+        return;
+      }
+
+      const increment =
+        current < 60 ? 4 + Math.random() * 6 : current < 90 ? 2 + Math.random() * 3 : 1;
+
+      current = Math.min(current + increment, 100);
+      setProgress(current);
+    }, 120);
 
     return () => clearInterval(progressInterval);
   }, [isLoading]);
@@ -38,7 +43,6 @@ export function useLoading(initialState = true) {
     progress,
     startLoading,
     stopLoading,
-    setProgress
+    setProgress,
   };
 }
-
