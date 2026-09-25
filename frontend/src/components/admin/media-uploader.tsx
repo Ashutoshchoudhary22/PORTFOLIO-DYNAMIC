@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { downloadMedia } from "@/lib/media-utils";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem } from "@/lib/types";
@@ -100,9 +101,14 @@ export function MediaUploader({
           ) : (
             <video src={value.secureUrl} controls className="max-h-32 rounded w-full" />
           )}
-          <Button type="button" size="sm" variant="outline" onClick={() => onChange(null)}>
-            Remove
-          </Button>
+          <div className="flex gap-2">
+            <Button type="button" size="sm" variant="outline" onClick={() => downloadMedia(value)}>
+              Download
+            </Button>
+            <Button type="button" size="sm" variant="outline" onClick={() => onChange(null)}>
+              Remove
+            </Button>
+          </div>
         </div>
       )}
     </div>

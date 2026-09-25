@@ -29,3 +29,35 @@ export function sanitizeMediaArray(media: MediaItem[] = []): MediaItem[] {
 export function isCloudinaryUrl(url?: string) {
   return Boolean(url?.includes("cloudinary.com"));
 }
+
+function getDownloadFilename(media: MediaItem): string {
+  if (media.originalFilename) return media.originalFilename;
+
+  const base = media.publicId.split("/").pop() || media.publicId;
+  if (media.format && !base.includes(".")) {
+    return `${base}.${media.format}`;
+  }
+
+  return base;
+}
+
+export function getMediaDownloadUrl(media: MediaItem): string {
+  const filename = getDownloadFilename(media).replace(/[:/\\?#]/g, "_");
+
+  if (isCloudinaryUrl(media.secureUrl)) {
+    return media.secureUrl.replace("/upload/", `/upload/fl_attachment:${filename}/`);
+  }
+
+  return media.secureUrl;
+}
+
+export function downloadMedia(media: MediaItem) {
+  const link = document.createElement("a");
+  link.href = getMediaDownloadUrl(media);
+  link.download = getDownloadFilename(media);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}

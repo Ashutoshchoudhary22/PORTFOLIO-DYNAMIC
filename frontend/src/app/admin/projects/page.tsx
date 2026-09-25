@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MediaUploader } from "@/components/admin/media-uploader";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { sanitizeMediaArray, sanitizeMediaItem } from "@/lib/media-utils";
+import { downloadMedia, sanitizeMediaArray, sanitizeMediaItem } from "@/lib/media-utils";
 import type { MediaItem, ProjectItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 
@@ -246,9 +246,14 @@ export default function AdminProjectsPage() {
                     {(form.media || []).map((media, index) => (
                       <div key={`${media.publicId}-${index}`} className="space-y-2">
                         <MediaPreview media={media} />
-                        <Button type="button" size="sm" variant="outline" onClick={() => removeMedia(index)}>
-                          Remove
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button type="button" size="sm" variant="outline" onClick={() => downloadMedia(media)}>
+                            Download
+                          </Button>
+                          <Button type="button" size="sm" variant="outline" onClick={() => removeMedia(index)}>
+                            Remove
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
