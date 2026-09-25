@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
@@ -28,6 +28,7 @@ export function MediaUploader({
   onChange,
   disabled = false,
 }: MediaUploaderProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -75,6 +76,9 @@ export function MediaUploader({
       setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
     } finally {
       setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   }
 
@@ -82,6 +86,7 @@ export function MediaUploader({
     <div className="space-y-2">
       <label className="text-sm font-medium">{label}</label>
       <Input
+        ref={fileInputRef}
         type="file"
         accept={accept}
         disabled={uploading || disabled}
@@ -97,7 +102,12 @@ export function MediaUploader({
           <p className="truncate">{value.originalFilename || value.publicId}</p>
           {value.type === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value.secureUrl} alt="Preview" className="max-h-32 rounded" />
+            <img
+              key={value.secureUrl}
+              src={value.secureUrl}
+              alt="Preview"
+              className="max-h-32 rounded"
+            />
           ) : (
             <video src={value.secureUrl} controls className="max-h-32 rounded w-full" />
           )}

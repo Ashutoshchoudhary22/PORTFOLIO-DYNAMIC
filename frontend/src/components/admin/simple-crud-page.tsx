@@ -7,14 +7,28 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminToken } from "@/lib/admin-auth";
+import { MediaUploader } from "@/components/admin/media-uploader";
 import { Spinner } from "@/components/loading";
+import type { MediaItem } from "@/lib/types";
 
 type FieldConfig = {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "number" | "checkbox";
+  type?: "text" | "textarea" | "number" | "checkbox" | "media";
   placeholder?: string;
+  mediaFolder?: string;
 };
+
+function urlToMediaItem(url: unknown): MediaItem | null {
+  if (typeof url !== "string" || !url.trim()) return null;
+
+  return {
+    type: "image",
+    provider: "cloudinary",
+    publicId: url,
+    secureUrl: url,
+  };
+}
 
 interface SimpleCrudPageProps<T extends { _id?: string }> {
   title: string;
@@ -97,7 +111,20 @@ export function SimpleCrudPage<T extends { _id?: string }>({
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-3">
               {fields.map((field) =>
-                field.type === "textarea" ? (
+                field.type === "media" ? (
+                  <MediaUploader
+                    key={field.name}
+                    label={field.label}
+                    resourceType="image"
+                    accept="image/*"
+                    folder={field.mediaFolder || "portfolio/skills"}
+                    value={urlToMediaItem(form[field.name])}
+                    disabled={saving}
+                    onChange={(media) =>
+                      setForm((prev) => ({ ...prev, [field.name]: media?.secureUrl || "" }))
+                    }
+                  />
+                ) : field.type === "textarea" ? (
                   <Textarea
                     key={field.name}
                     placeholder={field.placeholder || field.label}

@@ -26,6 +26,7 @@ const TechLogo = ({
       style={{ backgroundColor: bgColor ? `${bgColor}15` : undefined }}
     >
       <Image
+        key={logoUrl}
         src={logoUrl}
         alt={name}
         width={64}
