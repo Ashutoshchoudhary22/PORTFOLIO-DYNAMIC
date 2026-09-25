@@ -100,15 +100,29 @@ function ProjectCard({ project }: { project: ProjectItem }) {
             </Badge>
           ))}
         </div>
-        {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-lg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Explore Project
-          </a>
+        {(project.liveUrl || project.githubUrl) && (
+          <div className="mt-4 flex flex-wrap gap-3 justify-center">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-lg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Explore Project
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full hover:from-blue-600 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-lg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Explore GitHub
+              </a>
+            )}
+          </div>
         )}
       </CardContent>
     </Card>
