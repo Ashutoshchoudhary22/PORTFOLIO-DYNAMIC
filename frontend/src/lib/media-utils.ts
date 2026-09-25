@@ -42,22 +42,43 @@ function getDownloadFilename(media: MediaItem): string {
 }
 
 export function getMediaDownloadUrl(media: MediaItem): string {
-  const filename = getDownloadFilename(media).replace(/[:/\\?#]/g, "_");
-
   if (isCloudinaryUrl(media.secureUrl)) {
-    return media.secureUrl.replace("/upload/", `/upload/fl_attachment:${filename}/`);
+    return media.secureUrl.replace("/upload/", "/upload/fl_attachment/");
   }
 
   return media.secureUrl;
 }
 
-export function downloadMedia(media: MediaItem) {
+function triggerDownload(url: string, filename: string, openInNewTab = false) {
   const link = document.createElement("a");
-  link.href = getMediaDownloadUrl(media);
-  link.download = getDownloadFilename(media);
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
+  link.href = url;
+  link.download = filename;
+
+  if (openInNewTab) {
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  }
+
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+export async function downloadMedia(media: MediaItem) {
+  const filename = getDownloadFilename(media);
+
+  try {
+    const response = await fetch(media.secureUrl);
+    if (!response.ok) {
+      throw new Error("Download failed");
+    }
+
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    triggerDownload(objectUrl, filename);
+    URL.revokeObjectURL(objectUrl);
+    return;
+  } catch {
+    triggerDownload(getMediaDownloadUrl(media), filename, true);
+  }
 }
