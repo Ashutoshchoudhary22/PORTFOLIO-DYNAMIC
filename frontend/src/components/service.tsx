@@ -34,7 +34,6 @@ export function Services() {
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
           section="services"
-          fallback="/hero-4.mp4"
           className="w-full h-full object-cover"
           preload="none"
         />

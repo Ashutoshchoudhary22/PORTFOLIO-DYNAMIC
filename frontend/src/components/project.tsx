@@ -142,7 +142,6 @@ export function Projects() {
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
           section="projects"
-          fallback="/feature-2.mp4"
           className="w-full h-full object-cover"
           preload="none"
         />

@@ -17,7 +17,6 @@ export function Footer() {
       <SectionBackground
         sectionVideos={profile?.sectionVideos}
         section="footer"
-        fallback="/feature-1.mp4"
         className="absolute inset-0 w-full h-full object-cover z-0 opacity-50 md:opacity-70"
         preload="none"
       />

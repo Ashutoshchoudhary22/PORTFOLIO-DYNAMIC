@@ -234,15 +234,7 @@ async function seed() {
       publicId: 'logo',
       secureUrl: '/main-logo2.png',
     },
-    sectionVideos: [
-      { section: 'hero', media: { type: 'video', provider: 'local', publicId: 'hero-1', secureUrl: '/hero-1.mp4' } },
-      { section: 'about', media: { type: 'video', provider: 'local', publicId: 'hero-2', secureUrl: '/hero-2.mp4' } },
-      { section: 'services', media: { type: 'video', provider: 'local', publicId: 'hero-4', secureUrl: '/hero-4.mp4' } },
-      { section: 'projects', media: { type: 'video', provider: 'local', publicId: 'feature-2', secureUrl: '/feature-2.mp4' } },
-      { section: 'contact', media: { type: 'video', provider: 'local', publicId: 'feature-4', secureUrl: '/feature-4.mp4' } },
-      { section: 'header', media: { type: 'video', provider: 'local', publicId: 'feature-4-header', secureUrl: '/feature-4.mp4' } },
-      { section: 'footer', media: { type: 'video', provider: 'local', publicId: 'feature-1', secureUrl: '/feature-1.mp4' } },
-    ],
+    sectionVideos: [],
     socialLinks: [
       { platform: 'GitHub', url: 'https://github.com/Ashutoshchoudhary22', icon: 'github', sortOrder: 0 },
       { platform: 'LinkedIn', url: 'https://www.linkedin.com/in/ashutosh-choudhary-693b1a264/', icon: 'linkedin', sortOrder: 1 },

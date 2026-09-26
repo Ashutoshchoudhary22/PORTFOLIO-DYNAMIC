@@ -78,7 +78,6 @@ export function Hero() {
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
           section="hero"
-          fallback="/hero-1.mp4"
           className="w-full h-full object-cover"
           preload="metadata"
         />

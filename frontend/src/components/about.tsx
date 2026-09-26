@@ -110,7 +110,6 @@ export function About() {
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
           section="about"
-          fallback="/hero-2.mp4"
           className="w-full h-full object-cover opacity-50 md:opacity-70"
           aria-label="Background video of abstract digital patterns"
           preload="none"

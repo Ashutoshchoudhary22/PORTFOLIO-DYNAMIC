@@ -62,7 +62,6 @@ export function Header() {
       <SectionBackground
         sectionVideos={profile?.sectionVideos}
         section="header"
-        fallback="/feature-4.mp4"
         className="absolute inset-0 w-full h-full object-cover z-0"
         preload="metadata"
       />
@@ -109,7 +108,6 @@ export function Header() {
               <SectionBackground
                 sectionVideos={profile?.sectionVideos}
                 section="header"
-                fallback="/feature-4.mp4"
                 className="absolute inset-0 w-full h-full object-cover z-0"
                 preload="none"
               />
