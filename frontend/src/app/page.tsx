@@ -46,11 +46,13 @@ export default async function Home() {
       <JsonLd profile={profile} projects={projects} services={services} />
       <PortfolioProvider>
         <PortfolioStatusBanner />
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen bg-[#070b14]">
           <PageLoadingAnimation />
-          <Header />
-          <main id="main-content">
+          <div className="relative">
             <Hero />
+            <Header />
+          </div>
+          <main id="main-content">
             <About />
             <Services />
             <Projects />

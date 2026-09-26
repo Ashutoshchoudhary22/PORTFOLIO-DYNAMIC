@@ -10,6 +10,12 @@
   --font-space-grotesk: 'Space Grotesk', sans-serif;
 }
 
+html,
+body {
+  background-color: #070b14;
+  color: #ffffff;
+}
+
 body {
   font-family: var(--font-inter);
 }

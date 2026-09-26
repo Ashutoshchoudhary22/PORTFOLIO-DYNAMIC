@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 interface SectionBackgroundProps {
   sectionVideos?: SectionVideo[];
   section: string;
+  fallback?: string;
   className?: string;
   preload?: "none" | "metadata" | "auto";
   "aria-label"?: string;
@@ -18,11 +19,12 @@ interface SectionBackgroundProps {
 function SectionBackgroundComponent({
   sectionVideos,
   section,
+  fallback = "",
   className = "w-full h-full object-cover",
   preload = "none",
   "aria-label": ariaLabel,
 }: SectionBackgroundProps) {
-  const media = getSectionMedia(sectionVideos, section, "");
+  const media = getSectionMedia(sectionVideos, section, fallback);
   const isAbsolute = className.includes("absolute");
 
   if (!media.secureUrl) {

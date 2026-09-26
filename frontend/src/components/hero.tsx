@@ -64,7 +64,11 @@ export function Hero() {
   const { profile, loading } = usePortfolioContext();
 
   if (loading) {
-    return <SectionSkeleton rows={1} />;
+    return (
+      <section id="hero" className="relative min-h-screen bg-[#070b14] pt-24">
+        <SectionSkeleton rows={1} />
+      </section>
+    );
   }
 
   const resumeUrl = getMediaUrl(profile?.resume, "/Ashutosh.Choudhary.Resume.pdf");
@@ -72,17 +76,19 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="portfolio-section relative flex w-full flex-col items-center justify-center overflow-hidden py-12 text-center min-h-[calc(100vh-56px)]"
+      className="portfolio-section relative flex w-full flex-col items-center justify-center overflow-hidden py-12 text-center min-h-screen scroll-mt-0"
     >
-      <div className="absolute inset-0 z-0 bg-blue-300/50">
+      <div className="absolute inset-0 z-0 bg-[#070b14]">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
           section="hero"
-          className="w-full h-full object-cover"
-          preload="none"
+          fallback="/hero-1.mp4"
+          className="absolute inset-0 h-full w-full object-cover"
+          preload="auto"
         />
+        <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
       </div>
-      <div className="relative z-20 space-y-6 p-8 rounded-lg">
+      <div className="relative z-20 space-y-6 p-8 pt-24 rounded-lg">
         <h1 className="mx-auto max-w-[700px] text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
           {profile?.seo?.title || profile?.heroHeading || "Hi, I'm Ashutosh Choudhary"}
         </h1>
@@ -92,11 +98,11 @@ export function Hero() {
             "Full Stack Developer with 1.5+ years of experience building production-grade MERN SaaS platforms, HRM systems, CRM solutions, and enterprise dashboards."}
         </p>
 
-        <div className="space-x-4">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-transparent bg-clip-text animate-pulse shadow-[0_4px_8px_rgba(0,0,0,0.5)] hover:bg-gradient-to-r hover:from-blue-500 hover:via-purple-600 hover:to-pink-600"
+            className="border-0 bg-gradient-to-r from-blue-500 via-violet-500 to-fuchsia-500 text-white font-semibold shadow-lg shadow-violet-500/35 hover:from-blue-600 hover:via-violet-600 hover:to-fuchsia-600 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all"
           >
             <Link href="#projects">View My Work</Link>
           </Button>
@@ -104,14 +110,14 @@ export function Hero() {
             asChild
             variant="outline"
             size="lg"
-            className="border-2 border-transparent  bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-transparent bg-clip-text animate-pulse shadow-[0_4px_8px_rgba(0,0,0,0.5)] hover:bg-gradient-to-r hover:from-blue-500 hover:via-purple-600 hover:to-pink-600 hover:text-transparent"
+            className="border-2 border-white/40 bg-white/15 backdrop-blur-md text-white font-semibold shadow-lg shadow-black/20 hover:bg-white/25 hover:border-white/60 transition-all"
           >
             <Link href="#contact">Get in Touch</Link>
           </Button>
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-white animate-pulse shadow-[0_4px_8px_rgba(0,0,0,0.5)] hover:bg-gradient-to-r hover:from-green-500 hover:via-emerald-600 hover:to-teal-600"
+            className="border-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg shadow-emerald-500/35 hover:from-emerald-600 hover:to-teal-600 hover:shadow-emerald-500/50 hover:scale-[1.02] transition-all"
           >
             <a
               href={resumeUrl}
