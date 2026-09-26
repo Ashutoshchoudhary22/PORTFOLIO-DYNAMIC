@@ -1,4 +1,8 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant admin-dark (&:where(.admin-theme.dark, .admin-theme.dark *));
+
 /* app/globals.css */
 
 :root {

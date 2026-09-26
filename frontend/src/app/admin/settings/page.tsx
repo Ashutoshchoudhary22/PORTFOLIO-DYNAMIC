@@ -11,6 +11,7 @@ import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminCardClass } from "@/lib/admin-styles";
 
 type SiteSettingsForm = {
   profileName?: string;
@@ -65,7 +66,7 @@ export default function AdminSettingsPage() {
 
   return (
     <AdminShell>
-      <Card className="bg-slate-900 border-white/10 max-w-3xl">
+      <Card className={`${adminCardClass} max-w-3xl`}>
         <CardHeader>
           <CardTitle>Site Settings</CardTitle>
         </CardHeader>

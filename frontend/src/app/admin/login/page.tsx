@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminThemeToggle } from "@/components/admin/admin-theme-toggle";
 import { adminApi } from "@/lib/api";
 import { setAdminToken } from "@/lib/admin-auth";
+import { adminCardClass } from "@/lib/admin-styles";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -32,8 +34,11 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-slate-900 border-white/10">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      <div className="absolute top-4 right-4">
+        <AdminThemeToggle />
+      </div>
+      <Card className={`w-full max-w-md ${adminCardClass}`}>
         <CardHeader>
           <CardTitle>Admin Login</CardTitle>
         </CardHeader>
@@ -53,7 +58,7 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {error && <p className="text-sm text-red-400">{error}</p>}
+            {error && <p className="text-sm text-red-500 admin-dark:text-red-400">{error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>

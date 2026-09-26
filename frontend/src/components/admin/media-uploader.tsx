@@ -8,6 +8,7 @@ import { downloadMedia } from "@/lib/media-utils";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem } from "@/lib/types";
+import { adminBorderClass } from "@/lib/admin-styles";
 
 interface MediaUploaderProps {
   label: string;
@@ -98,7 +99,7 @@ export function MediaUploader({
       {uploading && <Progress value={progress} />}
       {error && <p className="text-sm text-red-400">{error}</p>}
       {value?.secureUrl && (
-        <div className="rounded-md border border-white/10 p-2 text-xs space-y-2">
+        <div className={`rounded-md border p-2 text-xs space-y-2 ${adminBorderClass}`}>
           <p className="truncate">{value.originalFilename || value.publicId}</p>
           {value.type === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element

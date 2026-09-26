@@ -12,6 +12,7 @@ import { getAdminToken } from "@/lib/admin-auth";
 import { downloadMedia, sanitizeMediaArray, sanitizeMediaItem } from "@/lib/media-utils";
 import type { MediaItem, ProjectItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminBorderClass, adminCardClass, adminFaintClass, adminMutedClass } from "@/lib/admin-styles";
 
 const emptyForm: Partial<ProjectItem> = {
   title: "",
@@ -28,7 +29,7 @@ const emptyForm: Partial<ProjectItem> = {
 
 function MediaPreview({ media }: { media: MediaItem }) {
   return (
-    <div className="rounded border border-white/10 p-2 space-y-2">
+    <div className={`rounded border p-2 space-y-2 ${adminBorderClass}`}>
       {media.type === "image" ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={media.secureUrl} alt={media.originalFilename || media.publicId} className="h-24 w-full object-cover rounded" />
@@ -140,7 +141,7 @@ export default function AdminProjectsPage() {
   return (
     <AdminShell>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>{editingId ? "Edit Project" : "Add Project"}</CardTitle>
           </CardHeader>
@@ -280,7 +281,7 @@ export default function AdminProjectsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>Projects</CardTitle>
           </CardHeader>
@@ -294,7 +295,7 @@ export default function AdminProjectsPage() {
                   item.media?.find((media) => media.type === "image")?.secureUrl;
 
                 return (
-                  <div key={item._id} className="border border-white/10 rounded-md p-3 space-y-3">
+                  <div key={item._id} className={`border rounded-md p-3 space-y-3 ${adminBorderClass}`}>
                     <div className="flex gap-3">
                       {preview && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -302,10 +303,10 @@ export default function AdminProjectsPage() {
                       )}
                       <div className="flex-1">
                         <p className="font-medium">{item.title}</p>
-                        <p className="text-xs text-white/60">
+                        <p className={`text-xs ${adminMutedClass}`}>
                           {item.published ? "Published" : "Draft"} • {item.featured ? "Featured" : "Standard"}
                         </p>
-                        <p className="text-xs text-white/50 mt-1">
+                        <p className={`text-xs mt-1 ${adminFaintClass}`}>
                           {(item.media || []).length} media • {item.thumbnail ? "has thumbnail" : "no thumbnail"}
                         </p>
                       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdminThemeProvider } from "@/components/admin/admin-theme-provider";
 
 export const metadata: Metadata = {
   title: "Admin Panel | Portfolio",
@@ -6,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-screen bg-slate-950 text-white">{children}</div>;
+  return <AdminThemeProvider>{children}</AdminThemeProvider>;
 }

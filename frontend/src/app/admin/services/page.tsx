@@ -11,6 +11,7 @@ import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem, ServiceItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminBorderClass, adminCardClass } from "@/lib/admin-styles";
 
 export default function AdminServicesPage() {
   const [items, setItems] = useState<ServiceItem[]>([]);
@@ -53,7 +54,7 @@ export default function AdminServicesPage() {
   return (
     <AdminShell>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>{editingId ? "Edit Service" : "Add Service"}</CardTitle>
           </CardHeader>
@@ -95,7 +96,7 @@ export default function AdminServicesPage() {
             </form>
           </CardContent>
         </Card>
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>Services</CardTitle>
           </CardHeader>
@@ -104,7 +105,7 @@ export default function AdminServicesPage() {
               <Spinner />
             ) : (
               items.map((item) => (
-                <div key={item._id} className="border border-white/10 rounded-md p-3 flex justify-between gap-3">
+                <div key={item._id} className={`border rounded-md p-3 flex flex-col sm:flex-row sm:justify-between gap-3 ${adminBorderClass}`}>
                   <p>{item.title}</p>
                   <div className="flex gap-2">
                     <Button

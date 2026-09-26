@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminToken } from "@/lib/admin-auth";
 import { MediaUploader } from "@/components/admin/media-uploader";
 import { Spinner } from "@/components/loading";
+import { adminBorderClass, adminCardClass, adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem } from "@/lib/types";
 
 type FieldConfig = {
@@ -104,7 +105,7 @@ export function SimpleCrudPage<T extends { _id?: string }>({
   return (
     <AdminShell>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>{editingId ? `Edit ${title}` : `Add ${title}`}</CardTitle>
           </CardHeader>
@@ -171,7 +172,7 @@ export function SimpleCrudPage<T extends { _id?: string }>({
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>{title} List</CardTitle>
           </CardHeader>
@@ -179,12 +180,12 @@ export function SimpleCrudPage<T extends { _id?: string }>({
             {loading ? (
               <Spinner />
             ) : items.length === 0 ? (
-              <p className="text-white/60">No items yet.</p>
+              <p className={adminMutedClass}>No items yet.</p>
             ) : (
               items.map((item) => (
                 <div
                   key={item._id}
-                  className="flex items-center justify-between gap-3 border border-white/10 rounded-md p-3"
+                  className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border rounded-md p-3 ${adminBorderClass}`}
                 >
                   <p className="text-sm">{listLabel(item)}</p>
                   <div className="flex gap-2">

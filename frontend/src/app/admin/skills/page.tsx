@@ -11,6 +11,7 @@ import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem, SkillItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminBorderClass, adminCardClass, adminMutedClass, adminSurfaceClass } from "@/lib/admin-styles";
 
 const emptyForm: Partial<SkillItem> = {
   name: "",
@@ -132,7 +133,7 @@ export default function AdminSkillsPage() {
   return (
     <AdminShell>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>{editingId ? "Edit Skill" : "Add Skill"}</CardTitle>
           </CardHeader>
@@ -165,7 +166,7 @@ export default function AdminSkillsPage() {
                 onChange={handleIconChange}
               />
               {!editingId && form.iconUrl && (
-                <p className="text-xs text-white/60">
+                <p className={`text-xs ${adminMutedClass}`}>
                   Icon uploaded. Click Create to save this skill.
                 </p>
               )}
@@ -213,7 +214,7 @@ export default function AdminSkillsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>Skills</CardTitle>
           </CardHeader>
@@ -221,12 +222,12 @@ export default function AdminSkillsPage() {
             {loading ? (
               <Spinner />
             ) : items.length === 0 ? (
-              <p className="text-white/60">No skills yet.</p>
+              <p className={adminMutedClass}>No skills yet.</p>
             ) : (
               items.map((item) => (
                 <div
                   key={item._id}
-                  className="flex items-center justify-between gap-3 border border-white/10 rounded-md p-3"
+                  className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border rounded-md p-3 ${adminBorderClass}`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     {item.iconUrl ? (
@@ -234,14 +235,14 @@ export default function AdminSkillsPage() {
                       <img
                         src={item.iconUrl}
                         alt={item.name}
-                        className="h-10 w-10 rounded object-contain bg-white/5 shrink-0"
+                        className={`h-10 w-10 rounded object-contain shrink-0 ${adminSurfaceClass}`}
                       />
                     ) : (
-                      <div className="h-10 w-10 rounded bg-white/5 shrink-0" />
+                      <div className={`h-10 w-10 rounded shrink-0 ${adminSurfaceClass}`} />
                     )}
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{item.name}</p>
-                      <p className="text-xs text-white/60 truncate">{item.category}</p>
+                      <p className={`text-xs truncate ${adminMutedClass}`}>{item.category}</p>
                     </div>
                   </div>
                   <div className="flex gap-2 shrink-0">

@@ -7,6 +7,7 @@ import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { DashboardStats } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminBorderClass, adminCardClass, adminMutedClass, adminSubtleClass } from "@/lib/admin-styles";
 
 export default function AdminDashboardPage() {
   const [data, setData] = useState<DashboardStats | null>(null);
@@ -47,36 +48,41 @@ export default function AdminDashboardPage() {
 
   return (
     <AdminShell>
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h2 className="text-3xl font-bold">Dashboard</h2>
-          <p className="text-white/60">Portfolio content overview</p>
+          <h2 className="text-2xl sm:text-3xl font-bold">Dashboard</h2>
+          <p className={`text-sm sm:text-base ${adminMutedClass}`}>Portfolio content overview</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
           {cards.map((card) => (
-            <Card key={card.label} className="bg-slate-900 border-white/10">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-white/70">{card.label}</CardTitle>
+            <Card key={card.label} className={adminCardClass}>
+              <CardHeader className="pb-1 sm:pb-2 p-4 sm:p-6">
+                <CardTitle className={`text-xs sm:text-sm leading-snug ${adminSubtleClass}`}>
+                  {card.label}
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold">{card.value}</p>
+              <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                <p className="text-2xl sm:text-3xl font-bold">{card.value}</p>
               </CardContent>
             </Card>
           ))}
         </div>
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
-            <CardTitle>Recent Messages</CardTitle>
+            <CardTitle className="text-lg sm:text-xl">Recent Messages</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {(data?.recentMessages || []).length === 0 ? (
-              <p className="text-white/60">No messages yet.</p>
+              <p className={adminMutedClass}>No messages yet.</p>
             ) : (
               data?.recentMessages.map((message) => (
-                <div key={message._id} className="border border-white/10 rounded-md p-3">
+                <div
+                  key={message._id}
+                  className={`border rounded-md p-3 sm:p-4 break-words ${adminBorderClass}`}
+                >
                   <p className="font-medium">{message.name}</p>
-                  <p className="text-sm text-white/60">{message.email}</p>
-                  <p className="text-sm mt-2">{message.message}</p>
+                  <p className={`text-sm break-all ${adminMutedClass}`}>{message.email}</p>
+                  <p className="text-sm mt-2 whitespace-pre-wrap">{message.message}</p>
                 </div>
               ))
             )}

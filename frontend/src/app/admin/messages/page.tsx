@@ -9,6 +9,7 @@ import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { ContactMessage } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminBorderClass, adminCardClass, adminFaintClass, adminMutedClass } from "@/lib/admin-styles";
 
 export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -29,12 +30,12 @@ export default function AdminMessagesPage() {
   return (
     <AdminShell>
       <div className="space-y-4">
-        <Card className="bg-slate-900 border-white/10">
+        <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>Contact Messages</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Input
                 placeholder="Search messages..."
                 value={search}
@@ -45,16 +46,16 @@ export default function AdminMessagesPage() {
             {loading ? (
               <Spinner />
             ) : messages.length === 0 ? (
-              <p className="text-white/60">No messages found.</p>
+              <p className={adminMutedClass}>No messages found.</p>
             ) : (
               messages.map((message) => (
-                <div key={message._id} className="border border-white/10 rounded-md p-4 space-y-2">
-                  <div className="flex justify-between gap-3">
+                <div key={message._id} className={`border rounded-md p-4 space-y-2 ${adminBorderClass}`}>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
                     <div>
                       <p className="font-medium">{message.name}</p>
-                      <p className="text-sm text-white/60">{message.email}</p>
+                      <p className={`text-sm ${adminMutedClass}`}>{message.email}</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <Button
                         size="sm"
                         variant="outline"
@@ -99,7 +100,7 @@ export default function AdminMessagesPage() {
                     </div>
                   </div>
                   <p className="text-sm">{message.message}</p>
-                  <p className="text-xs text-white/50">
+                  <p className={`text-xs ${adminFaintClass}`}>
                     {new Date(message.createdAt).toLocaleString()}
                   </p>
                 </div>

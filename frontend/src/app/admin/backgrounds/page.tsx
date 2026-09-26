@@ -9,6 +9,7 @@ import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem, SectionVideo } from "@/lib/types";
 import { Spinner } from "@/components/loading";
+import { adminCardClass, adminMutedClass } from "@/lib/admin-styles";
 
 const SECTIONS = [
   { key: "hero", label: "Hero Section", description: "Main landing background" },
@@ -131,14 +132,14 @@ export default function AdminBackgroundsPage() {
       <div className="space-y-6 max-w-4xl">
         <div>
           <h2 className="text-3xl font-bold">Background Media</h2>
-          <p className="text-white/60 mt-1">
+          <p className={`mt-1 ${adminMutedClass}`}>
             Upload images or videos for each section. Each upload is saved automatically to the database.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {SECTIONS.map((section) => (
-            <Card key={section.key} className="bg-slate-900 border-white/10">
+            <Card key={section.key} className={adminCardClass}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">{section.label}</CardTitle>
                 <CardDescription>{section.description}</CardDescription>
