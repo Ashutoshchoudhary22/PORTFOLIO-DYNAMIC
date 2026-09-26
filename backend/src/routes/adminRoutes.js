@@ -2,8 +2,23 @@ import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { protectAdmin } from '../middleware/auth.js';
 import { validateRequest } from '../middleware/validate.js';
-import { loginValidator } from '../validators/authValidators.js';
-import { login, logout, getMe } from '../controllers/authController.js';
+import {
+  forgotPasswordOtpValidator,
+  loginRequestOtpValidator,
+  resetPasswordValidator,
+  setupAdminValidator,
+  verifyOtpValidator,
+} from '../validators/authValidators.js';
+import {
+  getMe,
+  getSetupStatus,
+  logout,
+  requestForgotPasswordOtp,
+  requestLoginOtp,
+  resetPasswordWithOtp,
+  setupAdmin,
+  verifyLoginOtp,
+} from '../controllers/authController.js';
 import { getDashboardStats } from '../controllers/dashboardController.js';
 import {
   getAdminSettings,
@@ -65,18 +80,53 @@ import {
 
 const router = Router();
 
-const loginLimiter = rateLimit({
+const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 15,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     success: false,
-    message: 'Too many login attempts. Please try again later.',
+    message: 'Too many attempts. Please try again later.',
   },
 });
 
-router.post('/auth/login', loginLimiter, loginValidator, validateRequest, login);
+router.get('/auth/setup-status', getSetupStatus);
+router.post(
+  '/auth/setup',
+  authLimiter,
+  setupAdminValidator,
+  validateRequest,
+  setupAdmin
+);
+router.post(
+  '/auth/login/request-otp',
+  authLimiter,
+  loginRequestOtpValidator,
+  validateRequest,
+  requestLoginOtp
+);
+router.post(
+  '/auth/login/verify-otp',
+  authLimiter,
+  verifyOtpValidator,
+  validateRequest,
+  verifyLoginOtp
+);
+router.post(
+  '/auth/forgot-password/request-otp',
+  authLimiter,
+  forgotPasswordOtpValidator,
+  validateRequest,
+  requestForgotPasswordOtp
+);
+router.post(
+  '/auth/forgot-password/reset',
+  authLimiter,
+  resetPasswordValidator,
+  validateRequest,
+  resetPasswordWithOtp
+);
 router.post('/auth/logout', protectAdmin, logout);
 router.get('/auth/me', protectAdmin, getMe);
 

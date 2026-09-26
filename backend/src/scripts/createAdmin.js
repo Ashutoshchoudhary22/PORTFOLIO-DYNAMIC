@@ -32,6 +32,7 @@ async function createAdmin() {
   }
 
   const existing = await Admin.findOne({ email });
+  const adminCount = await Admin.countDocuments();
 
   if (existing) {
     existing.password = password;
@@ -39,6 +40,10 @@ async function createAdmin() {
     await existing.save();
     console.log(`Admin password updated for ${email}`);
   } else {
+    if (adminCount >= 1) {
+      throw new Error('Only one admin account is allowed. Update the existing admin instead.');
+    }
+
     await Admin.create({ email, password, name: 'Portfolio Admin' });
     console.log(`Admin account created for ${email}`);
   }

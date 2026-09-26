@@ -204,11 +204,15 @@ async function seed() {
   const password = process.env.ADMIN_PASSWORD || 'ChangeMe123!';
 
   const existingAdmin = await Admin.findOne({ email });
-  if (!existingAdmin) {
+  const adminCount = await Admin.countDocuments();
+
+  if (existingAdmin) {
+    console.log('Admin already exists, skipping admin creation');
+  } else if (adminCount >= 1) {
+    console.log('An admin account already exists. Only one admin is allowed.');
+  } else {
     await Admin.create({ email, password, name: 'Portfolio Admin' });
     console.log(`Admin created: ${email}`);
-  } else {
-    console.log('Admin already exists, skipping admin creation');
   }
 
   await SiteSettings.deleteMany({});

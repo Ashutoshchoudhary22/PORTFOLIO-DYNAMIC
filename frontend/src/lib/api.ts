@@ -30,10 +30,40 @@ export const publicApi = {
 };
 
 export const adminApi = {
-  login: (email: string, password: string) =>
-    apiRequest<{ token: string; admin: AdminUser }>("/admin/auth/login", {
+  getSetupStatus: () =>
+    apiRequest<{ needsSetup: boolean }>("/admin/auth/setup-status"),
+  setupAdmin: (data: {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }) =>
+    apiRequest<{ email: string; name: string }>("/admin/auth/setup", {
       method: "POST",
-      data: { email, password },
+      data,
+    }),
+  requestLoginOtp: (email: string, password: string) =>
+    apiRequest<{ email: string; expiresInMinutes: number }>(
+      "/admin/auth/login/request-otp",
+      {
+        method: "POST",
+        data: { email, password },
+      }
+    ),
+  verifyLoginOtp: (email: string, otp: string) =>
+    apiRequest<{ token: string; admin: AdminUser }>("/admin/auth/login/verify-otp", {
+      method: "POST",
+      data: { email, otp },
+    }),
+  requestForgotPasswordOtp: (email: string) =>
+    apiRequest<{ email: string }>("/admin/auth/forgot-password/request-otp", {
+      method: "POST",
+      data: { email },
+    }),
+  resetPasswordWithOtp: (email: string, otp: string, newPassword: string) =>
+    apiRequest<Record<string, never>>("/admin/auth/forgot-password/reset", {
+      method: "POST",
+      data: { email, otp, newPassword },
     }),
   logout: (token: string) =>
     apiRequest<Record<string, never>>("/admin/auth/logout", { method: "POST" }, token),
