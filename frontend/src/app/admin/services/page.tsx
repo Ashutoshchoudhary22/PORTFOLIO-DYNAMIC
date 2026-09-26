@@ -8,7 +8,6 @@ import { ServiceFormCard } from "@/components/admin/services/service-form-card";
 import { ServiceListCard } from "@/components/admin/services/service-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminMutedClass } from "@/lib/admin-styles";
 import type { ServiceItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 

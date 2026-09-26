@@ -8,7 +8,6 @@ import { EducationFormCard } from "@/components/admin/education/education-form-c
 import { EducationListCard } from "@/components/admin/education/education-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminMutedClass } from "@/lib/admin-styles";
 import type { EducationItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 

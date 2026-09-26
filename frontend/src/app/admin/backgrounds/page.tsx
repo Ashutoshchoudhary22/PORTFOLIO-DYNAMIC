@@ -17,7 +17,6 @@ import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { BackgroundSectionCard } from "@/components/admin/backgrounds/background-section-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem, SectionVideo } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 

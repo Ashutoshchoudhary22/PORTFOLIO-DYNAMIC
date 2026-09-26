@@ -9,7 +9,6 @@ import { ProjectListCard } from "@/components/admin/projects/project-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
 import { sanitizeMediaArray, sanitizeMediaItem } from "@/lib/media-utils";
-import { adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem, ProjectItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 

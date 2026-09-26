@@ -8,7 +8,6 @@ import { SkillFormCard } from "@/components/admin/skills/skill-form-card";
 import { SkillsListCard } from "@/components/admin/skills/skills-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem, SkillItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 

@@ -19,7 +19,7 @@ import {
 import { SettingsAssetCard } from "@/components/admin/settings/settings-asset-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminCardClass, adminMutedClass } from "@/lib/admin-styles";
+import { adminCardClass } from "@/lib/admin-styles";
 import type { MediaItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 import { cn } from "@/lib/utils";

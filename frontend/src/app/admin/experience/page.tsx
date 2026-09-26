@@ -8,7 +8,6 @@ import { ExperienceFormCard } from "@/components/admin/experience/experience-for
 import { ExperienceListCard } from "@/components/admin/experience/experience-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminMutedClass } from "@/lib/admin-styles";
 import type { ExperienceItem, MediaItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 
