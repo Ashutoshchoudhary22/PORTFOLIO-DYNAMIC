@@ -17,18 +17,27 @@ type AdminThemeContextValue = {
 
 const AdminThemeContext = createContext<AdminThemeContextValue | null>(null);
 
+function applyAdminTheme(theme: AdminTheme) {
+  document.documentElement.setAttribute("data-admin-theme", theme);
+}
+
 export function AdminThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<AdminTheme>("light");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setThemeState(getAdminTheme());
-    setMounted(true);
+    const stored = getAdminTheme();
+    setThemeState(stored);
+    applyAdminTheme(stored);
   }, []);
+
+  useEffect(() => {
+    applyAdminTheme(theme);
+  }, [theme]);
 
   function setTheme(next: AdminTheme) {
     setThemeState(next);
     setAdminThemeStorage(next);
+    applyAdminTheme(next);
   }
 
   function toggleTheme() {
@@ -38,11 +47,9 @@ export function AdminThemeProvider({ children }: { children: React.ReactNode }) 
   return (
     <AdminThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
       <div
-        className={cn(
-          "admin-theme",
-          mounted && theme === "dark" && "dark",
-          adminShellClass
-        )}
+        data-admin-theme={theme}
+        className={cn("admin-theme min-h-full", theme === "dark" && "dark", adminShellClass)}
+        suppressHydrationWarning
       >
         {children}
       </div>

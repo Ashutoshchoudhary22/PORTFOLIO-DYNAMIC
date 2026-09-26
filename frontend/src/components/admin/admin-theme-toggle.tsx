@@ -20,7 +20,6 @@ export function AdminThemeToggle({
 }: AdminThemeToggleProps) {
   const { theme, setTheme, toggleTheme } = useAdminTheme();
   const isDark = theme === "dark";
-  const isLight = theme === "light";
 
   if (variant === "switch") {
     return (
@@ -33,19 +32,17 @@ export function AdminThemeToggle({
         )}
       >
         <div className="flex items-center gap-2 min-w-0">
-          {isLight ? (
-            <Sun className="h-4 w-4 shrink-0 text-amber-500" />
-          ) : (
+          {isDark ? (
             <Moon className="h-4 w-4 shrink-0 text-indigo-400" />
+          ) : (
+            <Sun className="h-4 w-4 shrink-0 text-amber-500" />
           )}
-          <span className={cn("text-sm font-medium truncate", adminMutedClass)}>
-            {isLight ? "Light mode" : "Dark mode"}
-          </span>
+          <span className={cn("text-sm font-medium truncate", adminMutedClass)}>Dark mode</span>
         </div>
         <Switch
-          checked={isLight}
-          onCheckedChange={(checked) => setTheme(checked ? "light" : "dark")}
-          aria-label={isLight ? "Switch to dark mode" : "Switch to light mode"}
+          checked={isDark}
+          onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+          aria-label="Toggle dark mode"
         />
       </div>
     );
