@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Code2 } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { SkillFormCard } from "@/components/admin/skills/skill-form-card";
 import { SkillsListCard } from "@/components/admin/skills/skills-list-card";
 import { adminApi } from "@/lib/api";
@@ -139,23 +140,14 @@ export default function AdminSkillsPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <span className="h-12 w-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
-              <Code2 className="h-6 w-6" />
-            </span>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Skills & Technologies</h1>
-              <p className={`mt-1 text-sm sm:text-base max-w-2xl ${adminMutedClass}`}>
-                Add your technical skills and tools to showcase your expertise.
-              </p>
-            </div>
-          </div>
-
-          <p className="hidden xl:block text-sm italic text-slate-400 admin-dark:text-white/40 max-w-[220px] text-right leading-relaxed">
-            Build the skills you need for your next big thing. 💻
-          </p>
-        </div>
+        <AdminPageHeader
+          title="Skills & Technologies"
+          description="Add your technical skills and tools to showcase your expertise."
+          icon={Code2}
+          iconClassName="bg-violet-100 text-violet-600 admin-dark:bg-violet-900/30 admin-dark:text-violet-400"
+          quote="Build the skills you need for your next big thing."
+          quoteEmoji="💻"
+        />
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
           <SkillFormCard

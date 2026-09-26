@@ -11,6 +11,7 @@ import {
   User,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import {
   SettingsInputField,
   SettingsTextareaField,
@@ -81,19 +82,16 @@ export default function AdminSettingsPage() {
 
   return (
     <AdminShell>
-      <div className={cn(adminCardClass, "rounded-2xl p-5 sm:p-6 lg:p-8")}>
-        <div className="flex items-start gap-4 mb-8">
-          <span className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 admin-dark:bg-blue-900/30 admin-dark:text-blue-400">
-            <Settings className="h-6 w-6" />
-          </span>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Site Settings</h1>
-            <p className={cn("mt-1 text-sm sm:text-base", adminMutedClass)}>
-              Manage your portfolio information and settings
-            </p>
-          </div>
-        </div>
+      <div className="space-y-6">
+        <AdminPageHeader
+          title="Site Settings"
+          description="Manage your portfolio information and settings"
+          icon={Settings}
+          quote="Make your portfolio more personal"
+          quoteEmoji="✨"
+        />
 
+        <div className={cn(adminCardClass, "rounded-2xl p-5 sm:p-6 lg:p-8")}>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6 lg:gap-8">
             <div className="space-y-5">
@@ -243,6 +241,7 @@ export default function AdminSettingsPage() {
             </div>
           </div>
         </form>
+        </div>
       </div>
     </AdminShell>
   );

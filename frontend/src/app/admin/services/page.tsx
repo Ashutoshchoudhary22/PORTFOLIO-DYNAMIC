@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Wrench } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { ServiceFormCard } from "@/components/admin/services/service-form-card";
 import { ServiceListCard } from "@/components/admin/services/service-list-card";
 import { adminApi } from "@/lib/api";
@@ -133,23 +134,14 @@ export default function AdminServicesPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <span className="h-12 w-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
-              <Wrench className="h-6 w-6" />
-            </span>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Services</h1>
-              <p className={`mt-1 text-sm sm:text-base max-w-2xl ${adminMutedClass}`}>
-                Add and manage services to showcase your technical expertise.
-              </p>
-            </div>
-          </div>
-
-          <p className="hidden xl:block text-sm italic text-slate-400 admin-dark:text-white/40 max-w-[200px] text-right leading-relaxed">
-            Deliver value through your skills. 🛠️
-          </p>
-        </div>
+        <AdminPageHeader
+          title="Services"
+          description="Add and manage services to showcase your technical expertise."
+          icon={Wrench}
+          iconClassName="bg-violet-100 text-violet-600 admin-dark:bg-violet-900/30 admin-dark:text-violet-400"
+          quote="Deliver value through your skills."
+          quoteEmoji="🛠️"
+        />
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
           <ServiceFormCard

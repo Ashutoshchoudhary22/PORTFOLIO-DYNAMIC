@@ -11,13 +11,13 @@ import {
   Wrench,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { DashboardStatCard } from "@/components/admin/dashboard/stat-card";
 import { PortfolioOverview } from "@/components/admin/dashboard/portfolio-overview";
 import { RecentMessagesPanel } from "@/components/admin/dashboard/recent-messages-panel";
 import { QuickActions } from "@/components/admin/dashboard/quick-actions";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { adminCardClass, adminMutedClass } from "@/lib/admin-styles";
 import type { AdminUser, DashboardStats } from "@/lib/types";
 import { Spinner } from "@/components/loading";
 
@@ -65,27 +65,10 @@ export default function AdminDashboardPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              Welcome back, {adminName} 👋
-            </h1>
-            <p className={`mt-1 text-sm sm:text-base ${adminMutedClass}`}>
-              Here&apos;s what&apos;s happening with your portfolio today.
-            </p>
-          </div>
-
-          <div
-            className={`${adminCardClass} rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 bg-gradient-to-r from-white to-blue-50/80 admin-dark:from-slate-900 admin-dark:to-slate-900`}
-          >
-            <p className="text-sm sm:text-base text-slate-600 italic admin-dark:text-white/70">
-              &ldquo;Small steps every day lead to big results.&rdquo;
-            </p>
-            <div className="hidden sm:block shrink-0 text-4xl opacity-80" aria-hidden>
-              🌿
-            </div>
-          </div>
-        </div>
+        <AdminPageHeader
+          title={`Welcome back, ${adminName} 👋`}
+          description="Here's what's happening with your portfolio today."
+        />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {cards.map((card) => (

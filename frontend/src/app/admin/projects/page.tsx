@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FolderKanban } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { ProjectFormCard } from "@/components/admin/projects/project-form-card";
 import { ProjectListCard } from "@/components/admin/projects/project-list-card";
 import { adminApi } from "@/lib/api";
@@ -145,23 +146,14 @@ export default function AdminProjectsPage() {
   return (
     <AdminShell>
       <div className="space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <span className="h-12 w-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
-              <FolderKanban className="h-6 w-6" />
-            </span>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Projects</h1>
-              <p className={`mt-1 text-sm sm:text-base max-w-2xl ${adminMutedClass}`}>
-                Showcase your amazing projects and manage your portfolio showcase.
-              </p>
-            </div>
-          </div>
-
-          <p className="hidden xl:block text-sm italic text-slate-400 admin-dark:text-white/40 max-w-[200px] text-right leading-relaxed">
-            Build something great today. 🌱
-          </p>
-        </div>
+        <AdminPageHeader
+          title="Projects"
+          description="Showcase your amazing projects and manage your portfolio showcase."
+          icon={FolderKanban}
+          iconClassName="bg-violet-100 text-violet-600 admin-dark:bg-violet-900/30 admin-dark:text-violet-400"
+          quote="Build something great today."
+          quoteEmoji="🌱"
+        />
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
           <ProjectFormCard

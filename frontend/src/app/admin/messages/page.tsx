@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Mail } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,10 +31,19 @@ export default function AdminMessagesPage() {
 
   return (
     <AdminShell>
-      <div className="space-y-4">
+      <div className="space-y-6">
+        <AdminPageHeader
+          title="Contact Messages"
+          description="View and manage messages sent from your portfolio contact form."
+          icon={Mail}
+          iconClassName="bg-cyan-100 text-cyan-600 admin-dark:bg-cyan-900/30 admin-dark:text-cyan-400"
+          quote="Every message is a new opportunity."
+          quoteEmoji="💬"
+        />
+
         <Card className={adminCardClass}>
           <CardHeader>
-            <CardTitle>Contact Messages</CardTitle>
+            <CardTitle>Messages Inbox</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-2">
