@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import { publicApi } from "@/lib/api";
+import { queryKeys } from "@/lib/query-keys";
 import type {
   CertificationItem,
   EducationItem,
@@ -12,78 +13,48 @@ import type {
   SkillCategory,
 } from "@/lib/types";
 
-interface PortfolioState {
-  profile: ProfileData | null;
-  skills: SkillCategory[];
-  experience: ExperienceItem[];
-  education: EducationItem[];
-  certifications: CertificationItem[];
-  projects: ProjectItem[];
-  services: ServiceItem[];
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: PortfolioState = {
-  profile: null,
-  skills: [],
-  experience: [],
-  education: [],
-  certifications: [],
-  projects: [],
-  services: [],
-  loading: true,
-  error: null,
-};
+const portfolioQueries = [
+  { key: queryKeys.profile, fn: publicApi.getProfile },
+  { key: queryKeys.skills, fn: publicApi.getSkills },
+  { key: queryKeys.experience, fn: publicApi.getExperience },
+  { key: queryKeys.education, fn: publicApi.getEducation },
+  { key: queryKeys.certifications, fn: publicApi.getCertifications },
+  { key: queryKeys.projects, fn: publicApi.getProjects },
+  { key: queryKeys.services, fn: publicApi.getServices },
+] as const;
 
 export function usePortfolio() {
-  const [state, setState] = useState<PortfolioState>(initialState);
+  const results = useQueries({
+    queries: portfolioQueries.map(({ key, fn }) => ({
+      queryKey: key,
+      queryFn: fn,
+      staleTime: 5 * 60 * 1000,
+    })),
+  });
 
-  useEffect(() => {
-    let mounted = true;
+  const [
+    profileResult,
+    skillsResult,
+    experienceResult,
+    educationResult,
+    certificationsResult,
+    projectsResult,
+    servicesResult,
+  ] = results;
 
-    async function loadPortfolio() {
-      try {
-        const [profile, skills, experience, education, certifications, projects, services] =
-          await Promise.all([
-            publicApi.getProfile(),
-            publicApi.getSkills(),
-            publicApi.getExperience(),
-            publicApi.getEducation(),
-            publicApi.getCertifications(),
-            publicApi.getProjects(),
-            publicApi.getServices(),
-          ]);
+  const loading = results.some((result) => result.isLoading);
+  const errorResult = results.find((result) => result.isError);
 
-        if (!mounted) return;
-
-        setState({
-          profile,
-          skills,
-          experience,
-          education,
-          certifications,
-          projects,
-          services,
-          loading: false,
-          error: null,
-        });
-      } catch (error) {
-        if (!mounted) return;
-        setState((prev) => ({
-          ...prev,
-          loading: false,
-          error: error instanceof Error ? error.message : "Failed to load portfolio data",
-        }));
-      }
-    }
-
-    loadPortfolio();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  return state;
+  return {
+    profile: (profileResult.data as ProfileData | undefined) ?? null,
+    skills: (skillsResult.data as SkillCategory[] | undefined) ?? [],
+    experience: (experienceResult.data as ExperienceItem[] | undefined) ?? [],
+    education: (educationResult.data as EducationItem[] | undefined) ?? [],
+    certifications: (certificationsResult.data as CertificationItem[] | undefined) ?? [],
+    projects: (projectsResult.data as ProjectItem[] | undefined) ?? [],
+    services: (servicesResult.data as ServiceItem[] | undefined) ?? [],
+    loading,
+    error: errorResult?.error instanceof Error ? errorResult.error.message : null,
+    isFetching: results.some((result) => result.isFetching),
+  };
 }

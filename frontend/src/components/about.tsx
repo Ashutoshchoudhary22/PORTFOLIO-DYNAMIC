@@ -105,7 +105,7 @@ export function About() {
   }
 
   return (
-    <section id="about" className="relative py-12 md:py-20 lg:py-32 overflow-hidden">
+    <section id="about" className="portfolio-section relative py-12 md:py-20 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 z-0 motion-reduce:hidden">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}

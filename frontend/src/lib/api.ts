@@ -1,5 +1,5 @@
+import { apiRequest } from "./axios";
 import type {
-  ApiResponse,
   CertificationItem,
   DashboardStats,
   EducationItem,
@@ -11,142 +11,105 @@ import type {
   AdminUser,
   ContactMessage,
   SkillItem,
-} from './types';
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
-async function request<T>(
-  endpoint: string,
-  options: RequestInit = {},
-  token?: string | null
-): Promise<T> {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...(options.headers as Record<string, string> | undefined),
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-    credentials: 'include',
-    cache: 'no-store',
-  });
-
-  const payload: ApiResponse<T> = await response.json();
-
-  if (!response.ok || !payload.success) {
-    const details =
-      payload.errors && typeof payload.errors === 'object'
-        ? Object.values(payload.errors).join(', ')
-        : '';
-    throw new Error(details ? `${payload.message}: ${details}` : payload.message || 'Request failed');
-  }
-
-  return payload.data;
-}
+} from "./types";
 
 export const publicApi = {
-  getProfile: () => request<ProfileData>('/profile'),
-  getSkills: () => request<SkillCategory[]>('/skills'),
-  getExperience: () => request<ExperienceItem[]>('/experience'),
-  getEducation: () => request<EducationItem[]>('/education'),
-  getCertifications: () => request<CertificationItem[]>('/certifications'),
-  getProjects: () => request<ProjectItem[]>('/projects'),
-  getProjectBySlug: (slug: string) => request<ProjectItem>(`/projects/${slug}`),
-  getServices: () => request<ServiceItem[]>('/services'),
+  getProfile: () => apiRequest<ProfileData>("/profile"),
+  getSkills: () => apiRequest<SkillCategory[]>("/skills"),
+  getExperience: () => apiRequest<ExperienceItem[]>("/experience"),
+  getEducation: () => apiRequest<EducationItem[]>("/education"),
+  getCertifications: () => apiRequest<CertificationItem[]>("/certifications"),
+  getProjects: () => apiRequest<ProjectItem[]>("/projects"),
+  getProjectBySlug: (slug: string) => apiRequest<ProjectItem>(`/projects/${slug}`),
+  getServices: () => apiRequest<ServiceItem[]>("/services"),
   submitContact: (data: { name: string; email: string; message: string }) =>
-    request<{ id: string }>('/contact', {
-      method: 'POST',
-      body: JSON.stringify(data),
+    apiRequest<{ id: string }>("/contact", {
+      method: "POST",
+      data,
     }),
 };
 
 export const adminApi = {
   login: (email: string, password: string) =>
-    request<{ token: string; admin: AdminUser }>('/admin/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
+    apiRequest<{ token: string; admin: AdminUser }>("/admin/auth/login", {
+      method: "POST",
+      data: { email, password },
     }),
   logout: (token: string) =>
-    request<Record<string, never>>('/admin/auth/logout', { method: 'POST' }, token),
-  getMe: (token: string) => request<AdminUser>('/admin/auth/me', {}, token),
+    apiRequest<Record<string, never>>("/admin/auth/logout", { method: "POST" }, token),
+  getMe: (token: string) => apiRequest<AdminUser>("/admin/auth/me", {}, token),
   getDashboard: (token: string) =>
-    request<DashboardStats>('/admin/dashboard', {}, token),
-  getSettings: (token: string) => request<Record<string, unknown>>('/admin/settings', {}, token),
+    apiRequest<DashboardStats>("/admin/dashboard", {}, token),
+  getSettings: (token: string) =>
+    apiRequest<Record<string, unknown>>("/admin/settings", {}, token),
   updateSettings: (token: string, data: Record<string, unknown>) =>
-    request<Record<string, unknown>>(
-      '/admin/settings',
-      { method: 'PUT', body: JSON.stringify(data) },
+    apiRequest<Record<string, unknown>>(
+      "/admin/settings",
+      { method: "PUT", data },
       token
     ),
-  getSkills: (token: string) => request<SkillItem[]>('/admin/skills', {}, token),
+  getSkills: (token: string) => apiRequest<SkillItem[]>("/admin/skills", {}, token),
   createSkill: (token: string, data: Record<string, unknown>) =>
-    request('/admin/skills', { method: 'POST', body: JSON.stringify(data) }, token),
+    apiRequest("/admin/skills", { method: "POST", data }, token),
   updateSkill: (token: string, id: string, data: Record<string, unknown>) =>
-    request(`/admin/skills/${id}`, { method: 'PUT', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/skills/${id}`, { method: "PUT", data }, token),
   deleteSkill: (token: string, id: string) =>
-    request(`/admin/skills/${id}`, { method: 'DELETE' }, token),
+    apiRequest(`/admin/skills/${id}`, { method: "DELETE" }, token),
   getExperience: (token: string) =>
-    request<ExperienceItem[]>('/admin/experience', {}, token),
+    apiRequest<ExperienceItem[]>("/admin/experience", {}, token),
   createExperience: (token: string, data: Record<string, unknown>) =>
-    request('/admin/experience', { method: 'POST', body: JSON.stringify(data) }, token),
+    apiRequest("/admin/experience", { method: "POST", data }, token),
   updateExperience: (token: string, id: string, data: Record<string, unknown>) =>
-    request(`/admin/experience/${id}`, { method: 'PUT', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/experience/${id}`, { method: "PUT", data }, token),
   deleteExperience: (token: string, id: string) =>
-    request(`/admin/experience/${id}`, { method: 'DELETE' }, token),
+    apiRequest(`/admin/experience/${id}`, { method: "DELETE" }, token),
   getEducation: (token: string) =>
-    request<EducationItem[]>('/admin/education', {}, token),
+    apiRequest<EducationItem[]>("/admin/education", {}, token),
   createEducation: (token: string, data: Record<string, unknown>) =>
-    request('/admin/education', { method: 'POST', body: JSON.stringify(data) }, token),
+    apiRequest("/admin/education", { method: "POST", data }, token),
   updateEducation: (token: string, id: string, data: Record<string, unknown>) =>
-    request(`/admin/education/${id}`, { method: 'PUT', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/education/${id}`, { method: "PUT", data }, token),
   deleteEducation: (token: string, id: string) =>
-    request(`/admin/education/${id}`, { method: 'DELETE' }, token),
+    apiRequest(`/admin/education/${id}`, { method: "DELETE" }, token),
   getCertifications: (token: string) =>
-    request<CertificationItem[]>('/admin/certifications', {}, token),
+    apiRequest<CertificationItem[]>("/admin/certifications", {}, token),
   createCertification: (token: string, data: Record<string, unknown>) =>
-    request('/admin/certifications', { method: 'POST', body: JSON.stringify(data) }, token),
+    apiRequest("/admin/certifications", { method: "POST", data }, token),
   updateCertification: (token: string, id: string, data: Record<string, unknown>) =>
-    request(`/admin/certifications/${id}`, { method: 'PUT', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/certifications/${id}`, { method: "PUT", data }, token),
   deleteCertification: (token: string, id: string) =>
-    request(`/admin/certifications/${id}`, { method: 'DELETE' }, token),
-  getProjects: (token: string) => request<ProjectItem[]>('/admin/projects', {}, token),
+    apiRequest(`/admin/certifications/${id}`, { method: "DELETE" }, token),
+  getProjects: (token: string) => apiRequest<ProjectItem[]>("/admin/projects", {}, token),
   createProject: (token: string, data: Record<string, unknown>) =>
-    request('/admin/projects', { method: 'POST', body: JSON.stringify(data) }, token),
+    apiRequest("/admin/projects", { method: "POST", data }, token),
   updateProject: (token: string, id: string, data: Record<string, unknown>) =>
-    request(`/admin/projects/${id}`, { method: 'PUT', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/projects/${id}`, { method: "PUT", data }, token),
   deleteProject: (token: string, id: string) =>
-    request(`/admin/projects/${id}`, { method: 'DELETE' }, token),
-  getServices: (token: string) => request<ServiceItem[]>('/admin/services', {}, token),
+    apiRequest(`/admin/projects/${id}`, { method: "DELETE" }, token),
+  getServices: (token: string) => apiRequest<ServiceItem[]>("/admin/services", {}, token),
   createService: (token: string, data: Record<string, unknown>) =>
-    request('/admin/services', { method: 'POST', body: JSON.stringify(data) }, token),
+    apiRequest("/admin/services", { method: "POST", data }, token),
   updateService: (token: string, id: string, data: Record<string, unknown>) =>
-    request(`/admin/services/${id}`, { method: 'PUT', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/services/${id}`, { method: "PUT", data }, token),
   deleteService: (token: string, id: string) =>
-    request(`/admin/services/${id}`, { method: 'DELETE' }, token),
+    apiRequest(`/admin/services/${id}`, { method: "DELETE" }, token),
   getMessages: (token: string, params?: Record<string, string>) => {
-    const query = params ? `?${new URLSearchParams(params).toString()}` : '';
-    return request<{ messages: ContactMessage[]; pagination: { page: number; limit: number; total: number; pages: number } }>(
-      `/admin/messages${query}`,
-      {},
-      token
-    );
+    const query = params ? `?${new URLSearchParams(params).toString()}` : "";
+    return apiRequest<{
+      messages: ContactMessage[];
+      pagination: { page: number; limit: number; total: number; pages: number };
+    }>(`/admin/messages${query}`, {}, token);
   },
   updateMessage: (token: string, id: string, data: { isRead?: boolean; isReplied?: boolean }) =>
-    request(`/admin/messages/${id}`, { method: 'PATCH', body: JSON.stringify(data) }, token),
+    apiRequest(`/admin/messages/${id}`, { method: "PATCH", data }, token),
   deleteMessage: (token: string, id: string) =>
-    request(`/admin/messages/${id}`, { method: 'DELETE' }, token),
+    apiRequest(`/admin/messages/${id}`, { method: "DELETE" }, token),
   getUploadSignature: (
     token: string,
     params: { folder?: string; resourceType?: string } = {}
   ) => {
     const query = new URLSearchParams(params as Record<string, string>).toString();
-    return request<{
+    return apiRequest<{
       cloudName: string;
       apiKey: string;
       signature: string;
@@ -155,14 +118,14 @@ export const adminApi = {
     }>(`/admin/media/signature?${query}`, {}, token);
   },
   deleteMedia: (token: string, publicId: string, resourceType: string) =>
-    request(
-      '/admin/media',
-      { method: 'DELETE', body: JSON.stringify({ publicId, resourceType }) },
+    apiRequest(
+      "/admin/media",
+      { method: "DELETE", data: { publicId, resourceType } },
       token
     ),
 };
 
-export function getMediaUrl(media?: { secureUrl?: string } | null, fallback = '') {
+export function getMediaUrl(media?: { secureUrl?: string } | null, fallback = "") {
   return media?.secureUrl || fallback;
 }
 

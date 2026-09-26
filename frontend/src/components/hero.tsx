@@ -72,14 +72,14 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex w-full flex-col items-center justify-center overflow-hidden py-12 text-center min-h-[calc(100vh-56px)]"
+      className="portfolio-section relative flex w-full flex-col items-center justify-center overflow-hidden py-12 text-center min-h-[calc(100vh-56px)]"
     >
       <div className="absolute inset-0 z-0 bg-blue-300/50">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
           section="hero"
           className="w-full h-full object-cover"
-          preload="metadata"
+          preload="none"
         />
       </div>
       <div className="relative z-20 space-y-6 p-8 rounded-lg">

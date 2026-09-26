@@ -67,7 +67,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="relative py-20 lg:py-32 overflow-hidden">
+    <section id="contact" className="portfolio-section relative py-20 lg:py-32 overflow-hidden">
       {/* Background Video */}
       <SectionBackground
         sectionVideos={profile?.sectionVideos}

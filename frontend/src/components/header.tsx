@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, Gamepad2 } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { SectionBackground } from "@/components/section-background";
@@ -17,28 +17,23 @@ export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const logoUrl = getMediaUrl(profile?.logo, "/main-logo2.png");
 
-  // Debounced scroll handler with inline debounce logic
-  const handleScroll = useCallback(() => {
-    let timeout: NodeJS.Timeout;
-    return () => {
-      const later = () => {
-        clearTimeout(timeout);
-        const scrolled = window.scrollY > 0;
-        if (scrolled !== isScrolled) {
-          setIsScrolled(scrolled);
-        }
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, 100);
-    };
-  }, [isScrolled])();
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 0);
+        ticking = false;
+      });
     };
-  }, [handleScroll]);
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { href: "#hero", label: "Home" },
@@ -63,7 +58,7 @@ export function Header() {
         sectionVideos={profile?.sectionVideos}
         section="header"
         className="absolute inset-0 w-full h-full object-cover z-0"
-        preload="metadata"
+        preload="none"
       />
 
       <div className="container flex h-14 items-center relative z-10">

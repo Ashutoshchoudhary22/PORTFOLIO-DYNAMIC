@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Image from "next/image";
 import { LazyVideo } from "@/components/lazy-video";
 import { getSectionMedia } from "@/lib/api";
@@ -14,7 +15,7 @@ interface SectionBackgroundProps {
   "aria-label"?: string;
 }
 
-export function SectionBackground({
+function SectionBackgroundComponent({
   sectionVideos,
   section,
   className = "w-full h-full object-cover",
@@ -31,7 +32,6 @@ export function SectionBackground({
   if (media.type === "image") {
     return (
       <div
-        key={media.secureUrl}
         className={cn(isAbsolute ? "absolute inset-0" : "relative w-full h-full")}
       >
         <Image
@@ -39,7 +39,11 @@ export function SectionBackground({
           alt={ariaLabel || `${section} background`}
           fill
           className={className}
-          unoptimized={media.secureUrl.startsWith("/") || media.secureUrl.includes("cloudinary.com")}
+          sizes="100vw"
+          loading="lazy"
+          unoptimized={
+            media.secureUrl.startsWith("/") || media.secureUrl.includes("cloudinary.com")
+          }
         />
       </div>
     );
@@ -47,7 +51,6 @@ export function SectionBackground({
 
   return (
     <LazyVideo
-      key={media.secureUrl}
       src={media.secureUrl}
       poster={media.thumbnailUrl}
       className={className}
@@ -56,3 +59,5 @@ export function SectionBackground({
     />
   );
 }
+
+export const SectionBackground = memo(SectionBackgroundComponent);

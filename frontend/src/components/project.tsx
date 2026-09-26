@@ -137,7 +137,7 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="relative py-20 lg:py-32">
+    <section id="projects" className="portfolio-section relative py-20 lg:py-32">
       <div className="absolute inset-0 z-0">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}

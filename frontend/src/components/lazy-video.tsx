@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 interface LazyVideoProps {
   src: string;
@@ -15,7 +15,7 @@ interface LazyVideoProps {
   "aria-label"?: string;
 }
 
-export function LazyVideo({
+function LazyVideoComponent({
   src,
   className = "",
   autoPlay = true,
@@ -41,14 +41,15 @@ export function LazyVideo({
           if (entry.isIntersecting) {
             setIsInView(true);
             setShouldLoad(true);
-          } else if (!loop && !video.paused) {
+          } else {
+            setIsInView(false);
             video.pause();
           }
         });
       },
       {
-        rootMargin: "50px",
-        threshold: 0.1,
+        rootMargin: "120px 0px",
+        threshold: 0.12,
       }
     );
 
@@ -56,8 +57,9 @@ export function LazyVideo({
 
     return () => {
       observer.disconnect();
+      video.pause();
     };
-  }, [loop]);
+  }, []);
 
   useEffect(() => {
     if (preload === "auto" || preload === "metadata") {
@@ -69,23 +71,27 @@ export function LazyVideo({
     const video = videoRef.current;
     if (!video || !shouldLoad) return;
 
-    video.load();
-    if (autoPlay && isInView) {
+    if (isInView && autoPlay) {
+      if (video.readyState === 0) {
+        video.load();
+      }
       void video.play().catch(() => undefined);
+      return;
     }
+
+    video.pause();
   }, [src, shouldLoad, autoPlay, isInView]);
 
   return (
     <video
-      key={src}
       ref={videoRef}
       className={className}
-      autoPlay={autoPlay && isInView}
       loop={loop}
       muted={muted}
       playsInline={playsInline}
       preload={shouldLoad ? preload : "none"}
       poster={poster}
+      disablePictureInPicture
       data-ai-hint={dataAiHint}
       aria-label={ariaLabel}
     >
@@ -94,3 +100,5 @@ export function LazyVideo({
     </video>
   );
 }
+
+export const LazyVideo = memo(LazyVideoComponent);

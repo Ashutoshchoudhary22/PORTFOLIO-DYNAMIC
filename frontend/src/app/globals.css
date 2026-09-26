@@ -77,3 +77,8 @@ body {
 .animate-loading-bar {
   animation: loading-bar 1.2s ease-in-out infinite;
 }
+
+.portfolio-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}

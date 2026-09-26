@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingAnimation } from "@/components/loading";
+import { AppProviders } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: 'Ashutosh Choudhary Portfolio',
@@ -21,9 +22,11 @@ export default function RootLayout({
       
       </head>
       <body className="font-body antialiased">
-        <LoadingAnimation />
-        {children}
-        <Toaster />
+        <AppProviders>
+          <LoadingAnimation />
+          {children}
+          <Toaster />
+        </AppProviders>
       </body>
     </html>
   );

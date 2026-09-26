@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { AdminLoginLogo } from "@/components/admin/admin-login-logo";
 import { LoginBackground } from "@/components/admin/login-background";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useQuery } from "@tanstack/react-query";
 import { adminApi, publicApi } from "@/lib/api";
 import { setAdminToken } from "@/lib/admin-auth";
-import type { SectionVideo } from "@/lib/types";
+import { queryKeys } from "@/lib/query-keys";
 import { cn } from "@/lib/utils";
 
 const REMEMBER_KEY = "admin-login-email";
@@ -19,14 +20,11 @@ export default function AdminLoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [sectionVideos, setSectionVideos] = useState<SectionVideo[]>();
-
-  useEffect(() => {
-    publicApi
-      .getProfile()
-      .then((profile) => setSectionVideos(profile.sectionVideos))
-      .catch(() => setSectionVideos(undefined));
-  }, []);
+  const { data: profile } = useQuery({
+    queryKey: queryKeys.profile,
+    queryFn: publicApi.getProfile,
+    staleTime: 5 * 60 * 1000,
+  });
 
   useEffect(() => {
     try {
@@ -70,7 +68,7 @@ export default function AdminLoginPage() {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6 lg:p-10">
       <div className="fixed inset-0 -z-10 bg-[#1a1520]">
-        <LoginBackground sectionVideos={sectionVideos} />
+        <LoginBackground sectionVideos={profile?.sectionVideos} />
         <div className="absolute inset-0 bg-black/25" />
       </div>
 

@@ -29,7 +29,7 @@ export function Services() {
   }
 
   return (
-    <section id="services" className="relative py-20 lg:py-32 overflow-hidden">
+    <section id="services" className="portfolio-section relative py-20 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
