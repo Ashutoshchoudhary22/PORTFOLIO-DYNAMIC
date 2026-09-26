@@ -32,7 +32,6 @@ import { clearAdminToken, getAdminToken } from "@/lib/admin-auth";
 import {
   adminBorderClass,
   adminHeaderClass,
-  adminMutedClass,
   adminNavActiveClass,
   adminNavInactiveClass,
   adminSheetClass,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,16 +58,16 @@ export function SimpleCrudPage<T extends { _id?: string }>({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  async function loadItems() {
+  const loadItems = useCallback(async () => {
     const token = getAdminToken();
     if (!token) return;
     const data = await fetchItems(token);
     setItems(data);
-  }
+  }, [fetchItems]);
 
   useEffect(() => {
     loadItems().finally(() => setLoading(false));
-  }, []);
+  }, [loadItems]);
 
   function resetForm() {
     setForm(emptyItem);

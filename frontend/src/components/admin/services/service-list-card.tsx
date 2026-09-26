@@ -59,7 +59,13 @@ export function ServiceListCard({ items, loading, onEdit, onDelete }: ServiceLis
   const [categoryFilter, setCategoryFilter] = useState("all");
 
   const categories = useMemo(() => {
-    const unique = Array.from(new Set(items.map((item) => item.category).filter(Boolean)));
+    const unique = Array.from(
+      new Set(
+        items
+          .map((item) => item.category)
+          .filter((category): category is string => Boolean(category))
+      )
+    );
     return unique.sort();
   }, [items]);
 

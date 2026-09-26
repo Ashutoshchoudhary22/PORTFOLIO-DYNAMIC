@@ -62,7 +62,6 @@ function UploadField({
   label,
   hint,
   accept,
-  resourceType,
   disabled,
   previewUrl,
   onUpload,
