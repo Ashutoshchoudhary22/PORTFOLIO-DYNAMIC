@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLoading } from "@/hooks/use-loading";
+import { useAppLoading } from "@/hooks/use-app-loading";
 
 const loadingSteps = [
   "Initializing portfolio",
@@ -11,7 +11,7 @@ const loadingSteps = [
 ];
 
 export function LoadingAnimation() {
-  const { isLoading, progress } = useLoading(true);
+  const { isLoading, progress } = useAppLoading();
   const [stepIndex, setStepIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 

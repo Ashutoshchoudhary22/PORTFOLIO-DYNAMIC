@@ -1,5 +1,6 @@
 "use client";
 
+import { markHeroVideoCached } from "@/lib/video-preload";
 import { memo, useEffect, useRef, useState } from "react";
 
 interface LazyVideoProps {
@@ -71,15 +72,26 @@ function LazyVideoComponent({
     const video = videoRef.current;
     if (!video || !shouldLoad) return;
 
+    const handleReady = () => {
+      if (video.closest("#hero")) {
+        markHeroVideoCached(src);
+      }
+    };
+
+    video.addEventListener("loadeddata", handleReady);
+
     if (isInView && autoPlay) {
       if (video.readyState === 0) {
         video.load();
       }
       void video.play().catch(() => undefined);
-      return;
+    } else {
+      video.pause();
     }
 
-    video.pause();
+    return () => {
+      video.removeEventListener("loadeddata", handleReady);
+    };
   }, [src, shouldLoad, autoPlay, isInView]);
 
   return (
