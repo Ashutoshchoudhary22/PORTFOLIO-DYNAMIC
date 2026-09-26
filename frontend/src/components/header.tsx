@@ -76,7 +76,7 @@ export function Header() {
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-6">
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <nav aria-label="Primary navigation" className="hidden md:flex items-center space-x-6 text-sm font-medium">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

@@ -34,6 +34,8 @@ type SiteSettingsForm = {
   seo?: {
     title?: string;
     description?: string;
+    canonicalUrl?: string;
+    ogImage?: MediaItem;
   };
 };
 
@@ -167,6 +169,19 @@ export default function AdminSettingsPage() {
                 rows={4}
                 placeholder="SEO description for your portfolio..."
               />
+
+              <SettingsInputField
+                label="Canonical URL"
+                icon={Sparkles}
+                value={settings.seo?.canonicalUrl || ""}
+                onChange={(value) =>
+                  setSettings({
+                    ...settings,
+                    seo: { ...settings.seo, canonicalUrl: value },
+                  })
+                }
+                placeholder="https://yourdomain.com"
+              />
             </div>
 
             <div className="space-y-4 xl:sticky xl:top-28 h-fit">
@@ -179,6 +194,23 @@ export default function AdminSettingsPage() {
                 folder="portfolio/branding"
                 value={settings.logo || null}
                 onChange={(media) => setSettings({ ...settings, logo: media as MediaItem })}
+                disabled={saving}
+              />
+
+              <SettingsAssetCard
+                mode="image"
+                title="SEO / Social Preview Image"
+                description="Used for Google, LinkedIn, and Twitter previews (1200x630 recommended)"
+                resourceType="image"
+                accept="image/*"
+                folder="portfolio/seo"
+                value={settings.seo?.ogImage || null}
+                onChange={(media) =>
+                  setSettings({
+                    ...settings,
+                    seo: { ...settings.seo, ogImage: media as MediaItem },
+                  })
+                }
                 disabled={saving}
               />
 

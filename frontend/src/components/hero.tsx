@@ -83,11 +83,12 @@ export function Hero() {
         />
       </div>
       <div className="relative z-20 space-y-6 p-8 rounded-lg">
-        <h1 className="mx-auto max-w-[700px] text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
-          {profile?.heroHeading || "Hi, I'm Ashutosh Choudhary"}
+        <h1 className="mx-auto max-w-[700px] text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+          {profile?.seo?.title || profile?.heroHeading || "Hi, I'm Ashutosh Choudhary"}
         </h1>
-        <p className="mx-auto max-w-[700px] md:text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
-          {profile?.heroSubtitle ||
+        <p className="mx-auto max-w-[700px] md:text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+          {profile?.seo?.description ||
+            profile?.heroSubtitle ||
             "Full Stack Developer with 1.5+ years of experience building production-grade MERN SaaS platforms, HRM systems, CRM solutions, and enterprise dashboards."}
         </p>
 
