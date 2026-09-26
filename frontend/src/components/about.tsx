@@ -2,12 +2,64 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Briefcase, GraduationCap, Star, Award } from "lucide-react";
+import { Briefcase, GraduationCap, Star, Award, type LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { SectionBackground } from "@/components/section-background";
 import { usePortfolioContext } from "@/components/portfolio-provider";
 import { SectionSkeleton } from "@/components/section-skeleton";
+import { cn } from "@/lib/utils";
 import type { SkillItem } from "@/lib/types";
+
+const aboutTabs: {
+  value: string;
+  label: string;
+  mobileLabel: string;
+  icon: LucideIcon;
+  activeClass: string;
+  iconClass: string;
+  ringClass: string;
+}[] = [
+  {
+    value: "skills",
+    label: "Skills",
+    mobileLabel: "Skills",
+    icon: Star,
+    activeClass:
+      "data-[state=active]:bg-gradient-to-br data-[state=active]:from-emerald-500/35 data-[state=active]:to-cyan-500/20 data-[state=active]:border-emerald-400/45 data-[state=active]:shadow-[0_0_24px_rgba(52,211,153,0.22)]",
+    iconClass: "text-emerald-400",
+    ringClass: "group-data-[state=active]:bg-emerald-400/20 group-data-[state=active]:ring-emerald-400/40",
+  },
+  {
+    value: "experience",
+    label: "Experience",
+    mobileLabel: "Work",
+    icon: Briefcase,
+    activeClass:
+      "data-[state=active]:bg-gradient-to-br data-[state=active]:from-blue-500/35 data-[state=active]:to-violet-500/20 data-[state=active]:border-blue-400/45 data-[state=active]:shadow-[0_0_24px_rgba(96,165,250,0.22)]",
+    iconClass: "text-blue-400",
+    ringClass: "group-data-[state=active]:bg-blue-400/20 group-data-[state=active]:ring-blue-400/40",
+  },
+  {
+    value: "education",
+    label: "Education",
+    mobileLabel: "Study",
+    icon: GraduationCap,
+    activeClass:
+      "data-[state=active]:bg-gradient-to-br data-[state=active]:from-amber-500/35 data-[state=active]:to-orange-500/20 data-[state=active]:border-amber-400/45 data-[state=active]:shadow-[0_0_24px_rgba(251,191,36,0.22)]",
+    iconClass: "text-amber-400",
+    ringClass: "group-data-[state=active]:bg-amber-400/20 group-data-[state=active]:ring-amber-400/40",
+  },
+  {
+    value: "certifications",
+    label: "Certifications",
+    mobileLabel: "Certs",
+    icon: Award,
+    activeClass:
+      "data-[state=active]:bg-gradient-to-br data-[state=active]:from-fuchsia-500/35 data-[state=active]:to-pink-500/20 data-[state=active]:border-fuchsia-400/45 data-[state=active]:shadow-[0_0_24px_rgba(232,121,249,0.22)]",
+    iconClass: "text-fuchsia-400",
+    ringClass: "group-data-[state=active]:bg-fuchsia-400/20 group-data-[state=active]:ring-fuchsia-400/40",
+  },
+];
 
 const ABOUT_IMAGES = "/png-icons";
 
@@ -127,31 +179,37 @@ export function About() {
         </div>
         <div className="flex justify-center">
           <Tabs defaultValue="skills" className="w-full max-w-4xl">
-            <TabsList className="grid w-full grid-cols-4 bg-transparent border border-white/20">
-              <TabsTrigger
-                value="skills"
-                className="focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 text-white text-sm md:text-base"
-              >
-                <Star className="mr-2 h-4 w-4 text-green-400" /> Skills
-              </TabsTrigger>
-              <TabsTrigger
-                value="experience"
-                className="focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 text-white text-sm md:text-base"
-              >
-                <Briefcase className="mr-2 h-4 w-4 text-green-400" /> Experience
-              </TabsTrigger>
-              <TabsTrigger
-                value="education"
-                className="focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 text-white text-sm md:text-base"
-              >
-                <GraduationCap className="mr-2 h-4 w-4 text-green-400" /> Education
-              </TabsTrigger>
-              <TabsTrigger
-                value="certifications"
-                className="focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 text-white text-sm md:text-base"
-              >
-                <Award className="mr-2 h-4 w-4 text-green-400" /> Certifications
-              </TabsTrigger>
+            <TabsList className="relative flex h-auto w-full gap-1.5 overflow-x-auto rounded-2xl border border-white/10 bg-black/45 p-1.5 backdrop-blur-xl md:grid md:grid-cols-4 md:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {aboutTabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    className={cn(
+                      "group relative flex min-w-[4.75rem] flex-1 flex-col items-center gap-1.5 rounded-xl border border-transparent px-2 py-2.5 text-white/50 transition-all duration-300 sm:min-w-0 sm:flex-row sm:gap-2 sm:px-3 sm:py-2.5",
+                      "hover:bg-white/[0.06] hover:text-white/85",
+                      "data-[state=active]:text-white data-[state=active]:shadow-lg",
+                      "focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-0",
+                      tab.activeClass
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/[0.06] ring-1 ring-white/10 transition-all duration-300 group-data-[state=active]:scale-105",
+                        tab.ringClass
+                      )}
+                    >
+                      <Icon className={cn("h-4 w-4 transition-transform", tab.iconClass)} />
+                    </span>
+                    <span className="text-[10px] font-semibold leading-tight sm:hidden">
+                      {tab.mobileLabel}
+                    </span>
+                    <span className="hidden text-sm font-semibold sm:inline">{tab.label}</span>
+                    <span className="absolute bottom-1 left-1/2 hidden h-0.5 w-6 -translate-x-1/2 rounded-full bg-white/70 opacity-0 transition-opacity group-data-[state=active]:opacity-100 sm:block" />
+                  </TabsTrigger>
+                );
+              })}
             </TabsList>
             <TabsContent value="skills">
               <Card className="bg-transparent border-none shadow-none">
