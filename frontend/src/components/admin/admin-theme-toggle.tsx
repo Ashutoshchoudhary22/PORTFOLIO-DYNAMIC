@@ -24,14 +24,27 @@ export function AdminThemeToggle({
 
   if (variant === "switch") {
     return (
-      <div className={cn("flex items-center justify-between gap-3", className)}>
-        <span className={cn("text-sm", adminMutedClass)}>
-          {isLight ? "Light mode" : "Dark mode"}
-        </span>
+      <div
+        className={cn(
+          "flex items-center justify-between gap-3 rounded-xl border border-slate-100 bg-gradient-to-r from-slate-50/90 to-white px-3 py-2.5 transition-all duration-200",
+          "hover:border-blue-100 hover:shadow-sm hover:shadow-blue-500/5",
+          "admin-dark:border-white/10 admin-dark:from-slate-800/60 admin-dark:to-slate-800/40 admin-dark:hover:border-blue-500/20",
+          className
+        )}
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          {isLight ? (
+            <Sun className="h-4 w-4 shrink-0 text-amber-500" />
+          ) : (
+            <Moon className="h-4 w-4 shrink-0 text-indigo-400" />
+          )}
+          <span className={cn("text-sm font-medium truncate", adminMutedClass)}>
+            {isLight ? "Light mode" : "Dark mode"}
+          </span>
+        </div>
         <Switch
           checked={isLight}
           onCheckedChange={(checked) => setTheme(checked ? "light" : "dark")}
-          className="data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-slate-200 admin-dark:data-[state=unchecked]:bg-slate-700"
           aria-label={isLight ? "Switch to dark mode" : "Switch to light mode"}
         />
       </div>

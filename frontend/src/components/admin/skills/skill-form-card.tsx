@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Switch } from "@/components/ui/switch";
+import { AdminToggleField } from "@/components/admin/admin-toggle-field";
 import {
   Select,
   SelectContent,
@@ -231,17 +231,12 @@ export function SkillFormCard({
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-4 rounded-xl border border-slate-100 bg-slate-50/80 px-4 py-3 admin-dark:border-white/10 admin-dark:bg-slate-800/50">
-          <div>
-            <p className="text-sm font-medium">Active</p>
-            <p className={cn("text-xs", adminMutedClass)}>Make this skill visible on your portfolio.</p>
-          </div>
-          <Switch
-            checked={Boolean(form.isActive)}
-            onCheckedChange={(checked) => onChange({ isActive: checked })}
-            className="data-[state=checked]:bg-blue-500"
-          />
-        </div>
+        <AdminToggleField
+          label="Active"
+          description="Make this skill visible on your portfolio."
+          checked={Boolean(form.isActive)}
+          onCheckedChange={(checked) => onChange({ isActive: checked })}
+        />
 
         {message && (
           <p
