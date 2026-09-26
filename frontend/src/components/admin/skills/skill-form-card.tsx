@@ -12,7 +12,7 @@ import {
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { AdminToggleField } from "@/components/admin/admin-toggle-field";
 import {
   Select,
@@ -173,8 +173,12 @@ export function SkillFormCard({
           >
             <CloudUpload className="h-5 w-5 text-blue-500 shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm font-medium text-blue-600 admin-dark:text-blue-400">Choose file</p>
-              <p className={cn("text-xs", adminMutedClass)}>Recommended size: 64x64px (PNG, SVG)</p>
+              <p className="text-sm font-medium text-blue-600 admin-dark:text-blue-400">
+                {uploading ? "Uploading..." : "Choose file"}
+              </p>
+              {!uploading && (
+                <p className={cn("text-xs", adminMutedClass)}>Recommended size: 64x64px (PNG, SVG)</p>
+              )}
             </div>
             {iconMedia?.secureUrl && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -195,7 +199,7 @@ export function SkillFormCard({
               if (file) handleIconUpload(file);
             }}
           />
-          {uploading && <Progress value={progress} />}
+          {uploading && <AdminUploadingIndicator progress={progress} />}
           {uploadError && <p className="text-sm text-red-500">{uploadError}</p>}
         </div>
 

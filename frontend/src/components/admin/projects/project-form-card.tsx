@@ -14,7 +14,7 @@ import {
   Tags,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { AdminToggleField } from "@/components/admin/admin-toggle-field";
 import { SettingsInputField } from "@/components/admin/settings/settings-field";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
@@ -105,8 +105,10 @@ function UploadField({
       >
         <CloudUpload className="h-5 w-5 text-blue-500 shrink-0" />
         <div className="min-w-0">
-          <p className="text-sm font-medium text-blue-600 admin-dark:text-blue-400">Choose file</p>
-          <p className={cn("text-xs", adminMutedClass)}>{hint}</p>
+          <p className="text-sm font-medium text-blue-600 admin-dark:text-blue-400">
+            {uploading ? "Uploading..." : "Choose file"}
+          </p>
+          {!uploading && <p className={cn("text-xs", adminMutedClass)}>{hint}</p>}
         </div>
         {previewUrl && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -128,7 +130,7 @@ function UploadField({
           if (file) handleFile(file);
         }}
       />
-      {uploading && <Progress value={progress} />}
+      {uploading && <AdminUploadingIndicator progress={progress} />}
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );

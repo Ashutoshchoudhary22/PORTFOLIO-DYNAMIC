@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Download, MoreVertical, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { downloadMedia } from "@/lib/media-utils";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
@@ -123,10 +123,14 @@ export function BackgroundSectionCard({
         className="w-full flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm hover:bg-slate-100 transition-colors admin-dark:border-white/10 admin-dark:bg-slate-800/50 admin-dark:hover:bg-slate-800"
       >
         <Upload className="h-4 w-4 text-slate-400 shrink-0" />
-        <span className="text-slate-500 admin-dark:text-white/60">Choose file</span>
-        <span className="text-slate-400 truncate admin-dark:text-white/40">
-          {fileName || "No file chosen"}
+        <span className={cn("admin-dark:text-white/60", uploading ? "text-blue-600 admin-dark:text-blue-400 font-medium" : "text-slate-500")}>
+          {uploading ? "Uploading..." : "Choose file"}
         </span>
+        {!uploading && (
+          <span className="text-slate-400 truncate admin-dark:text-white/40">
+            {fileName || "No file chosen"}
+          </span>
+        )}
       </button>
 
       <input
@@ -141,7 +145,7 @@ export function BackgroundSectionCard({
         }}
       />
 
-      {uploading && <Progress value={progress} />}
+      {uploading && <AdminUploadingIndicator progress={progress} />}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {value?.secureUrl && (

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { Download, FileText, ImageIcon, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { downloadMedia } from "@/lib/media-utils";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
@@ -152,11 +152,13 @@ export function SettingsAssetCard({
             )}
           </div>
           <p className="text-sm font-medium">
-            {hasFile ? value?.originalFilename || "File uploaded" : "No file chosen"}
+            {uploading ? "Uploading..." : hasFile ? value?.originalFilename || "File uploaded" : "No file chosen"}
           </p>
-          <p className={cn("text-xs mt-1", adminMutedClass)}>
-            <span className="text-blue-600 admin-dark:text-blue-400">Choose file</span> or drag and drop
-          </p>
+          {!uploading && (
+            <p className={cn("text-xs mt-1", adminMutedClass)}>
+              <span className="text-blue-600 admin-dark:text-blue-400">Choose file</span> or drag and drop
+            </p>
+          )}
         </button>
       )}
 
@@ -172,7 +174,7 @@ export function SettingsAssetCard({
         }}
       />
 
-      {uploading && <Progress value={progress} />}
+      {uploading && <AdminUploadingIndicator progress={progress} />}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div className="flex gap-3">

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
+import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { downloadMedia } from "@/lib/media-utils";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
@@ -96,7 +96,7 @@ export function MediaUploader({
           if (file) handleUpload(file);
         }}
       />
-      {uploading && <Progress value={progress} />}
+      {uploading && <AdminUploadingIndicator progress={progress} />}
       {error && <p className="text-sm text-red-400">{error}</p>}
       {value?.secureUrl && (
         <div className={`rounded-md border p-2 text-xs space-y-2 ${adminBorderClass}`}>

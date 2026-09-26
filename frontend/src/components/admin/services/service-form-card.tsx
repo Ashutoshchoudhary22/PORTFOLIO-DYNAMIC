@@ -12,7 +12,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { AdminToggleField } from "@/components/admin/admin-toggle-field";
 import { SettingsInputField } from "@/components/admin/settings/settings-field";
 import { uploadToCloudinary } from "@/lib/cloudinary-upload";
@@ -106,10 +106,14 @@ function UploadField({
         onClick={() => inputRef.current?.click()}
         className="w-full flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-left hover:bg-slate-100 transition-colors admin-dark:border-white/10 admin-dark:bg-slate-800/50 admin-dark:hover:bg-slate-800"
       >
-        <span className="text-sm font-medium text-blue-600 admin-dark:text-blue-400">Choose file</span>
-        <span className={cn("text-sm", adminMutedClass)}>
-          {previewUrl ? "File selected" : "No file chosen"}
+        <span className={cn("text-sm font-medium", uploading ? "text-blue-600 admin-dark:text-blue-400" : "text-blue-600 admin-dark:text-blue-400")}>
+          {uploading ? "Uploading..." : "Choose file"}
         </span>
+        {!uploading && (
+          <span className={cn("text-sm", adminMutedClass)}>
+            {previewUrl ? "File selected" : "No file chosen"}
+          </span>
+        )}
         {previewUrl && resourceType === "image" && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -130,7 +134,7 @@ function UploadField({
           if (file) handleFile(file);
         }}
       />
-      {uploading && <Progress value={progress} />}
+      {uploading && <AdminUploadingIndicator progress={progress} />}
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
