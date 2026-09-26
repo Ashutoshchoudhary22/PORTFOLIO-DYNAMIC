@@ -16,8 +16,9 @@ const sectionVideoSchema = new mongoose.Schema(
   {
     section: {
       type: String,
-      enum: ['hero', 'about', 'services', 'projects', 'contact', 'header', 'footer'],
+      enum: ['hero', 'about', 'services', 'projects', 'contact', 'header', 'footer', 'login'],
       required: true,
+      trim: true,
     },
     media: mediaSchema,
   },

@@ -40,7 +40,11 @@ async function request<T>(
   const payload: ApiResponse<T> = await response.json();
 
   if (!response.ok || !payload.success) {
-    throw new Error(payload.message || 'Request failed');
+    const details =
+      payload.errors && typeof payload.errors === 'object'
+        ? Object.values(payload.errors).join(', ')
+        : '';
+    throw new Error(details ? `${payload.message}: ${details}` : payload.message || 'Request failed');
   }
 
   return payload.data;

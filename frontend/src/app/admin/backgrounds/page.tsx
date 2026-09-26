@@ -7,6 +7,7 @@ import {
   LayoutGrid,
   Mail,
   PanelBottom,
+  LogIn,
   PanelTop,
   Settings,
   User,
@@ -68,6 +69,13 @@ const SECTIONS = [
     description: "Footer background",
     icon: PanelBottom,
     iconClass: "bg-indigo-100 text-indigo-600",
+  },
+  {
+    key: "login",
+    label: "Admin Login",
+    description: "Login page background video",
+    icon: LogIn,
+    iconClass: "bg-rose-100 text-rose-600",
   },
 ] as const;
 
@@ -154,7 +162,8 @@ export default function AdminBackgroundsPage() {
           ? `${section} background saved successfully.`
           : `${section} background removed successfully.`
       );
-    } catch {
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Failed to save background.");
       await loadBackgrounds();
     }
   }
