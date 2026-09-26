@@ -24,6 +24,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { AdminBrand } from "@/components/admin/admin-brand";
+import { AdminTopbar } from "@/components/admin/admin-topbar";
 import { AdminThemeToggle } from "@/components/admin/admin-theme-toggle";
 import { adminApi } from "@/lib/api";
 import { clearAdminToken, getAdminToken } from "@/lib/admin-auth";
@@ -35,8 +37,10 @@ import {
   adminNavInactiveClass,
   adminSheetClass,
   adminSheetTitleClass,
+  adminSidebarClass,
 } from "@/lib/admin-styles";
 import { Spinner } from "@/components/loading";
+import type { AdminUser } from "@/lib/types";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -59,7 +63,7 @@ function AdminNav({
   onNavigate?: () => void;
 }) {
   return (
-    <nav className="space-y-1 flex-1">
+    <nav className="space-y-1 shrink-0">
       {navItems.map((item) => {
         const Icon = item.icon;
         const active = pathname.startsWith(item.href);
@@ -68,8 +72,10 @@ function AdminNav({
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors ${
-              active ? adminNavActiveClass : adminNavInactiveClass
+            className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+              active
+                ? `${adminNavActiveClass} before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-7 before:w-1 before:rounded-r-full before:bg-blue-500 admin-dark:before:bg-white/70`
+                : adminNavInactiveClass
             }`}
           >
             <Icon className="h-4 w-4 shrink-0" />
@@ -86,6 +92,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
 
   useEffect(() => {
     const token = getAdminToken();
@@ -96,7 +103,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
     adminApi
       .getMe(token)
-      .then(() => setChecking(false))
+      .then((user) => {
+        setAdminUser(user);
+        setChecking(false);
+      })
       .catch(() => {
         clearAdminToken();
         router.replace("/admin/login");
@@ -128,46 +138,53 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     );
   }
 
+  const adminName = adminUser?.name || "Admin";
+
   return (
-    <div className="min-h-screen flex">
-      <aside className={`w-64 border-r ${adminBorderClass} p-4 hidden md:flex flex-col shrink-0`}>
-        <div className="mb-8">
-          <p className={`text-sm ${adminMutedClass}`}>Portfolio Admin</p>
-          <h1 className="text-xl font-bold">Control Panel</h1>
+    <div className="h-screen flex overflow-hidden">
+      <aside
+        className={`w-64 h-screen border-r p-4 hidden md:flex flex-col shrink-0 overflow-hidden shadow-sm ${adminSidebarClass}`}
+      >
+        <div className="mb-6 px-1 shrink-0">
+          <AdminBrand />
         </div>
         <AdminNav pathname={pathname} />
-        <div className="mt-4 space-y-2">
-          <AdminThemeToggle showLabel className="w-full justify-start" />
-          <Button variant="outline" className="w-full" onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
+        <div className="mt-auto shrink-0 space-y-4 pt-4 border-t border-slate-100 admin-dark:border-white/10">
+          <AdminThemeToggle variant="switch" />
+          <button
+            type="button"
+            onClick={handleLogout}
+            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${adminNavInactiveClass}`}
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
             Logout
-          </Button>
+          </button>
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0 flex flex-col">
-        <div className={`md:hidden sticky top-0 z-40 ${adminHeaderClass}`}>
+      <main className="flex-1 min-w-0 h-screen flex flex-col overflow-hidden">
+        <div className="shrink-0">
+          <AdminTopbar adminName={adminName} />
+        </div>
+
+        <div className={`md:hidden shrink-0 z-40 ${adminHeaderClass}`}>
           <div className="flex items-center justify-between gap-3 p-3 sm:p-4">
             <div className="flex items-center gap-3 min-w-0">
               <Button
                 variant="outline"
                 size="icon"
-                className="shrink-0"
+                className="shrink-0 rounded-full"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open navigation menu"
               >
                 <Menu className="h-5 w-5" />
               </Button>
-              <div className="min-w-0">
-                <p className={`text-xs truncate ${adminMutedClass}`}>Portfolio Admin</p>
-                <p className="font-semibold truncate">Control Panel</p>
-              </div>
+              <AdminBrand compact />
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <AdminThemeToggle />
-              <Button size="sm" variant="outline" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Logout</span>
+              <Button size="sm" variant="outline" className="rounded-full" onClick={handleLogout}>
+                <LogOut className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -178,31 +195,31 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             side="left"
             className={`w-[min(100vw-2rem,18rem)] p-0 flex flex-col ${adminSheetClass}`}
           >
-            <SheetHeader className={`p-4 border-b text-left space-y-1 ${adminBorderClass}`}>
-              <SheetTitle className={adminSheetTitleClass}>Control Panel</SheetTitle>
-              <p className={`text-sm ${adminMutedClass}`}>Portfolio Admin</p>
+            <SheetHeader className={`p-4 border-b text-left space-y-3 ${adminBorderClass}`}>
+              <AdminBrand />
+              <SheetTitle className={`sr-only ${adminSheetTitleClass}`}>Control Panel</SheetTitle>
             </SheetHeader>
             <div className="flex flex-col flex-1 p-4 overflow-y-auto">
               <AdminNav pathname={pathname} onNavigate={() => setMobileOpen(false)} />
-              <div className="mt-4 space-y-2">
-                <AdminThemeToggle showLabel className="w-full justify-start" />
-                <Button
-                  variant="outline"
-                  className="w-full"
+              <div className="mt-4 space-y-4 pt-4 border-t border-slate-100 admin-dark:border-white/10">
+                <AdminThemeToggle variant="switch" />
+                <button
+                  type="button"
+                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm ${adminNavInactiveClass}`}
                   onClick={() => {
                     setMobileOpen(false);
                     handleLogout();
                   }}
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
+                  <LogOut className="h-4 w-4" />
                   Logout
-                </Button>
+                </button>
               </div>
             </div>
           </SheetContent>
         </Sheet>
 
-        <div className="p-3 sm:p-4 md:p-8 flex-1">{children}</div>
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</div>
       </main>
     </div>
   );

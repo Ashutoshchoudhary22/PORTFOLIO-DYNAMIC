@@ -1,38 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Code2 } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MediaUploader } from "@/components/admin/media-uploader";
+import { SkillFormCard } from "@/components/admin/skills/skill-form-card";
+import { SkillsListCard } from "@/components/admin/skills/skills-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
+import { adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem, SkillItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
-import { adminBorderClass, adminCardClass, adminMutedClass, adminSurfaceClass } from "@/lib/admin-styles";
 
 const emptyForm: Partial<SkillItem> = {
   name: "",
   description: "",
   category: "",
   iconUrl: "",
-  bgColor: "",
+  bgColor: "#6366F1",
   sortOrder: 0,
   isActive: true,
 };
-
-function iconUrlToMedia(url?: string): MediaItem | null {
-  if (!url?.trim()) return null;
-
-  return {
-    type: "image",
-    provider: "cloudinary",
-    publicId: url,
-    secureUrl: url,
-  };
-}
 
 function buildPayload(form: Partial<SkillItem>) {
   return {
@@ -80,7 +67,7 @@ export default function AdminSkillsPage() {
       description: item.description,
       category: item.category,
       iconUrl: item.iconUrl || "",
-      bgColor: item.bgColor || "",
+      bgColor: item.bgColor || "#6366F1",
       sortOrder: item.sortOrder ?? 0,
       isActive: item.isActive ?? true,
     });
@@ -130,145 +117,65 @@ export default function AdminSkillsPage() {
     }
   }
 
+  async function handleDelete(id: string) {
+    const token = getAdminToken();
+    if (!token) return;
+    if (!confirm("Delete this skill?")) return;
+    await adminApi.deleteSkill(token, id);
+    await loadItems();
+    if (editingId === id) resetForm();
+  }
+
+  if (loading) {
+    return (
+      <AdminShell>
+        <div className="flex justify-center py-20">
+          <Spinner size="lg" />
+        </div>
+      </AdminShell>
+    );
+  }
+
   return (
     <AdminShell>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <Card className={adminCardClass}>
-          <CardHeader>
-            <CardTitle>{editingId ? "Edit Skill" : "Add Skill"}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <Input
-                placeholder="Name"
-                value={form.name || ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-                required
-              />
-              <Input
-                placeholder="Category"
-                value={form.category || ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-                required
-              />
-              <Textarea
-                placeholder="Description"
-                value={form.description || ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-              />
-              <MediaUploader
-                label="Skill Icon"
-                resourceType="image"
-                accept="image/*"
-                folder="portfolio/skills"
-                value={iconUrlToMedia(form.iconUrl)}
-                disabled={saving}
-                onChange={handleIconChange}
-              />
-              {!editingId && form.iconUrl && (
-                <p className={`text-xs ${adminMutedClass}`}>
-                  Icon uploaded. Click Create to save this skill.
-                </p>
-              )}
-              <Input
-                placeholder="Background Color"
-                value={form.bgColor || ""}
-                onChange={(e) => setForm((prev) => ({ ...prev, bgColor: e.target.value }))}
-              />
-              <Input
-                type="number"
-                placeholder="Sort Order"
-                value={form.sortOrder ?? 0}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))
-                }
-              />
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={Boolean(form.isActive)}
-                  onChange={(e) => setForm((prev) => ({ ...prev, isActive: e.target.checked }))}
-                />
-                Active
-              </label>
+      <div className="space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <span className="h-12 w-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
+              <Code2 className="h-6 w-6" />
+            </span>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Skills & Technologies</h1>
+              <p className={`mt-1 text-sm sm:text-base max-w-2xl ${adminMutedClass}`}>
+                Add your technical skills and tools to showcase your expertise.
+              </p>
+            </div>
+          </div>
 
-              {message && (
-                <p
-                  className={`text-sm ${message.includes("success") ? "text-green-400" : "text-red-400"}`}
-                >
-                  {message}
-                </p>
-              )}
+          <p className="hidden xl:block text-sm italic text-slate-400 admin-dark:text-white/40 max-w-[220px] text-right leading-relaxed">
+            Build the skills you need for your next big thing. 💻
+          </p>
+        </div>
 
-              <div className="flex gap-2">
-                <Button type="submit" disabled={saving}>
-                  {saving ? "Saving..." : editingId ? "Update Skill" : "Create Skill"}
-                </Button>
-                {editingId && (
-                  <Button type="button" variant="outline" onClick={resetForm}>
-                    Cancel
-                  </Button>
-                )}
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
+          <SkillFormCard
+            form={form}
+            editingId={editingId}
+            saving={saving}
+            message={message}
+            onChange={(updates) => setForm((prev) => ({ ...prev, ...updates }))}
+            onSubmit={handleSubmit}
+            onCancel={resetForm}
+            onIconChange={handleIconChange}
+          />
 
-        <Card className={adminCardClass}>
-          <CardHeader>
-            <CardTitle>Skills</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {loading ? (
-              <Spinner />
-            ) : items.length === 0 ? (
-              <p className={adminMutedClass}>No skills yet.</p>
-            ) : (
-              items.map((item) => (
-                <div
-                  key={item._id}
-                  className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border rounded-md p-3 ${adminBorderClass}`}
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    {item.iconUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.iconUrl}
-                        alt={item.name}
-                        className={`h-10 w-10 rounded object-contain shrink-0 ${adminSurfaceClass}`}
-                      />
-                    ) : (
-                      <div className={`h-10 w-10 rounded shrink-0 ${adminSurfaceClass}`} />
-                    )}
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{item.name}</p>
-                      <p className={`text-xs truncate ${adminMutedClass}`}>{item.category}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 shrink-0">
-                    <Button size="sm" variant="outline" onClick={() => startEdit(item)}>
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={async () => {
-                        const token = getAdminToken();
-                        if (!token || !item._id) return;
-                        if (!confirm("Delete this skill?")) return;
-                        await adminApi.deleteSkill(token, item._id);
-                        await loadItems();
-                        if (editingId === item._id) resetForm();
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+          <SkillsListCard
+            items={items}
+            loading={false}
+            onEdit={startEdit}
+            onDelete={handleDelete}
+          />
+        </div>
       </div>
     </AdminShell>
   );

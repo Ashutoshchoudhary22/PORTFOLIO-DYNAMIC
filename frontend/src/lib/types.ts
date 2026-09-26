@@ -76,6 +76,7 @@ export interface ExperienceItem {
   company: string;
   period?: string;
   description: string;
+  iconUrl?: string;
   technologies?: string[];
   sortOrder?: number;
   isActive?: boolean;
@@ -95,6 +96,9 @@ export interface CertificationItem {
   _id?: string;
   title: string;
   issuer: string;
+  period?: string;
+  description?: string;
+  iconUrl?: string;
   issueDate?: string;
   credentialUrl?: string;
   sortOrder?: number;
@@ -123,6 +127,8 @@ export interface ServiceItem {
   _id?: string;
   title: string;
   description: string;
+  code?: string;
+  category?: string;
   iconType?: string;
   image?: MediaItem;
   video?: MediaItem;

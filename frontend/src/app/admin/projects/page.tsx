@@ -1,18 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FolderKanban } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MediaUploader } from "@/components/admin/media-uploader";
+import { ProjectFormCard } from "@/components/admin/projects/project-form-card";
+import { ProjectListCard } from "@/components/admin/projects/project-list-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
-import { downloadMedia, sanitizeMediaArray, sanitizeMediaItem } from "@/lib/media-utils";
+import { sanitizeMediaArray, sanitizeMediaItem } from "@/lib/media-utils";
+import { adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem, ProjectItem } from "@/lib/types";
 import { Spinner } from "@/components/loading";
-import { adminBorderClass, adminCardClass, adminFaintClass, adminMutedClass } from "@/lib/admin-styles";
 
 const emptyForm: Partial<ProjectItem> = {
   title: "",
@@ -26,20 +24,6 @@ const emptyForm: Partial<ProjectItem> = {
   sortOrder: 0,
   media: [],
 };
-
-function MediaPreview({ media }: { media: MediaItem }) {
-  return (
-    <div className={`rounded border p-2 space-y-2 ${adminBorderClass}`}>
-      {media.type === "image" ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={media.secureUrl} alt={media.originalFilename || media.publicId} className="h-24 w-full object-cover rounded" />
-      ) : (
-        <video src={media.secureUrl} controls className="h-24 w-full object-cover rounded" />
-      )}
-      <p className="text-xs truncate">{media.originalFilename || media.publicId}</p>
-    </div>
-  );
-}
 
 export default function AdminProjectsPage() {
   const [items, setItems] = useState<ProjectItem[]>([]);
@@ -64,6 +48,7 @@ export default function AdminProjectsPage() {
     setEditingId(null);
     setTagsInput("");
     setForm(emptyForm);
+    setMessage(null);
   }
 
   function addMedia(media: MediaItem | null) {
@@ -127,10 +112,10 @@ export default function AdminProjectsPage() {
       } else {
         await adminApi.createProject(token, payload);
         setMessage("Project created successfully.");
+        resetForm();
       }
 
       await loadItems();
-      resetForm();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Failed to save project.");
     } finally {
@@ -138,204 +123,72 @@ export default function AdminProjectsPage() {
     }
   }
 
+  async function handleDelete(id: string) {
+    const token = getAdminToken();
+    if (!token) return;
+    if (!confirm("Delete project?")) return;
+    await adminApi.deleteProject(token, id);
+    await loadItems();
+    if (editingId === id) resetForm();
+  }
+
+  if (loading) {
+    return (
+      <AdminShell>
+        <div className="flex justify-center py-20">
+          <Spinner size="lg" />
+        </div>
+      </AdminShell>
+    );
+  }
+
   return (
     <AdminShell>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <Card className={adminCardClass}>
-          <CardHeader>
-            <CardTitle>{editingId ? "Edit Project" : "Add Project"}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <Input
-                placeholder="Title"
-                value={form.title || ""}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-                required
-              />
-              <Input
-                placeholder="Slug (optional)"
-                value={form.slug || ""}
-                onChange={(e) => setForm({ ...form, slug: e.target.value })}
-              />
-              <Textarea
-                placeholder="Description"
-                value={form.description || ""}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                required
-              />
-              <Input
-                placeholder="Tags (comma separated)"
-                value={tagsInput}
-                onChange={(e) => setTagsInput(e.target.value)}
-              />
-              <Input
-                placeholder="Live URL"
-                value={form.liveUrl || ""}
-                onChange={(e) => setForm({ ...form, liveUrl: e.target.value })}
-              />
-              <Input
-                placeholder="GitHub URL"
-                value={form.githubUrl || ""}
-                onChange={(e) => setForm({ ...form, githubUrl: e.target.value })}
-              />
-              <Input
-                type="number"
-                placeholder="Sort Order"
-                value={form.sortOrder ?? 0}
-                onChange={(e) => setForm({ ...form, sortOrder: Number(e.target.value) })}
-              />
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={Boolean(form.featured)}
-                  onChange={(e) => setForm({ ...form, featured: e.target.checked })}
-                />
-                Featured
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={Boolean(form.published)}
-                  onChange={(e) => setForm({ ...form, published: e.target.checked })}
-                />
-                Published
-              </label>
+      <div className="space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <span className="h-12 w-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
+              <FolderKanban className="h-6 w-6" />
+            </span>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Projects</h1>
+              <p className={`mt-1 text-sm sm:text-base max-w-2xl ${adminMutedClass}`}>
+                Showcase your amazing projects and manage your portfolio showcase.
+              </p>
+            </div>
+          </div>
 
-              <MediaUploader
-                label="Main Thumbnail (shown first on portfolio)"
-                resourceType="image"
-                folder="portfolio/projects"
-                value={form.thumbnail || null}
-                disabled={saving}
-                onChange={(media) => setForm({ ...form, thumbnail: media || undefined })}
-              />
+          <p className="hidden xl:block text-sm italic text-slate-400 admin-dark:text-white/40 max-w-[200px] text-right leading-relaxed">
+            Build something great today. 🌱
+          </p>
+        </div>
 
-              <MediaUploader
-                label="Add Project Image"
-                resourceType="image"
-                folder="portfolio/projects"
-                value={null}
-                disabled={saving}
-                onChange={addMedia}
-              />
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
+          <ProjectFormCard
+            form={form}
+            tagsInput={tagsInput}
+            editingId={editingId}
+            saving={saving}
+            message={message}
+            onChange={(updates) => setForm((prev) => ({ ...prev, ...updates }))}
+            onTagsChange={setTagsInput}
+            onSubmit={handleSubmit}
+            onCancel={resetForm}
+            onThumbnailChange={(media) =>
+              setForm((prev) => ({ ...prev, thumbnail: media || undefined }))
+            }
+            onAddMedia={addMedia}
+            onRemoveMedia={removeMedia}
+            onClearMedia={() => setForm((prev) => ({ ...prev, media: [] }))}
+          />
 
-              <MediaUploader
-                label="Add Project Video"
-                accept="video/*"
-                resourceType="video"
-                folder="portfolio/projects"
-                value={null}
-                disabled={saving}
-                onChange={addMedia}
-              />
-
-              {(form.media || []).length > 0 && (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium">Project Media Gallery</p>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setForm({ ...form, media: [] })}
-                    >
-                      Clear All Media
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(form.media || []).map((media, index) => (
-                      <div key={`${media.publicId}-${index}`} className="space-y-2">
-                        <MediaPreview media={media} />
-                        <div className="flex gap-2">
-                          <Button type="button" size="sm" variant="outline" onClick={() => downloadMedia(media)}>
-                            Download
-                          </Button>
-                          <Button type="button" size="sm" variant="outline" onClick={() => removeMedia(index)}>
-                            Remove
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {message && (
-                <p className={`text-sm ${message.includes("success") ? "text-green-400" : "text-red-400"}`}>
-                  {message}
-                </p>
-              )}
-
-              <div className="flex gap-2">
-                <Button type="submit" disabled={saving}>
-                  {saving ? "Saving..." : editingId ? "Update Project" : "Create Project"}
-                </Button>
-                {editingId && (
-                  <Button type="button" variant="outline" onClick={resetForm}>
-                    Cancel
-                  </Button>
-                )}
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-
-        <Card className={adminCardClass}>
-          <CardHeader>
-            <CardTitle>Projects</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {loading ? (
-              <Spinner />
-            ) : (
-              items.map((item) => {
-                const preview =
-                  item.thumbnail?.secureUrl ||
-                  item.media?.find((media) => media.type === "image")?.secureUrl;
-
-                return (
-                  <div key={item._id} className={`border rounded-md p-3 space-y-3 ${adminBorderClass}`}>
-                    <div className="flex gap-3">
-                      {preview && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={preview} alt={item.title} className="h-16 w-24 object-cover rounded" />
-                      )}
-                      <div className="flex-1">
-                        <p className="font-medium">{item.title}</p>
-                        <p className={`text-xs ${adminMutedClass}`}>
-                          {item.published ? "Published" : "Draft"} • {item.featured ? "Featured" : "Standard"}
-                        </p>
-                        <p className={`text-xs mt-1 ${adminFaintClass}`}>
-                          {(item.media || []).length} media • {item.thumbnail ? "has thumbnail" : "no thumbnail"}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline" onClick={() => startEdit(item)}>
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={async () => {
-                          const token = getAdminToken();
-                          if (!token || !item._id) return;
-                          if (!confirm("Delete project?")) return;
-                          await adminApi.deleteProject(token, item._id);
-                          await loadItems();
-                          if (editingId === item._id) resetForm();
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </CardContent>
-        </Card>
+          <ProjectListCard
+            items={items}
+            loading={false}
+            onEdit={startEdit}
+            onDelete={handleDelete}
+          />
+        </div>
       </div>
     </AdminShell>
   );

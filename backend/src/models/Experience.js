@@ -8,6 +8,7 @@ const experienceSchema = new mongoose.Schema(
     endDate: Date,
     period: { type: String, trim: true },
     description: { type: String, required: true },
+    iconUrl: { type: String, trim: true },
     technologies: [{ type: String, trim: true }],
     sortOrder: { type: Number, default: 0, index: true },
     isActive: { type: Boolean, default: true, index: true },

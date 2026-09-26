@@ -1,24 +1,74 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import {
+  Home,
+  ImageIcon,
+  LayoutGrid,
+  Mail,
+  PanelBottom,
+  PanelTop,
+  Settings,
+  User,
+} from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MediaUploader } from "@/components/admin/media-uploader";
+import { BackgroundSectionCard } from "@/components/admin/backgrounds/background-section-card";
 import { adminApi } from "@/lib/api";
 import { getAdminToken } from "@/lib/admin-auth";
+import { adminMutedClass } from "@/lib/admin-styles";
 import type { MediaItem, SectionVideo } from "@/lib/types";
 import { Spinner } from "@/components/loading";
-import { adminCardClass, adminMutedClass } from "@/lib/admin-styles";
 
 const SECTIONS = [
-  { key: "hero", label: "Hero Section", description: "Main landing background" },
-  { key: "about", label: "About Section", description: "About tab background" },
-  { key: "services", label: "Services Section", description: "Services cards background" },
-  { key: "projects", label: "Projects Section", description: "Projects grid background" },
-  { key: "contact", label: "Contact Section", description: "Contact form background" },
-  { key: "header", label: "Header / Navbar", description: "Top navigation background" },
-  { key: "footer", label: "Footer", description: "Footer background" },
+  {
+    key: "hero",
+    label: "Hero Section",
+    description: "Main landing background",
+    icon: Home,
+    iconClass: "bg-violet-100 text-violet-600",
+  },
+  {
+    key: "about",
+    label: "About Section",
+    description: "About section background",
+    icon: User,
+    iconClass: "bg-blue-100 text-blue-600",
+  },
+  {
+    key: "services",
+    label: "Services Section",
+    description: "Services section background",
+    icon: Settings,
+    iconClass: "bg-teal-100 text-teal-600",
+  },
+  {
+    key: "projects",
+    label: "Projects Section",
+    description: "Projects section background",
+    icon: LayoutGrid,
+    iconClass: "bg-purple-100 text-purple-600",
+  },
+  {
+    key: "contact",
+    label: "Contact Section",
+    description: "Contact form background",
+    icon: Mail,
+    iconClass: "bg-pink-100 text-pink-600",
+  },
+  {
+    key: "header",
+    label: "Header / Navbar",
+    description: "Top navigation background",
+    icon: PanelTop,
+    iconClass: "bg-cyan-100 text-cyan-600",
+  },
+  {
+    key: "footer",
+    label: "Footer",
+    description: "Footer background",
+    icon: PanelBottom,
+    iconClass: "bg-indigo-100 text-indigo-600",
+  },
 ] as const;
 
 type SectionKey = (typeof SECTIONS)[number]["key"];
@@ -109,14 +159,6 @@ export default function AdminBackgroundsPage() {
     }
   }
 
-  async function handleSaveAll() {
-    try {
-      await persistBackgrounds(sectionVideos, "All backgrounds saved successfully.");
-    } catch {
-      // error message already set
-    }
-  }
-
   if (loading) {
     return (
       <AdminShell>
@@ -129,45 +171,53 @@ export default function AdminBackgroundsPage() {
 
   return (
     <AdminShell>
-      <div className="space-y-6 max-w-4xl">
-        <div>
-          <h2 className="text-3xl font-bold">Background Media</h2>
-          <p className={`mt-1 ${adminMutedClass}`}>
-            Upload images or videos for each section. Each upload is saved automatically to the database.
+      <div className="space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <span className="h-12 w-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
+              <ImageIcon className="h-6 w-6" />
+            </span>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Background Media</h1>
+              <p className={`mt-1 text-sm sm:text-base max-w-2xl ${adminMutedClass}`}>
+                Upload images or videos for each section. Each upload is saved automatically to the
+                database.
+              </p>
+            </div>
+          </div>
+
+          <p className="hidden xl:block text-sm italic text-slate-400 admin-dark:text-white/40 max-w-[200px] text-right leading-relaxed">
+            Make your portfolio more personal ✨
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           {SECTIONS.map((section) => (
-            <Card key={section.key} className={adminCardClass}>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg">{section.label}</CardTitle>
-                <CardDescription>{section.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <MediaUploader
-                  label="Background Image or Video"
-                  accept="image/*,video/*"
-                  resourceType="auto"
-                  folder={`portfolio/backgrounds/${section.key}`}
-                  value={getSectionMedia(section.key)}
-                  onChange={(media) => handleSectionMediaChange(section.key, media)}
-                  disabled={saving}
-                />
-              </CardContent>
-            </Card>
+            <BackgroundSectionCard
+              key={section.key}
+              title={section.label}
+              description={section.description}
+              icon={section.icon}
+              iconClass={section.iconClass}
+              folder={`portfolio/backgrounds/${section.key}`}
+              value={getSectionMedia(section.key)}
+              onChange={(media) => handleSectionMediaChange(section.key, media)}
+              disabled={saving}
+            />
           ))}
         </div>
 
         {message && (
-          <p className={`text-sm ${message.includes("success") || message.includes("saved") || message.includes("removed") ? "text-green-400" : "text-red-400"}`}>
+          <p
+            className={`text-sm ${
+              message.includes("success") || message.includes("saved") || message.includes("removed")
+                ? "text-emerald-600 admin-dark:text-emerald-400"
+                : "text-red-500 admin-dark:text-red-400"
+            }`}
+          >
             {message}
           </p>
         )}
-
-        <Button onClick={handleSaveAll} disabled={saving}>
-          {saving ? "Saving..." : "Re-save All Backgrounds"}
-        </Button>
       </div>
     </AdminShell>
   );

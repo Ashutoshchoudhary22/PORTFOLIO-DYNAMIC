@@ -18,7 +18,7 @@ type AdminThemeContextValue = {
 const AdminThemeContext = createContext<AdminThemeContextValue | null>(null);
 
 export function AdminThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<AdminTheme>("dark");
+  const [theme, setThemeState] = useState<AdminTheme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
