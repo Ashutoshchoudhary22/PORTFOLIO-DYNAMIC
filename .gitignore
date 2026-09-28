@@ -31,6 +31,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# local uploads (PDFs)
+backend/uploads/
+
 # env files
 .env*
 !.env.example
