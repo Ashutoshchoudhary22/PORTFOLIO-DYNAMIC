@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { usePortfolioContext } from "@/components/portfolio-provider";
-import { getMediaUrl, getSectionMedia } from "@/lib/api";
+import { getMediaUrl, getResumeDownloadUrl, getSectionMedia } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import type { SectionVideo } from "@/lib/types";
 
@@ -99,7 +99,7 @@ export function Header() {
   const [activeSection, setActiveSection] = useState("hero");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const logoUrl = getMediaUrl(profile?.logo, "/main-logo2.png");
-  const resumeUrl = getMediaUrl(profile?.resume, "/Ashutosh.Choudhary.Resume.pdf");
+  const resumeUrl = getResumeDownloadUrl(profile?.resume);
   const displayName = profile?.name?.split(" ")[0] || "Portfolio";
 
   useEffect(() => {
@@ -224,8 +224,6 @@ export function Header() {
         <div className="flex items-center gap-2 ml-auto shrink-0">
           <a
             href={resumeUrl}
-            download="Ashutosh_Choudhary_Resume.pdf"
-            target="_blank"
             rel="noopener noreferrer"
             title="Download Resume"
             aria-label="Download Resume"
@@ -307,8 +305,6 @@ export function Header() {
 
                   <a
                     href={resumeUrl}
-                    download="Ashutosh_Choudhary_Resume.pdf"
-                    target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleLinkClick}
                     className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30"

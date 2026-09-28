@@ -1,4 +1,4 @@
-import { apiRequest } from "./axios";
+import { API_BASE_URL, apiRequest } from "./axios";
 import type {
   CertificationItem,
   DashboardStats,
@@ -157,6 +157,19 @@ export const adminApi = {
 
 export function getMediaUrl(media?: { secureUrl?: string } | null, fallback = "") {
   return media?.secureUrl || fallback;
+}
+
+export function getResumeDownloadUrl(
+  resume?: { secureUrl?: string; provider?: string } | null
+) {
+  const url = resume?.secureUrl || "";
+  const isUploadedFile = resume?.provider === "local" || url.startsWith("/uploads/");
+
+  if (isUploadedFile) {
+    return `${API_BASE_URL}/resume/download`;
+  }
+
+  return url || "/Ashutosh.Choudhary.Resume.pdf";
 }
 
 export function getSectionMedia(

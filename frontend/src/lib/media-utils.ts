@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "./axios";
 import type { MediaItem } from "./types";
 
 export function sanitizeMediaItem(item?: MediaItem | null): MediaItem | null {
@@ -41,22 +42,33 @@ function getDownloadFilename(media: MediaItem): string {
   return base;
 }
 
+function resolveDownloadUrl(url: string) {
+  if (url.startsWith("/uploads/")) {
+    return `${API_BASE_URL.replace(/\/api\/?$/, "")}${url}`;
+  }
+
+  return url;
+}
+
 export function getMediaDownloadUrl(media: MediaItem): string {
   if (isCloudinaryUrl(media.secureUrl)) {
     return media.secureUrl.replace("/upload/", "/upload/fl_attachment/");
   }
 
-  return media.secureUrl;
+  if (media.provider === "local" || media.secureUrl.startsWith("/uploads/")) {
+    return `${API_BASE_URL}/resume/download`;
+  }
+
+  return resolveDownloadUrl(media.secureUrl);
 }
 
-function triggerDownload(url: string, filename: string, openInNewTab = false) {
+function triggerDownload(url: string, filename: string) {
   const link = document.createElement("a");
   link.href = url;
-  link.download = filename;
+  link.rel = "noopener noreferrer";
 
-  if (openInNewTab) {
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
+  if (url.startsWith("/")) {
+    link.download = filename;
   }
 
   document.body.appendChild(link);
@@ -66,9 +78,10 @@ function triggerDownload(url: string, filename: string, openInNewTab = false) {
 
 export async function downloadMedia(media: MediaItem) {
   const filename = getDownloadFilename(media);
+  const sourceUrl = getMediaDownloadUrl(media);
 
   try {
-    const response = await fetch(media.secureUrl);
+    const response = await fetch(sourceUrl);
     if (!response.ok) {
       throw new Error("Download failed");
     }
@@ -79,6 +92,6 @@ export async function downloadMedia(media: MediaItem) {
     URL.revokeObjectURL(objectUrl);
     return;
   } catch {
-    triggerDownload(getMediaDownloadUrl(media), filename, true);
+    triggerDownload(sourceUrl, filename);
   }
 }

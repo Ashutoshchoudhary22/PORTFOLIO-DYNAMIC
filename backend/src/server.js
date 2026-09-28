@@ -10,7 +10,8 @@ import { configureCloudinary } from './config/cloudinary.js';
 import publicRoutes from './routes/publicRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
-import { uploadsRoot } from './services/localUploadService.js';
+import { buildAttachmentHeader, uploadsRoot } from './services/localUploadService.js';
+import path from 'path';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -65,7 +66,18 @@ const apiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use('/uploads', express.static(uploadsRoot, { index: false, dotfiles: 'deny' }));
+app.use(
+  '/uploads',
+  express.static(uploadsRoot, {
+    index: false,
+    dotfiles: 'deny',
+    setHeaders(res, filePath) {
+      if (!filePath.toLowerCase().endsWith('.pdf')) return;
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', buildAttachmentHeader(path.basename(filePath)));
+    },
+  })
+);
 
 app.use('/api', apiLimiter);
 app.use('/api', publicRoutes);

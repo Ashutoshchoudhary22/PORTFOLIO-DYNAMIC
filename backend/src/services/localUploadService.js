@@ -111,3 +111,28 @@ export function removeUploadedFile(filePath) {
     fs.unlinkSync(filePath);
   }
 }
+
+export function buildAttachmentHeader(filename = 'resume.pdf') {
+  const name = String(filename).replace(/[\r\n"]/g, '') || 'resume.pdf';
+  const ascii = name.replace(/[^\x20-\x7E]/g, '_') || 'resume.pdf';
+  return `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`;
+}
+
+export function resolvePdfFilename(filename) {
+  const safeName = path.basename(String(filename || ''));
+  if (!/^[a-zA-Z0-9._-]+\.pdf$/i.test(safeName)) return null;
+
+  const filePath = path.resolve(pdfUploadDir, safeName);
+  const relative = path.relative(pdfUploadDir, filePath);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) return null;
+  if (!fs.existsSync(filePath)) return null;
+
+  return filePath;
+}
+
+export function sendLocalPdf(res, filePath, downloadName) {
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', buildAttachmentHeader(downloadName));
+  res.setHeader('Cache-Control', 'private, no-cache');
+  res.sendFile(filePath);
+}

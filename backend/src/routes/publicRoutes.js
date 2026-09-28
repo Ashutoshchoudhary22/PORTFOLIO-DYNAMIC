@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { getPublicProfile, getPublicSettings, getSocialLinks } from '../controllers/settingsController.js';
+import {
+  downloadPublicResume,
+  getPublicProfile,
+  getPublicSettings,
+  getSocialLinks,
+} from '../controllers/settingsController.js';
 import { getPublicSkills } from '../controllers/skillController.js';
 import { getPublicExperience } from '../controllers/experienceController.js';
 import { getPublicEducation } from '../controllers/educationController.js';
@@ -25,6 +30,7 @@ const contactLimiter = rateLimit({
 });
 
 router.get('/profile', getPublicProfile);
+router.get('/resume/download', downloadPublicResume);
 router.get('/settings', getPublicSettings);
 router.get('/social-links', getSocialLinks);
 router.get('/skills', getPublicSkills);

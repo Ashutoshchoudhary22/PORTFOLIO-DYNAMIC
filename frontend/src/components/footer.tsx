@@ -4,11 +4,11 @@ import Link from "next/link";
 import { Github, Linkedin, FileText } from "lucide-react";
 import { SectionBackground } from "@/components/section-background";
 import { usePortfolioContext } from "@/components/portfolio-provider";
-import { getMediaUrl } from "@/lib/api";
+import { getResumeDownloadUrl } from "@/lib/api";
 
 export function Footer() {
   const { profile } = usePortfolioContext();
-  const resumeUrl = getMediaUrl(profile?.resume, "/Ashutosh.Choudhary.Resume.pdf");
+  const resumeUrl = getResumeDownloadUrl(profile?.resume);
   const socialLinks = profile?.socialLinks || [];
 
   return (
@@ -62,11 +62,9 @@ export function Footer() {
           })}
           <Link
             href={resumeUrl}
-            target="_blank"
             rel="noreferrer"
             aria-label="Resume"
             className="group"
-            download="Ashutosh_Choudhary_Resume.pdf"
           >
             <FileText className="h-5 w-5 md:h-4 md:w-4 text-white group-hover:text-blue-500 group-hover:scale-110 transition-all duration-300" />
           </Link>

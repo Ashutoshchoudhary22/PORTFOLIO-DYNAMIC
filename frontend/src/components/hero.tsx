@@ -8,7 +8,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { SectionBackground } from "@/components/section-background";
 import { usePortfolioContext } from "@/components/portfolio-provider";
-import { getMediaUrl } from "@/lib/api";
+import { getResumeDownloadUrl } from "@/lib/api";
 import { SectionSkeleton } from "@/components/section-skeleton";
 
 const buttonVariants = cva(
@@ -71,7 +71,7 @@ export function Hero() {
     );
   }
 
-  const resumeUrl = getMediaUrl(profile?.resume, "/Ashutosh.Choudhary.Resume.pdf");
+  const resumeUrl = getResumeDownloadUrl(profile?.resume);
 
   return (
     <section
@@ -121,8 +121,6 @@ export function Hero() {
           >
             <a
               href={resumeUrl}
-              download="Ashutosh_Choudhary_Resume.pdf"
-              target="_blank"
               rel="noopener noreferrer"
             >
               <Download className="mr-2 h-5 w-5" />
