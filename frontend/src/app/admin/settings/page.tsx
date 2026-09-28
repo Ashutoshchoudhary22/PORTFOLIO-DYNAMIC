@@ -93,7 +93,7 @@ export default function AdminSettingsPage() {
 
         <div className={cn(adminCardClass, "rounded-2xl p-5 sm:p-6 lg:p-8")}>
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 gap-6 lg:gap-8 xl:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_380px]">
             <div className="space-y-5">
               <SettingsInputField
                 label="Name"

@@ -70,7 +70,7 @@ export default function AdminDashboardPage() {
           description="Here's what's happening with your portfolio today."
         />
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 xl:grid-cols-4">
           {cards.map((card) => (
             <DashboardStatCard
               key={card.label}
@@ -82,7 +82,7 @@ export default function AdminDashboardPage() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
           <PortfolioOverview
             skills={stats?.totalSkills ?? 0}
             projects={stats?.totalProjects ?? 0}

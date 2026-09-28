@@ -71,8 +71,8 @@ export function PortfolioOverview({ skills, projects, certifications }: Portfoli
         </button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_180px] gap-6">
-        <div className="h-[280px] w-full min-w-0">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_220px]">
+        <div className="h-[220px] w-full min-w-0 sm:h-[280px] xl:h-[320px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
               <defs>
@@ -135,7 +135,7 @@ export function PortfolioOverview({ skills, projects, certifications }: Portfoli
           </ResponsiveContainer>
         </div>
 
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 xl:grid-cols-1">
           {legendItems.map((item) => {
             const Icon = item.icon;
             const value = totals[item.key];

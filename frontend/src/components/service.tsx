@@ -29,7 +29,7 @@ export function Services() {
   }
 
   return (
-    <section id="services" className="portfolio-section relative py-20 lg:py-32 overflow-hidden">
+    <section id="services" className="portfolio-section relative overflow-hidden py-14 sm:py-20 lg:py-28 xl:py-32">
       <div className="absolute inset-0 z-0">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
@@ -39,19 +39,19 @@ export function Services() {
         />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
-      <div className="container relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="mx-auto max-w-[700px] text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
+      <div className="site-shell relative z-10">
+        <div className="mb-8 text-center sm:mb-12">
+          <h2 className="mx-auto max-w-3xl text-balance text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl lg:text-6xl">
             My Services
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-8">
           {services.map((service) => (
             <Card
               key={service._id || service.title}
-              className="group relative text-center p-6 text-white rounded-lg transition-all duration-300 bg-transparent border border-transparent hover:-translate-y-2 hover:shadow-2xl hover:border-blue-400/70 hover:bg-white/5"
+              className="group relative rounded-lg border border-transparent bg-transparent p-4 text-center text-white transition-all duration-300 hover:-translate-y-2 hover:border-blue-400/70 hover:bg-white/5 hover:shadow-2xl sm:p-6"
             >
-              <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+              <div className="relative mb-4 h-36 w-full overflow-hidden rounded-lg sm:h-40">
                 <Image
                   src={getMediaUrl(service.image, "/services/web-design2.jpeg")}
                   alt={service.title}
@@ -64,7 +64,7 @@ export function Services() {
                   <ServiceIcon service={service} />
                 </div>
               </CardHeader>
-              <CardTitle className="text-2xl mb-2">{service.title}</CardTitle>
+              <CardTitle className="mb-2 text-xl sm:text-2xl">{service.title}</CardTitle>
               <CardContent className="p-0">
                 <p className="text-white/90 mb-4">{service.description}</p>
               </CardContent>

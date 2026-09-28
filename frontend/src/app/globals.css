@@ -14,6 +14,8 @@ html,
 body {
   background-color: #070b14;
   color: #ffffff;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -87,4 +89,37 @@ body {
 .portfolio-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
+  scroll-margin-top: 5.75rem;
+}
+
+.site-shell {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .site-shell {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-shell {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-shell {
+    max-width: 80rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .site-shell {
+    max-width: 90rem;
+    padding-inline: 2.5rem;
+  }
 }

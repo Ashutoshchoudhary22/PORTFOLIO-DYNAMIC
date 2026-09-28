@@ -87,7 +87,7 @@ export function DashboardStatCard({ label, value, icon: Icon, color }: Dashboard
     <div
       className={cn(
         adminCardClass,
-        "relative overflow-hidden rounded-2xl p-4 sm:p-5 min-h-[130px]"
+        "relative min-h-[112px] overflow-hidden rounded-2xl p-4 sm:min-h-[130px] sm:p-5"
       )}
     >
       <div className="flex items-start justify-between gap-2 relative z-10">
@@ -101,7 +101,7 @@ export function DashboardStatCard({ label, value, icon: Icon, color }: Dashboard
         </div>
       </div>
       <div className="mt-4 relative z-10">
-        <p className={cn("text-xs sm:text-sm", adminMutedClass)}>{label}</p>
+        <p className={cn("break-words text-xs leading-snug sm:text-sm", adminMutedClass)}>{label}</p>
         <p className="text-2xl sm:text-3xl font-bold mt-1">{value}</p>
         <p className={cn("text-xs mt-2", styles.trend)}>↑ 0 from last month</p>
       </div>

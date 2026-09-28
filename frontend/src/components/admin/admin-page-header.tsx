@@ -24,8 +24,8 @@ export function AdminPageHeader({
   className,
 }: AdminPageHeaderProps) {
   return (
-    <div className={cn("grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4", className)}>
-      <div className="flex items-start gap-4 min-w-0">
+    <div className={cn("grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]", className)}>
+      <div className="flex min-w-0 items-start gap-3 sm:gap-4">
         {Icon ? (
           <span
             className={cn(
@@ -37,8 +37,8 @@ export function AdminPageHeader({
           </span>
         ) : null}
         <div className="min-w-0">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h1>
-          <p className={cn("mt-1 text-sm sm:text-base", adminMutedClass)}>{description}</p>
+          <h1 className="break-words text-xl font-bold tracking-tight sm:text-2xl lg:text-3xl">{title}</h1>
+          <p className={cn("mt-1 break-words text-sm sm:text-base", adminMutedClass)}>{description}</p>
         </div>
       </div>
 

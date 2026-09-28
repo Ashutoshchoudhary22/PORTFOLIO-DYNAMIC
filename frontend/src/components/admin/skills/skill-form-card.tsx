@@ -98,7 +98,7 @@ export function SkillFormCard({
   }
 
   return (
-    <div className={cn(adminCardClass, "rounded-2xl p-5 sm:p-6")}>
+    <div className={cn(adminCardClass, "@container min-w-0 rounded-2xl p-4 sm:p-6")}>
       <div className="flex items-start gap-3 mb-6">
         <span className="h-11 w-11 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center shrink-0 admin-dark:bg-violet-900/30 admin-dark:text-violet-400">
           <Star className="h-5 w-5" />
@@ -165,12 +165,14 @@ export function SkillFormCard({
             className="w-full flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-left hover:bg-slate-100 transition-colors admin-dark:border-white/10 admin-dark:bg-slate-800/50 admin-dark:hover:bg-slate-800"
           >
             <CloudUpload className="h-5 w-5 text-blue-500 shrink-0" />
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-blue-600 admin-dark:text-blue-400">
                 {uploading ? "Uploading..." : "Choose file"}
               </p>
               {!uploading && (
-                <p className={cn("text-xs", adminMutedClass)}>Recommended size: 64x64px (PNG, SVG)</p>
+                <p className={cn("text-xs break-words", adminMutedClass)}>
+                  Recommended size: 64x64px (PNG, SVG)
+                </p>
               )}
             </div>
             {iconMedia?.secureUrl && (
@@ -245,25 +247,30 @@ export function SkillFormCard({
           </p>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-          <div className="flex items-start gap-2 rounded-xl bg-blue-50 px-3 py-2.5 admin-dark:bg-blue-900/20">
-            <Lightbulb className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+        <div className="flex flex-col gap-3 pt-2 @3xl:flex-row @3xl:items-center @3xl:justify-between">
+          <div className="flex min-w-0 items-start gap-2 rounded-xl bg-blue-50 px-3 py-2.5 admin-dark:bg-blue-900/20">
+            <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
             <p className={cn("text-xs sm:text-sm", adminMutedClass)}>
               {editingId
                 ? "Update Skill. Changes will appear in the list on the right."
                 : "Create Skill. Your skill will be added to the list on the right."}
             </p>
           </div>
-          <div className="flex gap-2 shrink-0">
+          <div
+            className={cn(
+              "grid grid-cols-1 gap-2 @3xl:flex @3xl:w-auto @3xl:shrink-0",
+              editingId && "min-[380px]:grid-cols-2"
+            )}
+          >
             {editingId && (
-              <Button type="button" variant="outline" className="rounded-xl" onClick={onCancel}>
+              <Button type="button" variant="outline" className="w-full rounded-xl @3xl:w-auto" onClick={onCancel}>
                 Cancel
               </Button>
             )}
             <Button
               type="submit"
               disabled={saving}
-              className="rounded-xl bg-blue-500 hover:bg-blue-600 text-white px-5"
+              className="w-full rounded-xl bg-blue-500 px-5 text-white hover:bg-blue-600 @3xl:w-auto"
             >
               <Plus className="h-4 w-4 mr-1" />
               {saving ? "Saving..." : editingId ? "Update Skill" : "Add Skill"}

@@ -74,7 +74,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="portfolio-section relative overflow-hidden py-20 lg:py-32">
+    <section id="contact" className="portfolio-section relative overflow-hidden py-14 sm:py-20 lg:py-28 xl:py-32">
       <div className="absolute inset-0 z-0">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
@@ -86,25 +86,25 @@ export function Contact() {
         <div className="absolute inset-0 bg-black/25" aria-hidden="true" />
       </div>
 
-      <div className="container relative z-10 mx-auto flex flex-col items-center px-4">
-        <div className="mb-10 text-center md:mb-12">
-          <h2 className="mx-auto max-w-[700px] text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] md:text-6xl">
+      <div className="site-shell relative z-10 flex flex-col items-center">
+        <div className="mb-8 w-full text-center md:mb-12">
+          <h2 className="mx-auto max-w-3xl text-balance text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl lg:text-6xl">
             Let&apos;s Build Something Great
           </h2>
-          <p className="mx-auto mt-4 max-w-[700px] text-base font-medium leading-relaxed text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] md:text-lg">
+          <p className="mx-auto mt-4 max-w-3xl text-balance text-sm font-medium leading-relaxed text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] sm:text-base md:text-lg">
             Have a project, product, or team opportunity in mind? Send a message
             or email me directly.
           </p>
           <a
             href={`mailto:${contactEmail}`}
-            className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md transition-all hover:border-violet-400/40 hover:bg-white/15"
+            className="mt-4 inline-flex max-w-full items-center gap-2 break-all rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md transition-all hover:border-violet-400/40 hover:bg-white/15"
           >
-            <Mail className="h-4 w-4 text-violet-300" />
+            <Mail className="h-4 w-4 shrink-0 text-violet-300" />
             {contactEmail}
           </a>
         </div>
 
-        <Card className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 bg-black/55 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+        <Card className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 bg-black/55 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl lg:max-w-2xl">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
           <CardHeader className="space-y-2 pb-2">
@@ -123,7 +123,7 @@ export function Contact() {
             </div>
           </CardHeader>
 
-          <CardContent className="p-6 pt-2">
+          <CardContent className="p-4 pt-2 sm:p-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                 <FormField

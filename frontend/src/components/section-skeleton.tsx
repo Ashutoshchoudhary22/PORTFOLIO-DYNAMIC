@@ -2,10 +2,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function SectionSkeleton({ rows = 3 }: { rows?: number }) {
   return (
-    <div className="container mx-auto px-4 py-12 space-y-4">
-      <Skeleton className="h-10 w-64 mx-auto bg-white/10" />
-      <Skeleton className="h-6 w-96 max-w-full mx-auto bg-white/10" />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+    <div className="site-shell space-y-4 py-12">
+      <Skeleton className="mx-auto h-10 w-48 max-w-full bg-white/10 sm:w-64" />
+      <Skeleton className="mx-auto h-6 w-full max-w-md bg-white/10" />
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: rows }).map((_, index) => (
           <Skeleton key={index} className="h-48 bg-white/10" />
         ))}

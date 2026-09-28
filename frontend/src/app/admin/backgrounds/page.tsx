@@ -190,7 +190,7 @@ export default function AdminBackgroundsPage() {
           quoteEmoji="✨"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:gap-6">
           {SECTIONS.map((section) => (
             <BackgroundSectionCard
               key={section.key}

@@ -32,9 +32,9 @@ export function AdminTopbar({ adminName = "Admin" }: AdminTopbarProps) {
   });
 
   return (
-    <header className={`hidden md:block ${adminTopbarClass}`}>
-      <div className="flex w-full items-center gap-4 px-6 py-4">
-        <div className="w-full max-w-xl">
+    <header className={`hidden lg:block ${adminTopbarClass}`}>
+      <div className="flex w-full min-w-0 items-center gap-3 px-4 py-4 xl:gap-4 xl:px-6">
+        <div className="min-w-0 w-full max-w-xl">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -54,7 +54,7 @@ export function AdminTopbar({ adminName = "Admin" }: AdminTopbarProps) {
             <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white admin-dark:ring-slate-900" />
           </button>
 
-          <div className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 admin-dark:bg-slate-800">
+          <div className="hidden items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 admin-dark:bg-slate-800 xl:flex">
             <Calendar className="h-4 w-4 text-blue-500" />
             <div className="flex flex-col items-start">
               <span className="text-sm font-medium">{today}</span>
@@ -69,7 +69,7 @@ export function AdminTopbar({ adminName = "Admin" }: AdminTopbarProps) {
             <span className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-white text-sm font-semibold flex items-center justify-center">
               {adminName.charAt(0).toUpperCase()}
             </span>
-            <span className="text-sm font-medium pr-1 hidden lg:inline">{adminName}</span>
+            <span className="hidden pr-1 text-sm font-medium xl:inline">{adminName}</span>
             <ChevronDown className="h-4 w-4 text-slate-400" />
           </button>
         </div>

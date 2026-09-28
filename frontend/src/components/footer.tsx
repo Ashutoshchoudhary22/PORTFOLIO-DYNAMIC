@@ -21,9 +21,9 @@ export function Footer() {
         preload="none"
       />
 
-      <div className="relative container flex flex-col items-center justify-between gap-4 py-6 md:h-16 md:flex-row md:gap-6 md:py-0 z-10">
-        <div className="flex flex-col items-center gap-2 px-4 md:flex-row md:gap-4 md:px-0">
-          <p className="text-sm md:text-xs leading-tight text-white text-center md:text-left">
+      <div className="site-shell relative z-10 flex flex-col items-center justify-between gap-4 py-6 sm:flex-row sm:py-5">
+        <div className="flex flex-col items-center gap-2 sm:items-start">
+          <p className="max-w-xl text-center text-sm leading-tight text-white sm:text-left">
             {profile?.name ? `Made by ${profile.name}` : "Made by Ashutosh Choudhary"} ©{" "}
             {new Date().getFullYear()}. All rights reserved.
           </p>

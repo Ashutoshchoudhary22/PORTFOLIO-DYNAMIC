@@ -211,7 +211,7 @@ export function ExperienceFormCard({
                 : "Create Experience. Your entry will be added to the list on the right."}
             </p>
           </div>
-          <div className="flex gap-2 shrink-0">
+          <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:shrink-0">
             {editingId && (
               <Button type="button" variant="outline" className="rounded-xl" onClick={onCancel}>
                 Cancel

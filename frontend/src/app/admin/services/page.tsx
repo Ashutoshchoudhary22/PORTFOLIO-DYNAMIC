@@ -142,7 +142,7 @@ export default function AdminServicesPage() {
           quoteEmoji="🛠️"
         />
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 gap-5 lg:gap-6 xl:grid-cols-2 2xl:gap-8 [&>*]:min-w-0">
           <ServiceFormCard
             form={form}
             editingId={editingId}

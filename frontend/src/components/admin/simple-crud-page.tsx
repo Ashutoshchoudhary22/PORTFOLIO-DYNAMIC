@@ -104,7 +104,7 @@ export function SimpleCrudPage<T extends { _id?: string }>({
 
   return (
     <AdminShell>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 2xl:gap-8 [&>*]:min-w-0">
         <Card className={adminCardClass}>
           <CardHeader>
             <CardTitle>{editingId ? `Edit ${title}` : `Add ${title}`}</CardTitle>

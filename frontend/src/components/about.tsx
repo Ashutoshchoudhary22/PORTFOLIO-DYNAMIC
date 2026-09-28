@@ -157,7 +157,7 @@ export function About() {
   }
 
   return (
-    <section id="about" className="portfolio-section relative py-12 md:py-20 lg:py-32 overflow-hidden">
+    <section id="about" className="portfolio-section relative overflow-hidden py-14 sm:py-20 lg:py-28 xl:py-32">
       <div className="absolute inset-0 z-0 motion-reduce:hidden">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
@@ -168,12 +168,12 @@ export function About() {
         />
         <div className="absolute inset-0 bg-black/60 md:bg-black/50 backdrop-blur-sm"></div>
       </div>
-      <div className="container relative z-10 mx-auto px-4">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="mx-auto max-w-[700px] text-4xl md:text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
+      <div className="site-shell relative z-10">
+        <div className="mb-8 text-center md:mb-12">
+          <h2 className="mx-auto max-w-3xl text-balance text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl lg:text-6xl">
             About Me
           </h2>
-          <p className="mx-auto max-w-[700px] md:text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
+          <p className="mx-auto mt-3 max-w-3xl text-balance text-sm font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-base md:text-lg lg:text-xl">
             {profile?.aboutText}
           </p>
         </div>
@@ -233,7 +233,7 @@ export function About() {
                             <div className="relative z-10">{getSkillIcon(skill)}</div>
                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-50 scale-95 group-hover:scale-100">
                               <div className="bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-black/95 text-white text-xs rounded-xl px-4 py-3 border border-green-400/40 shadow-2xl shadow-green-400/20 max-w-[220px] text-center backdrop-blur-md">
-                                <p className="font-bold whitespace-nowrap text-green-400 drop-shadow-lg">
+                                <p className="break-words font-bold text-green-400 drop-shadow-lg">
                                   {skill.name}
                                 </p>
                                 <p className="text-white/80 mt-1.5 text-[10px] leading-tight">

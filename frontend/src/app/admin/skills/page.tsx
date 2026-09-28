@@ -148,7 +148,7 @@ export default function AdminSkillsPage() {
           quoteEmoji="💻"
         />
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 items-start gap-4 sm:gap-5 xl:grid-cols-2 xl:gap-6 2xl:gap-8 [&>*]:min-w-0">
           <SkillFormCard
             form={form}
             editingId={editingId}

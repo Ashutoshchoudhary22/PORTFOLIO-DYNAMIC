@@ -290,7 +290,7 @@ export function ProjectFormCard({
                 Clear All
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 min-[480px]:grid-cols-2">
               {(form.media || []).map((media, index) => (
                 <div key={`${media.publicId}-${index}`} className="space-y-2">
                   <MediaPreview media={media} />

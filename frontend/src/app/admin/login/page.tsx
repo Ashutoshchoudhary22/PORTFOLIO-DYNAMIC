@@ -16,7 +16,7 @@ const REMEMBER_KEY = "admin-login-email";
 type LoginView = "setup" | "login" | "otp" | "forgot-email" | "forgot-reset";
 
 const inputClassName =
-  "w-full rounded-md border border-white/20 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/40 focus:border-white/40 focus:ring-2 focus:ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]";
+  "w-full rounded-md border border-white/20 bg-white/5 px-4 py-3 text-base text-white outline-none transition-colors placeholder:text-white/40 focus:border-white/40 focus:ring-2 focus:ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:text-sm";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -188,16 +188,17 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6 lg:p-10">
+    <div className="fixed inset-0 z-50 overflow-y-auto p-4 sm:p-6 lg:p-10">
       <div className="fixed inset-0 -z-10 bg-[#1a1520]">
         <LoginBackground sectionVideos={profile?.sectionVideos} />
         <div className="absolute inset-0 bg-black/25" />
       </div>
 
+      <div className="mx-auto flex min-h-full w-full max-w-[440px] items-center lg:max-w-[460px]">
       <div
         className={cn(
-          "w-full max-w-[420px] rounded-[28px] border border-white/15 bg-transparent overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.2)]",
-          "flex items-center justify-center px-6 py-10 sm:px-10 sm:py-12"
+          "w-full rounded-[28px] border border-white/15 bg-transparent overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.2)]",
+          "flex items-center justify-center px-5 py-8 sm:px-10 sm:py-12"
         )}
       >
         <div className="w-full">
@@ -573,6 +574,7 @@ export default function AdminLoginPage() {
             </form>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

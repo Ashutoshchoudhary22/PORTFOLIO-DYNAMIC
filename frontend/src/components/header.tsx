@@ -162,7 +162,7 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-50 w-full px-3 sm:px-4 pt-3 sm:pt-4 pointer-events-none bg-transparent">
       <div
         className={cn(
-          "pointer-events-auto mx-auto flex max-w-6xl items-center gap-3 rounded-2xl border px-3 sm:px-4 transition-all duration-500",
+          "pointer-events-auto mx-auto flex max-w-6xl items-center gap-2 rounded-2xl border px-3 transition-all duration-500 sm:gap-3 sm:px-4 xl:max-w-7xl 2xl:max-w-[90rem]",
           isScrolled
             ? "h-14 bg-black/60 backdrop-blur-2xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
             : "h-16 bg-black/35 backdrop-blur-xl border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.35)]"
@@ -195,9 +195,9 @@ export function Header() {
 
         <nav
           aria-label="Primary navigation"
-          className="hidden md:flex flex-1 items-center justify-center"
+          className="hidden min-w-0 flex-1 items-center justify-center lg:flex"
         >
-          <div className="flex items-center gap-1 rounded-full bg-white/[0.05] border border-white/[0.08] p-1">
+          <div className="flex items-center gap-0.5 rounded-full bg-white/[0.05] border border-white/[0.08] p-1 xl:gap-1">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -205,7 +205,7 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "relative px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-300",
+                    "relative rounded-full px-2.5 py-1.5 text-sm font-medium transition-all duration-300 xl:px-3.5",
                     isActive
                       ? "text-white bg-gradient-to-r from-blue-500/30 to-violet-500/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
                       : "text-white/65 hover:text-white hover:bg-white/[0.08]"
@@ -239,7 +239,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden rounded-xl h-10 w-10 text-white hover:bg-white/10 hover:text-white border border-white/10"
+                className="h-10 w-10 rounded-xl border border-white/10 text-white hover:bg-white/10 hover:text-white lg:hidden"
               >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
@@ -247,7 +247,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full max-w-none border-none p-0 overflow-hidden bg-[#070b14] text-white [&>button]:z-30 [&>button]:text-white [&>button]:hover:bg-white/10 [&>button]:rounded-full [&>button]:top-5 [&>button]:right-5"
+              className="w-full border-none p-0 overflow-hidden bg-[#070b14] text-white sm:max-w-md [&>button]:z-30 [&>button]:top-5 [&>button]:right-5 [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-white/10"
             >
               <VisuallyHidden>
                 <SheetTitle>Navigation Menu</SheetTitle>

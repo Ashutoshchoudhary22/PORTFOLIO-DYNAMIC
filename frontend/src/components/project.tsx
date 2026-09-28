@@ -105,7 +105,7 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white opacity-0 backdrop-blur-md transition-all duration-300 hover:bg-violet-500/80 group-hover:opacity-100"
+              className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white opacity-100 backdrop-blur-md transition-all duration-300 hover:bg-violet-500/80 lg:opacity-0 lg:group-hover:opacity-100"
               aria-label={`Open ${project.title}`}
             >
               <ArrowUpRight className="h-4 w-4" />
@@ -202,7 +202,7 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="portfolio-section relative py-20 lg:py-32">
+    <section id="projects" className="portfolio-section relative py-14 sm:py-20 lg:py-28 xl:py-32">
       <div className="absolute inset-0 z-0">
         <SectionBackground
           sectionVideos={profile?.sectionVideos}
@@ -212,12 +212,12 @@ export function Projects() {
         />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
-      <div className="container relative z-10 mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="mx-auto max-w-[700px] text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
+      <div className="site-shell relative z-10">
+        <div className="mb-8 text-center sm:mb-12">
+          <h2 className="mx-auto max-w-3xl text-balance text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl lg:text-6xl">
             My Projects
           </h2>
-          <p className="mx-auto mt-4 max-w-[700px] md:text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] animate-pulse">
+          <p className="mx-auto mt-4 max-w-3xl text-balance text-sm font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-base md:text-lg lg:text-xl">
             Here are some of my key projects showcasing expertise in MERN stack development,
             B2B platforms, HRM systems, and enterprise solutions.
           </p>
@@ -225,7 +225,7 @@ export function Projects() {
         {projects.length === 0 ? (
           <p className="text-center text-white/70">No projects published yet.</p>
         ) : (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-8">
             {projects.map((project, index) => (
               <ProjectCard
                 key={project._id || project.slug}

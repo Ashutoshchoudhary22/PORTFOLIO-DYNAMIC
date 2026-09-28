@@ -45,29 +45,29 @@ export function SkillsListCard({ items, loading, onEdit, onDelete }: SkillsListC
   }, [items, search, categoryFilter]);
 
   return (
-    <div className={cn(adminCardClass, "rounded-2xl p-5 sm:p-6")}>
-      <div className="flex items-start gap-3 mb-6">
-        <span className="h-11 w-11 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 admin-dark:bg-indigo-900/30 admin-dark:text-indigo-400">
+    <div className={cn(adminCardClass, "@container min-w-0 rounded-2xl p-4 sm:p-6")}>
+      <div className="mb-6 flex items-start gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600 admin-dark:bg-indigo-900/30 admin-dark:text-indigo-400">
           <Hexagon className="h-5 w-5" />
         </span>
-        <div>
+        <div className="min-w-0">
           <h2 className="text-lg font-semibold">Skills List</h2>
           <p className={cn("text-sm", adminMutedClass)}>Manage your existing skills.</p>
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 mb-5">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+      <div className="mb-5 flex flex-col gap-3 @md:flex-row">
+        <div className="relative min-w-0 flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <Input
             placeholder="Search skills..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 h-11 rounded-xl bg-slate-50 border-slate-200 admin-dark:bg-slate-800 admin-dark:border-white/10"
+            className="h-11 rounded-xl border-slate-200 bg-slate-50 pl-10 admin-dark:border-white/10 admin-dark:bg-slate-800"
           />
         </div>
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full sm:w-[180px] h-11 rounded-xl border-slate-200 admin-dark:border-white/10">
+          <SelectTrigger className="h-11 w-full rounded-xl border-slate-200 admin-dark:border-white/10 @md:w-[180px]">
             <SelectValue placeholder="All Categories" />
           </SelectTrigger>
           <SelectContent>
@@ -94,51 +94,58 @@ export function SkillsListCard({ items, loading, onEdit, onDelete }: SkillsListC
           {filteredItems.map((item) => (
             <div
               key={item._id}
-              className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/50 px-3 py-3 admin-dark:border-white/10 admin-dark:bg-slate-800/40"
+              className="flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/50 px-3 py-3 admin-dark:border-white/10 admin-dark:bg-slate-800/40 @lg:flex-row @lg:items-center"
             >
-              <GripVertical className="h-4 w-4 text-slate-300 shrink-0 cursor-grab admin-dark:text-white/20" />
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                <GripVertical className="hidden h-4 w-4 shrink-0 cursor-grab text-slate-300 admin-dark:text-white/20 @lg:block" />
 
-              {item.iconUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.iconUrl}
-                  alt={item.name}
-                  className={`h-10 w-10 rounded-xl object-contain shrink-0 p-1 ${adminSurfaceClass}`}
-                  style={item.bgColor ? { backgroundColor: item.bgColor } : undefined}
-                />
-              ) : (
-                <div
-                  className={`h-10 w-10 rounded-xl shrink-0 ${adminSurfaceClass}`}
-                  style={item.bgColor ? { backgroundColor: item.bgColor } : undefined}
-                />
-              )}
+                {item.iconUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.iconUrl}
+                    alt={item.name}
+                    className={`h-10 w-10 shrink-0 rounded-xl object-contain p-1 ${adminSurfaceClass}`}
+                    style={item.bgColor ? { backgroundColor: item.bgColor } : undefined}
+                  />
+                ) : (
+                  <div
+                    className={`h-10 w-10 shrink-0 rounded-xl ${adminSurfaceClass}`}
+                    style={item.bgColor ? { backgroundColor: item.bgColor } : undefined}
+                  />
+                )}
 
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm truncate">{item.name}</p>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{item.name}</p>
+                  <div className="mt-1 @lg:hidden">
+                    <SkillCategoryBadge category={item.category} />
+                  </div>
+                </div>
               </div>
 
-              <SkillCategoryBadge category={item.category} />
+              <div className="hidden shrink-0 @lg:block">
+                <SkillCategoryBadge category={item.category} />
+              </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="grid grid-cols-2 gap-2 @lg:flex @lg:shrink-0">
                 <Button
                   type="button"
                   size="sm"
                   variant="outline"
-                  className="rounded-lg border-blue-200 text-blue-600 hover:bg-blue-50 admin-dark:border-blue-900/50 admin-dark:text-blue-400"
+                  className="w-full rounded-lg border-blue-200 text-blue-600 hover:bg-blue-50 admin-dark:border-blue-900/50 admin-dark:text-blue-400 @lg:w-auto"
                   onClick={() => onEdit(item)}
                 >
-                  <Pencil className="h-3.5 w-3.5 mr-1" />
-                  Edit
+                  <Pencil className="h-3.5 w-3.5 sm:mr-1" />
+                  <span className="sr-only @sm:not-sr-only">Edit</span>
                 </Button>
                 <Button
                   type="button"
                   size="sm"
                   variant="outline"
-                  className="rounded-lg border-red-200 text-red-500 hover:bg-red-50 admin-dark:border-red-900/50 admin-dark:text-red-400"
+                  className="w-full rounded-lg border-red-200 text-red-500 hover:bg-red-50 admin-dark:border-red-900/50 admin-dark:text-red-400 @lg:w-auto"
                   onClick={() => item._id && onDelete(item._id)}
                 >
-                  <Trash2 className="h-3.5 w-3.5 mr-1" />
-                  Delete
+                  <Trash2 className="h-3.5 w-3.5 sm:mr-1" />
+                  <span className="sr-only @sm:not-sr-only">Delete</span>
                 </Button>
               </div>
             </div>

@@ -64,7 +64,7 @@ export default function AdminMessagesPage() {
                   <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
                     <div>
                       <p className="font-medium">{message.name}</p>
-                      <p className={`text-sm ${adminMutedClass}`}>{message.email}</p>
+                      <p className={`break-all text-sm ${adminMutedClass}`}>{message.email}</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <Button
@@ -110,7 +110,7 @@ export default function AdminMessagesPage() {
                       </Button>
                     </div>
                   </div>
-                  <p className="text-sm">{message.message}</p>
+                  <p className="break-words text-sm whitespace-pre-wrap">{message.message}</p>
                   <p className={`text-xs ${adminFaintClass}`}>
                     {new Date(message.createdAt).toLocaleString()}
                   </p>

@@ -76,7 +76,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="portfolio-section relative flex w-full flex-col items-center justify-center overflow-hidden py-12 text-center min-h-screen scroll-mt-0"
+      className="portfolio-section relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-clip py-8 text-center scroll-mt-0 sm:py-12"
     >
       <div className="absolute inset-0 z-0 bg-[#070b14]">
         <SectionBackground
@@ -88,21 +88,21 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
       </div>
-      <div className="relative z-20 space-y-6 p-8 pt-24 rounded-lg">
-        <h1 className="mx-auto max-w-[700px] text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+      <div className="relative z-20 w-full max-w-4xl space-y-5 px-4 pb-6 pt-28 sm:space-y-6 sm:px-6 sm:pt-32 lg:pt-36">
+        <h1 className="mx-auto max-w-3xl text-balance text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
           {profile?.seo?.title || profile?.heroHeading || "Hi, I'm Ashutosh Choudhary"}
         </h1>
-        <p className="mx-auto max-w-[700px] md:text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+        <p className="mx-auto max-w-3xl text-balance text-sm font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-base md:text-lg lg:text-xl">
           {profile?.seo?.description ||
             profile?.heroSubtitle ||
             "Full Stack Developer with 1.5+ years of experience building production-grade MERN SaaS platforms, HRM systems, CRM solutions, and enterprise dashboards."}
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <div className="mx-auto flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center">
           <Button
             asChild
             size="lg"
-            className="border-0 bg-gradient-to-r from-blue-500 via-violet-500 to-fuchsia-500 text-white font-semibold shadow-lg shadow-violet-500/35 hover:from-blue-600 hover:via-violet-600 hover:to-fuchsia-600 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all"
+            className="w-full border-0 bg-gradient-to-r from-blue-500 via-violet-500 to-fuchsia-500 text-white font-semibold shadow-lg shadow-violet-500/35 hover:from-blue-600 hover:via-violet-600 hover:to-fuchsia-600 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all sm:w-auto"
           >
             <Link href="#projects">View My Work</Link>
           </Button>
@@ -110,14 +110,14 @@ export function Hero() {
             asChild
             variant="outline"
             size="lg"
-            className="border-2 border-white/40 bg-white/15 backdrop-blur-md text-white font-semibold shadow-lg shadow-black/20 hover:bg-white/25 hover:border-white/60 transition-all"
+            className="w-full border-2 border-white/40 bg-white/15 backdrop-blur-md text-white font-semibold shadow-lg shadow-black/20 hover:bg-white/25 hover:border-white/60 transition-all sm:w-auto"
           >
             <Link href="#contact">Get in Touch</Link>
           </Button>
           <Button
             asChild
             size="lg"
-            className="border-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg shadow-emerald-500/35 hover:from-emerald-600 hover:to-teal-600 hover:shadow-emerald-500/50 hover:scale-[1.02] transition-all"
+            className="w-full border-0 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg shadow-emerald-500/35 hover:from-emerald-600 hover:to-teal-600 hover:shadow-emerald-500/50 hover:scale-[1.02] transition-all sm:w-auto"
           >
             <a
               href={resumeUrl}
@@ -130,11 +130,11 @@ export function Hero() {
             </a>
           </Button>
         </div>
-      </div>
-      <div className="absolute bottom-10 z-20">
-        <Link href="#projects" aria-label="Scroll to projects">
-          <ArrowDown className="h-6 w-6 text-muted-foreground animate-bounce" />
-        </Link>
+        <div className="flex justify-center pt-2 sm:pt-4">
+          <Link href="#projects" aria-label="Scroll to projects">
+            <ArrowDown className="h-6 w-6 text-white/70 animate-bounce" />
+          </Link>
+        </div>
       </div>
     </section>
   );

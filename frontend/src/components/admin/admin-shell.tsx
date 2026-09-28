@@ -142,7 +142,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-screen flex overflow-hidden">
       <aside
-        className={`w-64 h-screen border-r p-4 hidden md:flex flex-col shrink-0 overflow-hidden shadow-sm ${adminSidebarClass}`}
+        className={`hidden h-screen w-60 shrink-0 flex-col overflow-hidden border-r p-4 shadow-sm lg:flex xl:w-64 2xl:w-72 ${adminSidebarClass}`}
       >
         <div className="mb-6 px-1 shrink-0">
           <AdminBrand />
@@ -166,7 +166,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <AdminTopbar adminName={adminName} />
         </div>
 
-        <div className={`md:hidden shrink-0 z-40 ${adminHeaderClass}`}>
+        <div className={`z-40 shrink-0 lg:hidden ${adminHeaderClass}`}>
           <div className="flex items-center justify-between gap-3 p-3 sm:p-4">
             <div className="flex items-center gap-3 min-w-0">
               <Button
@@ -218,7 +218,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </SheetContent>
         </Sheet>
 
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-5 lg:p-6 xl:p-8 2xl:p-10">
+          <div className="mx-auto w-full min-w-0 max-w-[1600px]">{children}</div>
+        </div>
       </main>
     </div>
   );
