@@ -24,8 +24,8 @@ export function Footer() {
       <div className="site-shell relative z-10 flex flex-col items-center justify-between gap-4 py-6 sm:flex-row sm:py-5">
         <div className="flex flex-col items-center gap-2 sm:items-start">
           <p className="max-w-xl text-center text-sm leading-tight text-white sm:text-left">
-            {profile?.name ? `Made by ${profile.name}` : "Made by Ashutosh Choudhary"} ©{" "}
-            {new Date().getFullYear()}. All rights reserved.
+            {profile?.name || "Ashutosh Choudhary"} portfolio © {new Date().getFullYear()}. All
+            rights reserved.
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -36,7 +36,7 @@ export function Footer() {
                   key={link.url}
                   href={link.url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="me noopener noreferrer"
                   aria-label={link.platform}
                   className="group"
                 >
@@ -50,7 +50,7 @@ export function Footer() {
                   key={link.url}
                   href={link.url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="me noopener noreferrer"
                   aria-label={link.platform}
                   className="group"
                 >

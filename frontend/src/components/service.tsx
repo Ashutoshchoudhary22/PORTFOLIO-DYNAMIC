@@ -7,6 +7,7 @@ import Image from "next/image";
 import { usePortfolioContext } from "@/components/portfolio-provider";
 import { getMediaUrl } from "@/lib/api";
 import { SectionSkeleton } from "@/components/section-skeleton";
+import { TiltCard } from "@/components/tilt-card";
 import type { ServiceItem } from "@/lib/types";
 
 const iconMap = {
@@ -45,11 +46,11 @@ export function Services() {
             My Services
           </h2>
         </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-8">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-8 [perspective:1200px]">
           {services.map((service) => (
+            <TiltCard key={service._id || service.title}>
             <Card
-              key={service._id || service.title}
-              className="group relative rounded-lg border border-transparent bg-transparent p-4 text-center text-white transition-all duration-300 hover:-translate-y-2 hover:border-blue-400/70 hover:bg-white/5 hover:shadow-2xl sm:p-6"
+              className="group relative h-full rounded-2xl border border-white/10 bg-white/5 p-4 text-center text-white shadow-[0_18px_50px_rgba(0,0,0,0.35)] transition-colors duration-300 hover:border-blue-400/70 hover:bg-white/10 sm:p-6"
             >
               <div className="relative mb-4 h-36 w-full overflow-hidden rounded-lg sm:h-40">
                 <Image
@@ -69,6 +70,7 @@ export function Services() {
                 <p className="text-white/90 mb-4">{service.description}</p>
               </CardContent>
             </Card>
+            </TiltCard>
           ))}
         </div>
       </div>

@@ -1,6 +1,38 @@
 import type { Metadata } from "next";
 import type { ProfileData } from "./types";
-import { DEFAULT_SEO, getSiteUrl } from "./site-config";
+import { BRAND_NAME, DEFAULT_SEO, getSiteUrl } from "./site-config";
+
+function personName(profile: ProfileData | null) {
+  const name = profile?.name?.trim();
+  if (name && name.toLowerCase().includes("ashutosh")) return name;
+  return BRAND_NAME;
+}
+
+function buildTitle(profile: ProfileData | null) {
+  const name = personName(profile);
+  const optimized = `${name} Portfolio | Full Stack Developer`;
+  const custom = profile?.seo?.title?.trim();
+  if (!custom) return optimized;
+
+  const lower = custom.toLowerCase();
+  const branded =
+    lower.includes(name.toLowerCase()) && lower.includes("portfolio");
+  if (branded && custom.length >= 40 && custom.length <= 65) return custom;
+  return optimized;
+}
+
+function buildDescription(profile: ProfileData | null) {
+  const custom = profile?.seo?.description?.trim();
+  if (
+    custom &&
+    custom.toLowerCase().startsWith("ashutosh choudhary portfolio") &&
+    custom.length <= 160
+  ) {
+    return custom;
+  }
+
+  return DEFAULT_SEO.description;
+}
 
 function resolveImageUrl(profile: ProfileData | null) {
   const ogImage =
@@ -13,52 +45,39 @@ function resolveImageUrl(profile: ProfileData | null) {
 }
 
 function buildKeywords(profile: ProfileData | null) {
-  const dynamic = [
-    profile?.name,
-    profile?.heroHeading,
-    profile?.heroSubtitle,
-    profile?.aboutText,
-    ...(profile?.socialLinks?.map((link) => link.platform) || []),
-  ]
+  const merged = [...DEFAULT_SEO.keywords];
+  const extra = [profile?.heroSubtitle, profile?.aboutText]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
 
-  const merged = [...DEFAULT_SEO.keywords];
-
-  ["mern", "react", "node", "typescript", "saas", "crm", "hrm", "dashboard"].forEach(
-    (keyword) => {
-      if (dynamic.includes(keyword) && !merged.some((k) => k.toLowerCase() === keyword)) {
-        merged.push(keyword.charAt(0).toUpperCase() + keyword.slice(1));
-      }
+  ["typescript", "saas", "crm", "hrm"].forEach((keyword) => {
+    if (extra.includes(keyword) && !merged.some((item) => item.toLowerCase() === keyword)) {
+      merged.push(keyword.charAt(0).toUpperCase() + keyword.slice(1));
     }
-  );
+  });
 
-  return merged.slice(0, 20);
+  return merged;
 }
 
 export function buildPortfolioMetadata(profile: ProfileData | null): Metadata {
   const siteUrl = getSiteUrl();
-  const title =
-    profile?.seo?.title ||
-    profile?.heroHeading ||
-    DEFAULT_SEO.title;
-  const description =
-    profile?.seo?.description ||
-    profile?.heroSubtitle ||
-    profile?.aboutText ||
-    DEFAULT_SEO.description;
+  const name = personName(profile);
+  const title = buildTitle(profile);
+  const description = buildDescription(profile);
   const canonical = profile?.seo?.canonicalUrl || siteUrl;
   const imageUrl = resolveImageUrl(profile);
   const keywords = buildKeywords(profile);
+  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords,
-    authors: [{ name: profile?.name || "Ashutosh Choudhary" }],
-    creator: profile?.name || "Ashutosh Choudhary",
-    publisher: profile?.name || "Ashutosh Choudhary",
+    applicationName: `${name} Portfolio`,
+    authors: [{ name, url: canonical }],
+    creator: name,
+    publisher: name,
     category: "technology",
     alternates: {
       canonical,
@@ -67,7 +86,7 @@ export function buildPortfolioMetadata(profile: ProfileData | null): Metadata {
       type: "website",
       locale: "en_IN",
       url: canonical,
-      siteName: profile?.name || "Ashutosh Choudhary Portfolio",
+      siteName: `${name} Portfolio`,
       title,
       description,
       images: [
@@ -75,7 +94,7 @@ export function buildPortfolioMetadata(profile: ProfileData | null): Metadata {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: `${profile?.name || "Ashutosh Choudhary"} portfolio preview`,
+          alt: `${name} portfolio`,
         },
       ],
     },
@@ -96,6 +115,7 @@ export function buildPortfolioMetadata(profile: ProfileData | null): Metadata {
         "max-video-preview": -1,
       },
     },
+    verification: googleVerification ? { google: googleVerification } : undefined,
     other: profile?.contactEmail
       ? {
           "contact:email": profile.contactEmail,

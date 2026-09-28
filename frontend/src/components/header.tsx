@@ -100,7 +100,7 @@ export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const logoUrl = getMediaUrl(profile?.logo, "/main-logo2.png");
   const resumeUrl = getResumeDownloadUrl(profile?.resume);
-  const displayName = profile?.name?.split(" ")[0] || "Portfolio";
+  const displayName = profile?.name || "Ashutosh Choudhary";
 
   useEffect(() => {
     let ticking = false;
@@ -180,16 +180,16 @@ export function Header() {
             <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/40 to-violet-500/40 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
             <Image
               src={logoUrl}
-              alt={`${profile?.name || "Portfolio"} logo`}
+              alt={`${profile?.name || "Ashutosh Choudhary"} portfolio logo`}
               width={40}
               height={40}
               className="relative rounded-full ring-2 ring-white/15 group-hover:ring-white/30 transition-all"
               priority
             />
           </span>
-          <div className="hidden sm:block leading-tight">
-            <p className="text-sm font-semibold text-white">{displayName}</p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">Developer</p>
+          <div className="hidden leading-tight sm:block">
+            <p className="whitespace-nowrap text-sm font-semibold text-white">{displayName}</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">Portfolio</p>
           </div>
         </Link>
 
@@ -263,7 +263,7 @@ export function Header() {
                   <div className="flex items-center gap-3 pb-6 mb-2 border-b border-white/15">
                     <Image
                       src={logoUrl}
-                      alt={`${profile?.name || "Portfolio"} logo`}
+                      alt={`${profile?.name || "Ashutosh Choudhary"} portfolio logo`}
                       width={44}
                       height={44}
                       className="rounded-full ring-2 ring-white/20 shadow-lg"
@@ -271,7 +271,7 @@ export function Header() {
                     <div>
                       <p className="font-semibold text-lg">{profile?.name || "Portfolio"}</p>
                       <p className="text-xs uppercase tracking-[0.18em] text-white/55">
-                        Full Stack Developer
+                        Portfolio
                       </p>
                     </div>
                   </div>

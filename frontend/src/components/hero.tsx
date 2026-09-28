@@ -62,6 +62,7 @@ Button.displayName = "Button";
 
 export function Hero() {
   const { profile, loading } = usePortfolioContext();
+  const stageRef = React.useRef<HTMLDivElement>(null);
 
   if (loading) {
     return (
@@ -73,10 +74,31 @@ export function Hero() {
 
   const resumeUrl = getResumeDownloadUrl(profile?.resume);
 
+  function tiltStage(event: React.PointerEvent<HTMLElement>) {
+    const el = stageRef.current;
+    if (!el) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const rotateY = (x - 0.5) * 10;
+    const rotateX = (0.5 - y) * 8;
+    el.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+  }
+
+  function resetStage() {
+    if (stageRef.current) {
+      stageRef.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+    }
+  }
+
   return (
     <section
       id="hero"
-      className="portfolio-section relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-clip py-8 text-center scroll-mt-0 sm:py-12"
+      className="portfolio-section hero-stage relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-clip py-8 text-center scroll-mt-0 sm:py-12"
+      onPointerMove={tiltStage}
+      onPointerLeave={resetStage}
     >
       <div className="absolute inset-0 z-0 bg-[#070b14]">
         <SectionBackground
@@ -86,15 +108,19 @@ export function Hero() {
           className="absolute inset-0 h-full w-full object-cover"
           preload="auto"
         />
-        <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
+        <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
       </div>
-      <div className="relative z-20 w-full max-w-4xl space-y-5 px-4 pb-6 pt-28 sm:space-y-6 sm:px-6 sm:pt-32 lg:pt-36">
+      <div className="hero-ring hero-ring-2" aria-hidden="true" />
+      <div className="hero-ring hero-ring-1" aria-hidden="true" />
+      <div
+        ref={stageRef}
+        className="hero-stage-inner hero-glass relative z-20 mx-4 mt-24 w-full max-w-4xl space-y-5 rounded-3xl px-4 py-8 sm:mx-6 sm:space-y-6 sm:px-8 sm:py-10 lg:mt-28"
+      >
         <h1 className="mx-auto max-w-3xl text-balance text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-          {profile?.seo?.title || profile?.heroHeading || "Hi, I'm Ashutosh Choudhary"}
+          {`${profile?.name || "Ashutosh Choudhary"} Portfolio`}
         </h1>
         <p className="mx-auto max-w-3xl text-balance text-sm font-semibold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-blue-500 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] sm:text-base md:text-lg lg:text-xl">
-          {profile?.seo?.description ||
-            profile?.heroSubtitle ||
+          {profile?.heroSubtitle ||
             "Full Stack Developer with 1.5+ years of experience building production-grade MERN SaaS platforms, HRM systems, CRM solutions, and enterprise dashboards."}
         </p>
 

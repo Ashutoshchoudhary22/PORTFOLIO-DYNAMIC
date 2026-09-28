@@ -17,6 +17,7 @@ import { SectionBackground } from "@/components/section-background";
 import { SectionSkeleton } from "@/components/section-skeleton";
 import { isCloudinaryUrl } from "@/lib/media-utils";
 import { cn } from "@/lib/utils";
+import { TiltCard } from "@/components/tilt-card";
 import type { ProjectItem, MediaItem } from "@/lib/types";
 
 function getProjectImages(project: ProjectItem): string[] {
@@ -60,7 +61,8 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
   }, [hasSlider, images.length]);
 
   return (
-    <Card className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-violet-400/35 hover:shadow-[0_24px_60px_rgba(139,92,246,0.22)]">
+    <TiltCard>
+    <Card className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent shadow-[0_18px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-colors duration-300 hover:border-violet-400/35">
       <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/0 via-violet-500/0 to-fuchsia-500/0 opacity-0 transition-opacity duration-500 group-hover:from-blue-500/10 group-hover:via-violet-500/5 group-hover:to-fuchsia-500/10 group-hover:opacity-100" />
 
       <div className="relative p-3 pb-0">
@@ -191,6 +193,7 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
         )}
       </CardContent>
     </Card>
+    </TiltCard>
   );
 }
 
@@ -225,7 +228,7 @@ export function Projects() {
         {projects.length === 0 ? (
           <p className="text-center text-white/70">No projects published yet.</p>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-8">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-8 [perspective:1400px]">
             {projects.map((project, index) => (
               <ProjectCard
                 key={project._id || project.slug}

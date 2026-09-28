@@ -59,11 +59,11 @@ const siteSettingsSchema = new mongoose.Schema(
     sectionVideos: [sectionVideoSchema],
     socialLinks: [socialLinkSchema],
     seo: {
-      title: { type: String, default: 'Ashutosh Choudhary Portfolio' },
+      title: { type: String, default: 'Ashutosh Choudhary Portfolio | Full Stack Developer' },
       description: {
         type: String,
         default:
-          'Portfolio of Ashutosh Choudhary, a Full Stack Developer specializing in MERN, SaaS, HRM, CRM, and enterprise dashboards.',
+          'Ashutosh Choudhary portfolio (ashutoshchoudhary). Full Stack MERN developer building SaaS, HRM, CRM, and enterprise dashboards.',
       },
       canonicalUrl: String,
       ogImage: mediaSchema,

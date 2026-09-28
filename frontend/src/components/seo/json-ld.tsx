@@ -1,5 +1,5 @@
 import type { ProfileData, ProjectItem, ServiceItem } from "@/lib/types";
-import { getSiteUrl } from "@/lib/site-config";
+import { DEFAULT_SEO, getSiteUrl } from "@/lib/site-config";
 
 type JsonLdProps = {
   profile: ProfileData | null;
@@ -16,11 +16,10 @@ function absoluteUrl(path: string) {
 export function JsonLd({ profile, projects = [], services = [] }: JsonLdProps) {
   const siteUrl = getSiteUrl();
   const name = profile?.name || "Ashutosh Choudhary";
-  const description =
-    profile?.seo?.description ||
-    profile?.heroSubtitle ||
-    profile?.aboutText ||
-    "Full Stack Developer portfolio";
+  const storedDescription = profile?.seo?.description?.trim() || "";
+  const description = storedDescription.toLowerCase().startsWith("ashutosh choudhary portfolio")
+    ? storedDescription
+    : DEFAULT_SEO.description;
   const image =
     profile?.seo?.ogImage?.secureUrl ||
     profile?.logo?.secureUrl ||
@@ -29,12 +28,19 @@ export function JsonLd({ profile, projects = [], services = [] }: JsonLdProps) {
     .map((link) => link.url)
     .filter(Boolean);
 
+  const pageUrl = profile?.seo?.canonicalUrl || siteUrl;
+  const portfolioName = `${name} Portfolio`;
+  const personId = `${siteUrl}/#person`;
+  const websiteId = `${siteUrl}/#website`;
+  const imageUrl = image.startsWith("http") ? image : absoluteUrl(image);
+
   const personSchema = {
-    "@context": "https://schema.org",
     "@type": "Person",
+    "@id": personId,
     name,
-    url: profile?.seo?.canonicalUrl || siteUrl,
-    image: image.startsWith("http") ? image : absoluteUrl(image),
+    alternateName: ["AshutoshChoudhary", "ashutoshchoudhary"],
+    url: pageUrl,
+    image: imageUrl,
     email: profile?.contactEmail,
     jobTitle: "Full Stack Developer",
     description,
@@ -52,34 +58,33 @@ export function JsonLd({ profile, projects = [], services = [] }: JsonLdProps) {
   };
 
   const websiteSchema = {
-    "@context": "https://schema.org",
     "@type": "WebSite",
-    name: profile?.seo?.title || `${name} Portfolio`,
+    "@id": websiteId,
+    name: portfolioName,
+    alternateName: [
+      "Ashutosh Choudhary portfolio",
+      "ashutoshchoudhary portfolio",
+    ],
     url: siteUrl,
     description,
     inLanguage: "en-IN",
-    publisher: {
-      "@type": "Person",
-      name,
-    },
+    publisher: { "@id": personId },
   };
 
   const profilePageSchema = {
-    "@context": "https://schema.org",
     "@type": "ProfilePage",
-    name: profile?.seo?.title || `${name} Portfolio`,
-    url: siteUrl,
+    "@id": `${siteUrl}/#profile`,
+    name: portfolioName,
+    url: pageUrl,
     description,
-    mainEntity: {
-      "@type": "Person",
-      name,
-    },
+    isPartOf: { "@id": websiteId },
+    mainEntity: { "@id": personId },
+    about: { "@id": personId },
   };
 
   const serviceListSchema =
     services.length > 0
       ? {
-          "@context": "https://schema.org",
           "@type": "ItemList",
           name: "Professional Services",
           itemListElement: services.slice(0, 10).map((service, index) => ({
@@ -101,7 +106,6 @@ export function JsonLd({ profile, projects = [], services = [] }: JsonLdProps) {
   const projectListSchema =
     projects.length > 0
       ? {
-          "@context": "https://schema.org",
           "@type": "ItemList",
           name: "Portfolio Projects",
           itemListElement: projects.slice(0, 12).map((project, index) => ({
@@ -118,7 +122,6 @@ export function JsonLd({ profile, projects = [], services = [] }: JsonLdProps) {
       : null;
 
   const breadcrumbSchema = {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       {
@@ -159,14 +162,14 @@ export function JsonLd({ profile, projects = [], services = [] }: JsonLdProps) {
   if (projectListSchema) schemas.push(projectListSchema);
 
   return (
-    <>
-      {schemas.map((schema, index) => (
-        <script
-          key={`${String(schema["@type"])}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": schemas,
+        }),
+      }}
+    />
   );
 }

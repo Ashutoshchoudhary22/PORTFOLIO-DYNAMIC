@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { TiltCard } from "@/components/tilt-card";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -104,7 +105,8 @@ export function Contact() {
           </a>
         </div>
 
-        <Card className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/20 bg-black/55 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl lg:max-w-2xl">
+        <TiltCard className="w-full max-w-xl lg:max-w-2xl" max={6}>
+        <Card className="relative w-full overflow-hidden rounded-2xl border border-white/20 bg-black/55 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-xl">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
           <CardHeader className="space-y-2 pb-2">
@@ -205,6 +207,7 @@ export function Contact() {
             </Form>
           </CardContent>
         </Card>
+        </TiltCard>
       </div>
     </section>
   );

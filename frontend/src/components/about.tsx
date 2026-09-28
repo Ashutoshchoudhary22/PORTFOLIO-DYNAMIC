@@ -219,11 +219,11 @@ export function About() {
                       <h4 className="text-lg md:text-xl font-semibold text-white mb-4">
                         {category.category}
                       </h4>
-                      <div className="flex flex-wrap justify-start gap-3 md:gap-4 lg:gap-5">
+                      <div className="flex flex-wrap justify-start gap-3 [perspective:800px] md:gap-4 lg:gap-5">
                         {category.skills.map((skill, skillIndex) => (
                           <div
                             key={skill._id || skillIndex}
-                            className="relative flex flex-col items-center justify-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-white/[0.08] via-white/[0.04] to-white/[0.02] hover:from-white/[0.15] hover:via-white/[0.10] hover:to-white/[0.05] border border-white/20 hover:border-green-400/50 transition-all duration-500 cursor-pointer group hover:shadow-[0_8px_32px_rgba(74,222,128,0.15)] hover:-translate-y-1 backdrop-blur-lg flex-shrink-0"
+                            className="skill-3d relative flex flex-col items-center justify-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-white/[0.08] via-white/[0.04] to-white/[0.02] hover:from-white/[0.15] hover:via-white/[0.10] hover:to-white/[0.05] border border-white/20 hover:border-green-400/50 transition-all duration-500 cursor-pointer group hover:shadow-[0_18px_40px_rgba(74,222,128,0.2)] backdrop-blur-lg flex-shrink-0"
                             style={{
                               animationDelay: `${skillIndex * 50}ms`,
                               animation: "fadeInUp 0.6s ease-out forwards",

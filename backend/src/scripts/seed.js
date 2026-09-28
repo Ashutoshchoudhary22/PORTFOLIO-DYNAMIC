@@ -244,9 +244,9 @@ async function seed() {
       { platform: 'LinkedIn', url: 'https://www.linkedin.com/in/ashutosh-choudhary-693b1a264/', icon: 'linkedin', sortOrder: 1 },
     ],
     seo: {
-      title: 'Ashutosh Choudhary Portfolio',
+      title: 'Ashutosh Choudhary Portfolio | Full Stack Developer',
       description:
-        'Portfolio of Ashutosh Choudhary, a Full Stack Developer specializing in MERN, SaaS, HRM, CRM, and enterprise dashboards.',
+        'Ashutosh Choudhary portfolio (ashutoshchoudhary). Full Stack MERN developer building SaaS, HRM, CRM, and enterprise dashboards.',
     },
   });
 

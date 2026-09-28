@@ -4,7 +4,7 @@ import { DEFAULT_SEO, getSiteUrl } from "@/lib/site-config";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: DEFAULT_SEO.title,
-    short_name: "Ashutosh Portfolio",
+    short_name: "Ashutosh Choudhary",
     description: DEFAULT_SEO.description,
     start_url: "/",
     display: "standalone",
