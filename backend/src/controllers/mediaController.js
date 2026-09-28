@@ -4,6 +4,12 @@ import {
   isCloudinaryConfigured,
   mapCloudinaryUploadResult,
 } from '../services/cloudinaryService.js';
+import {
+  assertPdfMagicBytes,
+  deleteLocalFile,
+  mapLocalPdfUpload,
+  removeUploadedFile,
+} from '../services/localUploadService.js';
 import { successResponse, errorResponse } from '../utils/apiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
@@ -37,11 +43,31 @@ export const saveUploadedMedia = asyncHandler(async (req, res) => {
   return successResponse(res, media, 'Media metadata saved', 201);
 });
 
+export const uploadLocalPdf = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return errorResponse(res, 'PDF file is required', 400);
+  }
+
+  try {
+    assertPdfMagicBytes(req.file.path);
+  } catch (error) {
+    removeUploadedFile(req.file.path);
+    throw error;
+  }
+
+  return successResponse(res, mapLocalPdfUpload(req.file), 'PDF saved locally', 201);
+});
+
 export const deleteMediaAsset = asyncHandler(async (req, res) => {
-  const { publicId, resourceType = 'image' } = req.body;
+  const { publicId, resourceType = 'image', provider } = req.body;
 
   if (!publicId) {
     return errorResponse(res, 'publicId is required', 400);
+  }
+
+  if (provider === 'local' || String(publicId).startsWith('local/')) {
+    const result = deleteLocalFile(publicId);
+    return successResponse(res, result, 'Media deleted from local storage');
   }
 
   const result = await deleteCloudinaryAsset(publicId, resourceType);

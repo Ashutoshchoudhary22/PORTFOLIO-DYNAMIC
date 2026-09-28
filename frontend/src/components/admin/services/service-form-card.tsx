@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { AdminToggleField } from "@/components/admin/admin-toggle-field";
 import { SettingsInputField } from "@/components/admin/settings/settings-field";
-import { uploadToCloudinary } from "@/lib/cloudinary-upload";
+import { uploadMediaFile } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem, ServiceItem } from "@/lib/types";
 import { adminCardClass, adminMutedClass } from "@/lib/admin-styles";
@@ -68,24 +68,13 @@ function UploadField({
     setProgress(0);
 
     try {
-      const result = await uploadToCloudinary(file, token, {
+      const media = await uploadMediaFile(file, token, {
         folder: "portfolio/services",
         resourceType,
         onProgress: (p) => setProgress(p.percentage),
       });
 
-      const isVideo = result.resource_type === "video" || file.type.startsWith("video/");
-      onUploaded({
-        type: isVideo ? "video" : "image",
-        provider: "cloudinary",
-        publicId: String(result.public_id),
-        secureUrl: String(result.secure_url),
-        thumbnailUrl: isVideo
-          ? String(result.secure_url).replace(/\.[^.]+$/, ".jpg")
-          : String(result.secure_url),
-        format: String(result.format || ""),
-        originalFilename: file.name,
-      });
+      onUploaded(media);
     } catch (uploadError) {
       setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
     } finally {

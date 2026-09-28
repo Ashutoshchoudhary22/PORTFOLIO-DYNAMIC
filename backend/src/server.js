@@ -10,6 +10,7 @@ import { configureCloudinary } from './config/cloudinary.js';
 import publicRoutes from './routes/publicRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
+import { uploadsRoot } from './services/localUploadService.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -63,6 +64,8 @@ const apiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+app.use('/uploads', express.static(uploadsRoot, { index: false, dotfiles: 'deny' }));
 
 app.use('/api', apiLimiter);
 app.use('/api', publicRoutes);

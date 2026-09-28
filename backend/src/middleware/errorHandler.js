@@ -1,3 +1,4 @@
+import multer from 'multer';
 import { errorResponse } from '../utils/apiResponse.js';
 
 export function notFoundHandler(req, res) {
@@ -25,6 +26,12 @@ export function errorHandler(err, req, res, _next) {
 
   if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
     return errorResponse(res, 'Invalid or expired token', 401);
+  }
+
+  if (err instanceof multer.MulterError) {
+    const message =
+      err.code === 'LIMIT_FILE_SIZE' ? 'PDF must be 10MB or smaller' : err.message;
+    return errorResponse(res, message, 400);
   }
 
   const statusCode = err.statusCode || 500;

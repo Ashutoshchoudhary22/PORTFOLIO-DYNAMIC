@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { AdminToggleField } from "@/components/admin/admin-toggle-field";
 import { SettingsInputField } from "@/components/admin/settings/settings-field";
-import { uploadToCloudinary } from "@/lib/cloudinary-upload";
+import { uploadMediaFile } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
 import { downloadMedia } from "@/lib/media-utils";
 import type { MediaItem, ProjectItem } from "@/lib/types";
@@ -159,28 +159,11 @@ export function ProjectFormCard({
       throw new Error(resourceType === "video" ? "Video must be 100MB or smaller." : "Image must be 10MB or smaller.");
     }
 
-    const result = await uploadToCloudinary(file, token, {
+    return uploadMediaFile(file, token, {
       folder: "portfolio/projects",
       resourceType,
       onProgress: (p) => setProgress(p.percentage),
     });
-
-    const isVideo = result.resource_type === "video" || file.type.startsWith("video/");
-    return {
-      type: isVideo ? "video" as const : "image" as const,
-      provider: "cloudinary" as const,
-      publicId: String(result.public_id),
-      secureUrl: String(result.secure_url),
-      thumbnailUrl: isVideo
-        ? String(result.secure_url).replace(/\.[^.]+$/, ".jpg")
-        : String(result.secure_url),
-      format: String(result.format || ""),
-      width: Number(result.width || 0),
-      height: Number(result.height || 0),
-      duration: Number(result.duration || 0),
-      bytes: Number(result.bytes || 0),
-      originalFilename: file.name,
-    } satisfies MediaItem;
   }
 
   return (

@@ -22,7 +22,7 @@ function getUploadConstraints(resourceType = 'auto') {
   }
 
   return {
-    allowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf'],
+    allowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
   };
 }
 

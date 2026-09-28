@@ -6,7 +6,7 @@ import { Download, MoreVertical, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { downloadMedia } from "@/lib/media-utils";
-import { uploadToCloudinary } from "@/lib/cloudinary-upload";
+import { uploadMediaFile } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem } from "@/lib/types";
 import { adminCardClass, adminMutedClass } from "@/lib/admin-styles";
@@ -60,28 +60,13 @@ export function BackgroundSectionCard({
     setProgress(0);
 
     try {
-      const result = await uploadToCloudinary(file, token, {
+      const media = await uploadMediaFile(file, token, {
         folder,
         resourceType: "auto",
         onProgress: (p) => setProgress(p.percentage),
       });
 
-      const uploadedIsVideo = result.resource_type === "video" || file.type.startsWith("video/");
-      onChange({
-        type: uploadedIsVideo ? "video" : "image",
-        provider: "cloudinary",
-        publicId: String(result.public_id),
-        secureUrl: String(result.secure_url),
-        thumbnailUrl: uploadedIsVideo
-          ? String(result.secure_url).replace(/\.[^.]+$/, ".jpg")
-          : String(result.secure_url),
-        format: String(result.format || ""),
-        width: Number(result.width || 0),
-        height: Number(result.height || 0),
-        duration: Number(result.duration || 0),
-        bytes: Number(result.bytes || 0),
-        originalFilename: file.name,
-      });
+      onChange(media);
     } catch (uploadError) {
       setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
     } finally {

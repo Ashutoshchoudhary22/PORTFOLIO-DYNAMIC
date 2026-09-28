@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AdminUploadingIndicator } from "@/components/admin/admin-uploading-indicator";
 import { downloadMedia } from "@/lib/media-utils";
-import { uploadToCloudinary } from "@/lib/cloudinary-upload";
+import { uploadMediaFile } from "@/lib/cloudinary-upload";
 import { getAdminToken } from "@/lib/admin-auth";
 import type { MediaItem } from "@/lib/types";
 import { adminBorderClass } from "@/lib/admin-styles";
@@ -53,26 +53,12 @@ export function MediaUploader({
     setProgress(0);
 
     try {
-      const result = await uploadToCloudinary(file, token, {
+      const media = await uploadMediaFile(file, token, {
         folder,
         resourceType,
         onProgress: (p) => setProgress(p.percentage),
       });
-
-      const isVideo = result.resource_type === "video" || file.type.startsWith("video/");
-      onChange({
-        type: isVideo ? "video" : "image",
-        provider: "cloudinary",
-        publicId: String(result.public_id),
-        secureUrl: String(result.secure_url),
-        thumbnailUrl: isVideo ? String(result.secure_url).replace(/\.[^.]+$/, ".jpg") : String(result.secure_url),
-        format: String(result.format || ""),
-        width: Number(result.width || 0),
-        height: Number(result.height || 0),
-        duration: Number(result.duration || 0),
-        bytes: Number(result.bytes || 0),
-        originalFilename: file.name,
-      });
+      onChange(media);
     } catch (uploadError) {
       setError(uploadError instanceof Error ? uploadError.message : "Upload failed");
     } finally {
@@ -101,7 +87,9 @@ export function MediaUploader({
       {value?.secureUrl && (
         <div className={`rounded-md border p-2 text-xs space-y-2 ${adminBorderClass}`}>
           <p className="truncate">{value.originalFilename || value.publicId}</p>
-          {value.type === "image" ? (
+          {value.format === "pdf" || value.secureUrl.toLowerCase().includes(".pdf") ? (
+            <p className="text-sm">PDF saved locally</p>
+          ) : value.type === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={value.secureUrl}

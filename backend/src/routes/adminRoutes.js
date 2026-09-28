@@ -75,8 +75,10 @@ import {
 import {
   getUploadSignature,
   saveUploadedMedia,
+  uploadLocalPdf,
   deleteMediaAsset,
 } from '../controllers/mediaController.js';
+import { pdfUpload } from '../services/localUploadService.js';
 
 const router = Router();
 
@@ -179,6 +181,7 @@ router.patch('/messages/:id', updateContactMessage);
 router.delete('/messages/:id', deleteContactMessage);
 
 router.get('/media/signature', getUploadSignature);
+router.post('/media/local', pdfUpload.single('file'), uploadLocalPdf);
 router.post('/media/save', saveUploadedMedia);
 router.delete('/media', deleteMediaAsset);
 
